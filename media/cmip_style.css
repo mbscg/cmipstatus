@@ -1,0 +1,63 @@
+ul.nav_bar {
+list-style-type:none;
+background-color:#000000;
+font-family:helvetica;
+line-height:1.5em;
+}
+
+ul.exp_list {
+list-style-type:none;
+background-color:#f0f0f0;
+font-family:helvetica;
+line-height:1.5em;
+}
+
+ul.stat_list {
+list-style-type:none;
+font-family:helvetica;
+}
+
+
+li.nav_bar {display:inline;}
+
+a.header_link:link{
+color:#ffffff;
+text-decoration:none;
+padding-left:10px;
+padding-right:10px;
+}
+a.header_link:visited {color:#ffffff}
+a.header_link:hover {color:#f0f0f0}
+a.header_link:active {color:#ffffff}
+
+a.exp_link:link{
+color:#000000;
+}
+a.exp_link:visited {color:#000000}
+a.exp_link:hover {color:#0f0f00}
+a.exp_link:active {color:#000000}
+
+p.exp_view_section{
+font-size:1.5em;
+}
+
+div.home{
+font-family:helvetica;
+background-color:#f0f0f0;
+}
+
+div.footer{
+text-align:center;
+font-family:helvetica;
+color:#ffffff;
+background-color:#000000;
+position:fixed;
+bottom:-1px;
+left:0px;
+right:-1px;
+}
+
+div.exp_view{
+font-family:helvetica;
+background-color:#f0f0f0;
+}
