@@ -3,17 +3,28 @@
 {% block body %}
 <div class="exp_view">
 <p class="exp_view_section">Experiment: {{ exp.name }}</p>
-{% if job_id %}
+
+<ul class='exp_list'>
+{% for member_info in minfo %}
+<li>Member {{ member_info.member }}: 
+    {% if member_info.submitted  %}
+        <progress value={{ member_info.status }}></progress>
+        {% if member_info.post %}Post-processing{% else %}Running{% endif %}
+    {% else %}Not submitted
+    {% endif %} 
+</li>
+{% empty %}No jobs submitted
+{% endfor %}
+</ul>
+
+<!--
 <p class="exp_view_section">Tupa running info:
 <ul class="stat_list">
 <li><b>job_id: </b>{{ job_id }}</li>
 <li><b>status: </b>{{ status }}</li>
 </ul>
-{% else %}
-Job is not running.
-{% endif %}
 </p>
 <p class="exp_view_section">Figures:</p>
-</div>
+</div>-->
 {% endblock %}
 

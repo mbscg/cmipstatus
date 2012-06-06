@@ -13,12 +13,29 @@ def explist(request):
 def expview(request, expname):
     exp = Experiment.objects.get(name=expname)
     tupa_data = TupaQuery.objects.get(name='query').get_data()
-    runinfo = exp.check_status(tupa_data)
+    members_info = exp.check_status(tupa_data)
+    runinfo = []
     info = {'exp':exp}
-    if runinfo:
-        info['job_id'] = runinfo[0]
-        if 'aux' in info['job_id']:
-            info['status'] = "Post-processing"
-        else:
-            info['status'] = runinfo[-1]
+
+    if members_info:
+        for member_info in members_info:
+            print "showing", member_info
+            minfo = {'member':member_info[1].split('_')[-1]}
+            if member_info[0] == None: #no job, no job_id
+                 minfo['submitted'] = False
+            else:
+                minfo['submitted'] = True
+                minfo['job_id'] = member_info[0]
+                if 'aux' in minfo['job_id']:
+                    minfo['post'] = True
+                    minfo['status'] = 1.0
+                else:   
+                    minfo['post'] = False
+                    print "status", member_info[-1][:-1]
+                    minfo['status'] = float(member_info[-1][:-1])/100
+            runinfo.append(minfo)
+        info['minfo'] = runinfo
+    else:
+        info['minfo'] = None
+
     return  render_to_response("cmipexpview.html", info)
