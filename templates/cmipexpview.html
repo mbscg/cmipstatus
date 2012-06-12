@@ -6,12 +6,15 @@
 
 <ul class='exp_list'>
 {% for member_info in minfo %}
-<li>Member {{ member_info.member }}: 
-    {% if member_info.submitted  %}
-        <progress value={{ member_info.status }}></progress>
-        {% if member_info.post %}Post-processing{% else %}Running{% endif %}
-    {% else %}Not submitted
-    {% endif %} 
+<li>Member {{ member_info.member }}:
+        <progress value={{ member_info.prog }}></progress>{{ member_info.text_total }}% of total,
+        {% if member_info.running %}
+            {% if member_info.post %}Post-processing
+            {% else %}Running
+            {% endif %}
+        {% else %}Not Running
+        {% endif %}
+        [{{ member_info.text_run }}% of run {{ member_info.current }} (Total runs: {{ member_info.total }})]
 </li>
 {% empty %}No jobs submitted
 {% endfor %}
