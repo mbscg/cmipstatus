@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^cmip/$', 'cmipstatus.views.home'),
     url(r'^cmip/list/$', 'cmipstatus.views.explist'),
     url(r'^cmip/expview/(.*)/$', 'cmipstatus.views.expview'),
+    url(r'^cmip/validation/(.*)/$', 'cmipstatus.views.expvalview'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -1,0 +1,12 @@
+{% extends 'cmiphome.html' %}
+
+{% block body %}
+<div class="exp_view">
+<p class="exp_view_section">Validation Images for {{ expname }}</p>
+</div>
+{% for img in imgs %}
+<img src="{{ img }}"/><br>
+<!--{{ img }}<br>-->
+{% endfor %}
+{% endblock %}
+
