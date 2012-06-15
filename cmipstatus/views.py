@@ -1,8 +1,8 @@
 from django.shortcuts import render_to_response
 from models import Experiment, TupaQuery, Member, get_tupa_data
-from os import listdir
-from os.path import join
+from os.path import join, exists
 import inpe.settings
+from django.http import Http404
 
 def home(request):
     return render_to_response("cmiphome.html", {})
@@ -29,7 +29,6 @@ def expview(request, expname):
         finished_prog = float(done) / float(total)
         run_fraction = 1. / total
         minfo = {'member':current[1].split('_',1)[-1], 'current':done+1, 'total':total}
-        print "current[1], minfo member", current[1], minfo['member']
         if current[0] == None: #not running
             minfo['running'] = False
             minfo['prog'] = 0.0 * run_fraction + finished_prog
@@ -59,10 +58,10 @@ def expvalview(request, expname):
     if '_' not in expname:
         expname += '_1'
     FIGS_DIR = join(inpe.settings.MEDIA_ROOT, 'images', expname, 'figures')
-    print "figs dir", FIGS_DIR
     imgs = []
+    if not exists(FIGS_DIR):
+        raise Http404
     for uri in listdir(FIGS_DIR):
         imgs.append(join(inpe.settings.MEDIA_URL, 'images', expname, 'figures', uri))
-    print imgs
     info = {'imgs':imgs, 'expname':expname}
     return render_to_response("cmipexpvalview.html", {'imgs':imgs, 'expname':expname})
