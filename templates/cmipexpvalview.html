@@ -4,9 +4,13 @@
 <div class="exp_view">
 <p class="exp_view_section">Validation Images for {{ expname }}</p>
 </div>
-{% for img in imgs %}
-<img src="{{ img }}"/><br>
-<!--{{ img }}<br>-->
+<div class="graphics_info">
+Graphics info:<br>{{ log|linebreaks }}
+</div>
+{% for img_pair in imgs %}
+<a href="{{ img_pair.0 }}"><img src="{{ img_pair.0 }}" width=300/></a>
+<a href="{{ img_pair.1 }}"><img src="{{ img_pair.1 }}" width=300/></a>
+<br>
 {% endfor %}
 {% endblock %}
 

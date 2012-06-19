@@ -1,0 +1,15 @@
+{% extends 'cmiphome.html' %}
+
+{% block body %}
+<div class="prof_photo">
+<img class="prof_photo" width=200 src="{{ prof.photo.url }}"/>
+{% if editable %}
+<p><a class="prof_link" href="/cmip/profedit/{{ prof.id }}">Edit Profile</a></p>
+{% endif %}
+</div>
+<div class="profile">
+<p class="prof_title">{{ prof.name }}</p>
+<p class="prof_about">{{ prof.about }}</p>
+</div>
+{% endblock %}
+

@@ -12,6 +12,13 @@ font-family:helvetica;
 line-height:1.5em;
 }
 
+ul.prof_list{
+list-style-type:none;
+background-color:#f0f0f0;
+font-family:helvetica;
+line-height:1.5em;
+}
+
 ul.stat_list {
 list-style-type:none;
 font-family:helvetica;
@@ -36,6 +43,39 @@ color:#000000;
 a.exp_link:visited {color:#000000}
 a.exp_link:hover {color:#0f0f00}
 a.exp_link:active {color:#000000}
+
+a.val_link:link{
+color:#000000;
+}
+a.val_link:visited {color:#000000}
+a.val_link:hover {color:#0f0f00}
+a.val_link:active {color:#000000}
+
+a.logout_link:link{
+color:#ffffff;
+text-decoration:none;
+}
+a.logout_link:visited {color:#ffffff}
+a.logout_link:hover {color:#ffff99}
+a.logout_link:active {color:#ffffff}
+
+progress.exp_progress{
+position:fixed;
+left:160px;;
+}
+
+span.exp_progress_details{
+position:fixed;
+left:340px;
+}
+
+a.prof_link:link{
+font-family:helvetica;
+color:#000000;
+}
+a.prof_link:visited {color:#000000}
+a.prof_link:hover {color:#0f0f00}
+a.prof_link:active {color:#000000}
 
 p.exp_view_section{
 font-size:1.5em;
@@ -62,3 +102,34 @@ font-family:helvetica;
 background-color:#f0f0f0;
 }
 
+div.profile{
+background-color:#efefef;
+position:fixed;
+left:220px;
+top:50px;
+right:10px;
+bottom:-20px;
+overflow:auto;
+text-align:justify;
+}
+
+p.prof_title{
+font-family:helvetica;
+font-size:2em;
+}
+
+p.prof_about{
+font-family:helvetica;
+}
+
+div.prof_photo{
+background-color:#e0e0e0;
+position:fixed;
+top:50px;
+bottom:-20px;
+}
+
+div.graphics_info{
+font-family:helvetica;
+background-color:#f0fff0;
+}

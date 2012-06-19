@@ -2,6 +2,16 @@ from django.db import models
 from datetime import datetime
 from os.path import join
 from cmip_fig_gen import get_restart_list, gen_figures
+from django.contrib.auth.models import User
+
+
+class People(User):
+    name = models.CharField(max_length=100)
+    about = models.TextField(default='INPE GMAO Researcher')
+    photo = models.ImageField(max_length=2048, upload_to='profile_pics', default='profile_default.png')
+
+    def __unicode__(self):
+        return self.name
 
 
 class Experiment(models.Model):
@@ -11,10 +21,6 @@ class Experiment(models.Model):
         done, total = check_restart_list(self.name, '')
         current = check_status(self.name, '', tupa_data)
         return done, total, current
-
-    def get_figures(self):
-        #gen_figures(self.name)
-        pass
 
     def __unicode__(self):
         return self.name
@@ -29,10 +35,6 @@ class Member(models.Model):
         current = check_status(self.exp.name, self.name, tupa_data)
         return done, total, current
 
-    def get_figures(self):
-        #gen_figures(self.exp, member=self.name)
-        pass
-
     def __unicode__(self):
         return self.name
 
@@ -42,10 +44,15 @@ def check_restart_list(exp_name, member_name):
     restart_list = open(join('cmipstatus', 'fetched_data', "RESTARTLIST.{0}.tmp".format(exp_name+member_name)), 'r')
     restarts = 0
     done = 0
+    error = 0
     for line in restart_list:
         restarts += 1
         if 'END' in line:
             done += 1
+        if 'ERR' in line:
+            error += 1
+    if error > 0:
+        done *= -1
     return done, restarts
 
 
@@ -66,13 +73,3 @@ def get_tupa_data():
     query_result = f.read()
     f.close()
     return query_result
-    
-
-class TupaQuery(models.Model):
-    name = models.CharField(max_length=5)
-    query_result = models.CharField(max_length=10240)
-    last_checked = models.DateTimeField()
-    refresh_time = models.IntegerField()
-
-    def get_data(self):
-        pass

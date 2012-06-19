@@ -2,21 +2,49 @@
 
 {% block body %}
 <div class="exp_view">
-<p class="exp_view_section">Experiment: {{ exp.name }}</p>
+<p class="exp_view_section">Experiment: {{ title }}</p>
+<p>Click exp/member name to see its figures</p>
 
 <ul class='exp_list'>
 {% for member_info in minfo %}
-<li>Member {{ member_info.member }}:
-        <progress value={{ member_info.prog }}></progress>{{ member_info.text_total }}% of total,
-        {% if member_info.running %}
-            {% if member_info.post %}Post-processing
-            {% else %}Running
-            {% endif %}
-        {% else %}Not Running
-        {% endif %}
-        [{{ member_info.text_run }}% of run {{ member_info.current }} (Total runs: {{ member_info.total }})]
-<a class="exp_link" href="/cmip/validation/{{ member_info.member }}">Validation Figures</a>
+
+<li>
+
+<!-- signal -->
+{% if member_info.error %}
+    <img src="/media/vermelho.png" title="Error"/>
+{% elif member_info.post %}
+    <img src="/media/azul.png" title="Post-Processing"/> <!-- post -->
+{% elif  member_info.running %}
+    <img src="/media/verde.png" title="Running"/> <!-- running -->
+{% elif member_info.complete %}
+    <img src="/media/final.png" width=10 title="Finished"/>
+{% else %}
+    <img src="/media/amarelo.png" title="Waiting/Copying"/> <!-- waiting -->
+{% endif %}
+
+<!-- name and link -->
+<a class="val_link" href="/cmip/validation/{{ member_info.member }}">{{ member_info.member }}</a>
+
+<!-- progressbar -->
+<progress class="exp_progress" value={{ member_info.prog }} title="{{ member_info.text_total }}%"></progress>
+
+<!-- run info -->
+{% if not member_info.complete %}
+    <span class="exp_progress_details">
+    {% if not member_info.error %}
+        {{ member_info.text_total }}%
+    {% endif %}
+    {% if member_info.running %} 
+        [{{ member_info.text_run }}% on run {{ member_info.current }} 
+    {% else %}
+        [Completed {{ member_info.last }}
+    {% endif %}
+        of {{ member_info.total }}]
+    </span>
+{% endif %}
 </li>
+
 {% empty %}No jobs submitted
 {% endfor %}
 </ul>

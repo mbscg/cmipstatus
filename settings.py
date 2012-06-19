@@ -148,3 +148,7 @@ LOGGING = {
         },
     }
 }
+
+LOGIN_URL = "/cmip/login"
+LOGOUT_URL = "/cmip/logout"
+LOGIN_REDIRECT_URL = "/cmip"

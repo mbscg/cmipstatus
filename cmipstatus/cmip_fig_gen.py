@@ -2,9 +2,11 @@ from fabric.api import run, env, settings, get, cd, prefix
 from time import sleep
 from os.path import join
 from os import makedirs
-import glob
+import datetime
+from random import shuffle
 
-RESTART_LIST_TEMPLATE = '/stornext/{0}/ocean/simulations/{1}/experiment_design/RESTARTLIST.{2}.tmp'
+#RESTART_LIST_TEMPLATE = '/stornext/{0}/ocean/simulations/{1}/experiment_design/RESTARTLIST.{2}.tmp'
+RESTART_LIST_BLEEDING = '/stornext/home/manoel.baptista/exp_repos/exp/cpld/RESTARTLIST/RESTARTLIST.{0}.tmp'
 
 def get_restart_list(exp_name, member_name):
     disk = "online2"
@@ -12,7 +14,8 @@ def get_restart_list(exp_name, member_name):
         member_index = int(member_name.split('_')[-1])
         if member_index > 4:
             disk = "online12"
-    file_to_read = RESTART_LIST_TEMPLATE.format(disk, exp_name, exp_name+member_name)
+    #file_to_read = RESTART_LIST_TEMPLATE.format(disk, exp_name, exp_name+member_name)
+    file_to_read = RESTART_LIST_BLEEDING.format(exp_name+member_name)
     with settings(host_string='ocean@tupa', warn_only=True):
         get(file_to_read, join('fetched_data'))
 
@@ -40,7 +43,8 @@ def get_running_dates(expname, member):
 OUTPUT_DIR_TEMPLATE = '/stornext/{0}/ocean/simulations/{1}/dataout/*/*/{2}/ocean/CGCM/'
 SCRIPT_LINE = "cmip_base_eval_gg.bash {0} {1} {2} {3} {4} '{5}'"
 FIGS_DIR = '/scratchin/grupos/ocean/home/ocean/cmip_evaluation/{0}_{1}/*'
-DEST_DIR = 'media/images/{0}_{1}'
+DEST_DIR = '../media/images/{0}_{1}'
+LOG_DIR = 'fetched_data/logs/'
 
 def gen_figures(exp, member=None):
     with settings(host_string='ocean@tupa', warn_only=True):
@@ -63,7 +67,7 @@ def gen_figures(exp, member=None):
                 return
             complete_dir = run('find {0} -type d'.format(incomplete_dir))
             print complete_dir
-            regions = ['SA']#, 'SH', 'GT', 'NH', 'GB', 'TP', 'TA']
+            regions = ['SA', 'SH', 'GT', 'NH', 'GB', 'TP', 'TA']
             with prefix('module load grads'):
                 for region in regions:
                     #run(SCRIPT_LINE.format('1', 'last', region, exp, str(member), complete_dir))
@@ -73,22 +77,32 @@ def gen_figures(exp, member=None):
         dest_dir = DEST_DIR.format(exp, str(member))
         print "or, dest", figs_dir, dest_dir
         get(figs_dir, dest_dir)
+        loginfo = 'start date: {0}, end date: {1}\n'.format(running_dates[0], running_dates[1])
+        loginfo += 'last generated: {0}\n'.format(str(datetime.datetime.now()))
+        log = open(join(LOG_DIR, exp+'_'+str(member)+'log.txt'), 'w')
+        log.write(loginfo)
+        log.close()
 
 
 if __name__ == "__main__":
     restart_interval = 900
     restart_count = 0
-    exps_with_members = ['004', '006','008','010','012','014','016', '018','022','023']
+    exps_with_members = ['016', '004', '006','008','010','012','014', '018','022','023']
+    shuffle(exps_with_members)
     exps_no_members = ['001','002','003','005','007','009','011','013','015','017','019','020','021']
+    shuffle(exps_no_members)
     while True:
+        print "refresh status"
         for exp in exps_with_members:
             for m in range(1,11):
                 get_restart_list('cmp'+exp, '_'+str(m))
                 if restart_count == 0:
+                    print "refresh figures"
                     gen_figures('cmp'+exp, m) 
         for exp in exps_no_members:
             get_restart_list('cmp'+exp, '')
             if restart_count == 0:
-               gen_figures('cmp'+exp, 1)
+                print "refresh figures"
+                gen_figures('cmp'+exp, 1)
         restart_count = (restart_count + 1) % 10 
         sleep(restart_interval)
