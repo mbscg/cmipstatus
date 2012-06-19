@@ -1,14 +1,13 @@
 from django.db import models
 from datetime import datetime
 from os.path import join
-from cmip_fig_gen import get_restart_list, gen_figures
 from django.contrib.auth.models import User
 
 
 class People(User):
     name = models.CharField(max_length=100)
     about = models.TextField(default='INPE GMAO Researcher')
-    photo = models.ImageField(max_length=2048, upload_to='profile_pics', default='profile_default.png')
+    photo = models.ImageField(max_length=1048, upload_to='media', default='profile_default.png')
 
     def __unicode__(self):
         return self.name

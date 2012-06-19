@@ -30,19 +30,17 @@
 <progress class="exp_progress" value={{ member_info.prog }} title="{{ member_info.text_total }}%"></progress>
 
 <!-- run info -->
+<span class="exp_progress_details" title="{% if member_info.running %}[{{ member_info.text_run }}% on run {{ member_info.current }}{% else %}[Completed {{ member_info.last }} runs{% endif %} of {{ member_info.total }}]">
 {% if not member_info.complete %}
-    <span class="exp_progress_details">
-    {% if not member_info.error %}
-        {{ member_info.text_total }}%
-    {% endif %}
-    {% if member_info.running %} 
-        [{{ member_info.text_run }}% on run {{ member_info.current }} 
+    {% if member_info.error %}
+        Error ocurred
     {% else %}
-        [Completed {{ member_info.last }}
+        {{ member_info.text_total }}% ({{ member_info.finished_years }} years of {{ member_info.total_years }})
     {% endif %}
-        of {{ member_info.total }}]
-    </span>
+{% else %}
+    Completed {{ member_info.finished_years }} years
 {% endif %}
+</span>
 </li>
 
 {% empty %}No jobs submitted

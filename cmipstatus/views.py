@@ -1,5 +1,7 @@
 from django.shortcuts import render_to_response
 from models import Experiment, Member, People, get_tupa_data
+from forms import FormEditProfile, FormPassword
+from django.template import RequestContext
 from os.path import join, exists
 from os import listdir
 import inpe.settings
@@ -37,11 +39,13 @@ def expview(request, expname):
     for member in exp:
         done, total, current = member.get_status(tupa_data)
         finished_prog = float(done) / float(total)
+        finished_years = float(done)/12
+        total_years = total/12
         run_fraction = 1. / total
         error = (done < 0)
         if error:
             done *= -1
-        minfo = {'member':current[1].split('_',1)[-1], 'last':done, 'current':done+1, 'total':total, 'error':error}
+        minfo = {'member':current[1].split('_',1)[-1], 'last':done, 'current':done, 'total':total, 'error':error}
         minfo['complete'] = (done == total)
         minfo['running'] = (current[0] is not None)
         minfo['prog'] = finished_prog
@@ -55,6 +59,8 @@ def expview(request, expname):
                 minfo['post'] = False
                 minfo['text_run'] = current[-1][:-1]
                 minfo['prog'] += float(minfo['text_run'])/100.0 * run_fraction
+        minfo['finished_years'] = '%3.2f' % (minfo['prog'] * total_years)
+        minfo['total_years'] = total_years
         minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
         runinfo.append(minfo)
         print minfo
@@ -88,10 +94,46 @@ def expvalview(request, expname):
 @login_required
 def profview(request, profid):
     prof = People.objects.get(id=profid)
-    editable = request.user == prof.username
+    user_prof = People.objects.get(username=request.user)
+    editable = prof == user_prof
     return render_to_response("cmipprofview.html", {'prof':prof, 'editable':editable})
 
 
 @login_required
-def profedit(request, profid):
-    return "oi"
+def profedit(request):
+    profile = People.objects.get(username=request.user)
+
+    if request.method == 'POST':
+        form = FormEditProfile(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return render_to_response("cmipsuccess.html", {})
+    else:
+        form = FormEditProfile(instance=profile)
+
+    return render_to_response("cmipprofedit.html", {'form':form},
+                context_instance=RequestContext(request))
+
+
+@login_required
+def passwedit(request):
+    if request.method == 'POST':
+        profile = People.objects.get(username=request.user)
+        form = FormPassword(request.POST, request.FILES)
+        if form.is_valid():
+            curr_passw = form.cleaned_data['current_passw']
+            if request.user.check_password(curr_passw):
+                new_passw = form.cleaned_data['new_passw']
+                request.user.set_password(new_passw)
+                request.user.save()
+                return render_to_response("cmipsuccess.html", {})
+            else:
+                return render_to_response("cmipchangepassw.html", {'form':form, 'erro':True},
+                context_instance=RequestContext(request))
+
+    else:
+        form = FormPassword()
+
+    return render_to_response("cmipchangepassw.html", {'form':form},
+                context_instance=RequestContext(request))
+    

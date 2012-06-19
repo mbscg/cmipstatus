@@ -4,12 +4,12 @@
 <div class="prof_photo">
 <img class="prof_photo" width=200 src="{{ prof.photo.url }}"/>
 {% if editable %}
-<p><a class="prof_link" href="/cmip/profedit/{{ prof.id }}">Edit Profile</a></p>
+<p><a class="prof_link" href="/cmip/profedit/">Edit Profile</a></p>
 {% endif %}
 </div>
 <div class="profile">
 <p class="prof_title">{{ prof.name }}</p>
-<p class="prof_about">{{ prof.about }}</p>
+<p class="prof_about">{{ prof.about|linebreaks }}</p>
 </div>
 {% endblock %}
 
