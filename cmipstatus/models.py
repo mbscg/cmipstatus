@@ -40,7 +40,7 @@ class Member(models.Model):
 
 def check_restart_list(exp_name, member_name):
     print "checking restart count..."
-    restart_list = open(join('cmipstatus', 'fetched_data', "RESTARTLIST.{0}.tmp".format(exp_name+member_name)), 'r')
+    restart_list = open(join('/home/opendap/cmipsite/cmipstatus/fetched_data', "RESTARTLIST.{0}.tmp".format(exp_name+member_name)), 'r')
     restarts = 0
     done = 0
     error = 0
@@ -68,7 +68,7 @@ def check_status(exp_name, member_name, tupa_data):
 
 
 def get_tupa_data():
-    f = open(join('cmipstatus', 'fetched_data', 'running_stats.txt'), 'r')
+    f = open(join('/home/opendap/cmipsite/cmipstatus/fetched_data', 'running_stats.txt'), 'r')
     query_result = f.read()
     f.close()
     return query_result

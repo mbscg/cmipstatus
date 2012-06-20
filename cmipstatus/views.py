@@ -4,7 +4,7 @@ from forms import FormEditProfile, FormPassword
 from django.template import RequestContext
 from os.path import join, exists
 from os import listdir
-import inpe.settings
+import settings
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 
@@ -74,15 +74,15 @@ def expvalview(request, expname):
     #load images for exp
     if '_' not in expname:
         expname += '_1'
-    FIGS_DIR = join(inpe.settings.MEDIA_ROOT, 'images', expname, 'figures')
+    FIGS_DIR = join(settings.MEDIA_ROOT, 'images', expname, 'figures')
     imgs = []
     if not exists(FIGS_DIR):
         raise Http404
     for uri in listdir(FIGS_DIR):
-        imgs.append(join(inpe.settings.MEDIA_URL, 'images', expname, 'figures', uri))
+        imgs.append(join(settings.MEDIA_URL, 'images', expname, 'figures', uri))
     imgs = zip(imgs[::2], imgs[1::2])
     try:
-        logfile = open(join('cmipstatus', 'fetched_data', 'logs', expname+'log.txt'), 'r')
+        logfile = open(join('/home/opendap/cmipsite/cmipstatus/fetched_data/logs', expname+'log.txt'), 'r')
         log = logfile.read()
         logfile.close()
     except:
