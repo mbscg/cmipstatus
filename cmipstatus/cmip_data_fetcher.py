@@ -7,6 +7,7 @@ from os.path import join
 ANTARES_STATS_DIR = '/home/opendap/cmipsite/cmipstatus/fetched_data/'
 
 def get_running_stats():
+    env.use_ssh_config = True
     with settings(host_string='ocean@tupa', warn_only=True):
         results = run('stat_cpld manoel.baptista')
     if results.succeeded:
@@ -16,7 +17,7 @@ def get_running_stats():
         f.writelines(['\n'])
         f.close()
         #send to antares
-        with settings(host_string='opendap@antares.ccst.inpe.br', warn_only=True):
+        with settings(host_string='opendap@antares', warn_only=True):
             print "sending to antares"
             put(stats_file, ANTARES_STATS_DIR)
     else:

@@ -11,6 +11,7 @@ ANTARES_RESTARTS_DIR = '/home/opendap/cmipsite/cmipstatus/fetched_data/'
 
 def get_restart_list(exp_name, member_name):
     disk = "online2"
+    env.use_ssh_config = True
     if '_' in member_name:
         member_index = int(member_name.split('_')[-1])
         if member_index > 4:
@@ -20,7 +21,7 @@ def get_restart_list(exp_name, member_name):
     file_to_read = RESTART_LIST_BLEEDING.format(restart_filename)
     with settings(host_string='ocean@tupa', warn_only=True):
         get(file_to_read, join('fetched_data'))
-    with settings(host_string='opendap@antares.ccst.inpe.br', warn_only=True):
+    with settings(host_string='opendap@antares', warn_only=True):
         put(join('fetched_data', restart_filename), ANTARES_RESTARTS_DIR)
 
 if __name__ == "__main__":

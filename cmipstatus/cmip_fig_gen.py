@@ -35,6 +35,7 @@ PAPERA_LOG_FILE = 'fetched_data/logs/{0}'
 ANTARES_LOGS_DIR = '/home/opendap/cmipsite/cmipstatus/fetched_data/logs/'
 
 def gen_figures(exp, member=None):
+    env.use_ssh_config = True
     with settings(host_string='ocean@tupa', warn_only=True):
         with cd('cmipstatus_scripts'):
             member_index = '01'
@@ -65,6 +66,7 @@ def gen_figures(exp, member=None):
                 return
             complete_dir = run('find {0} -type d'.format(incomplete_dir))
             regions = ['SA', 'SH', 'GT', 'NH', 'GB', 'TP', 'TA']
+            shuffle(regions)
             with prefix('module load grads'):
                 for region in regions:
                     run(SCRIPT_LINE.format(running_dates[0], running_dates[1], region, exp, str(member), complete_dir))
@@ -79,7 +81,7 @@ def gen_figures(exp, member=None):
         log.write(loginfo)
         log.close()
     #send them all
-    with settings(host_string='opendap@antares.ccst.inpe.br', warn_only=True):
+    with settings(host_string='opendap@antares', warn_only=True):
         put(PAPERA_FIGS_DIR.format(exp, str(member)), ANTARES_FIGS_DIR.format(exp, str(member)))
         put(PAPERA_LOG_FILE.format(exp+'_'+str(member)+'log.txt'), ANTARES_LOGS_DIR)
 
