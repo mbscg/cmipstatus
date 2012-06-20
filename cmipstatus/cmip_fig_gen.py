@@ -1,6 +1,6 @@
 from fabric.api import run, env, settings, get, cd, prefix
 from time import sleep
-from os.path import join
+from os.path import join, exists
 from os import makedirs
 import datetime
 from random import shuffle
@@ -20,8 +20,7 @@ def get_running_dates(expname, member):
         for line in lsresult:
             dates.append(line.split('.')[0]+'00')
         if len(dates) > 3:
-            print dates[1], dates[-2]
-            return dates[1], dates[-2]
+            return dates[1], dates[-1]
         else:
             return None
 
@@ -49,7 +48,17 @@ def gen_figures(exp, member=None):
             else: #only one dir
                 incomplete_dir = OUTPUT_DIR_TEMPLATE.format('online2', exp, '01')
             running_dates = get_running_dates(exp, member)
+            LOG_FILE = join(LOG_DIR, exp+'_'+str(member)+'log.txt')
             if not running_dates:
+                return
+            if exists(LOG_FILE):
+                log_lines = open(LOG_FILE, 'r').readlines()
+                dates = log_lines[0][:-1].split(', ')
+                logged_dates = (dates[0].split(': ')[-1], dates[1].split(': ')[-1])
+            print "logged_dates", logged_dates
+            print "running_dates", running_dates
+            if logged_dates == running_dates:
+                print "no changes in graphics, skipping", exp, str(member)
                 return
             complete_dir = run('find {0} -type d'.format(incomplete_dir))
             regions = ['SA', 'SH', 'GT', 'NH', 'GB', 'TP', 'TA']
@@ -68,7 +77,7 @@ def gen_figures(exp, member=None):
 
 
 if __name__ == "__main__":
-    restart_interval = 900
+    restart_interval = 1200
     exps_with_members = ['016', '004', '006','008','010','012','014', '018','022','023']
     shuffle(exps_with_members)
     exps_no_members = ['001','002','003','005','007','009','011','013','015','017','019','020','021']
