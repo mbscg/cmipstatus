@@ -1,7 +1,7 @@
 from fabric.api import run, env, settings, get, put, cd, prefix
 from time import sleep
 from os.path import join, exists
-from os import makedirs
+from os import makedirs, listdir
 import datetime
 from random import shuffle
 
@@ -29,8 +29,8 @@ def get_running_dates(expname, member):
 TUPA_OUTPUT_DIR_TEMPLATE = '/stornext/{0}/ocean/simulations/{1}/dataout/*/*/{2}/ocean/CGCM/'
 SCRIPT_LINE = "cmip_base_eval_gg.bash {0} {1} {2} {3} {4} '{5}'"
 TUPA_FIGS_DIR = '/scratchin/grupos/ocean/home/ocean/cmip_evaluation/{0}_{1}/*'
-PAPERA_FIGS_DIR = '../media/images/{0}_{1}'
-ANTARES_FIGS_DIR = '/home/opendap/cmipsite/cmipstatus/media/images/{0}_{1}'
+PAPERA_FIGS_DIR = '/home/gabriel/inpe/media/images/{0}_{1}'
+ANTARES_FIGS_DIR = '/home/opendap/cmipsite/media/images/'
 PAPERA_LOG_FILE = 'fetched_data/logs/{0}'
 ANTARES_LOGS_DIR = '/home/opendap/cmipsite/cmipstatus/fetched_data/logs/'
 
@@ -71,6 +71,7 @@ def gen_figures(exp, member=None):
                 for region in regions:
                     run(SCRIPT_LINE.format(running_dates[0], running_dates[1], region, exp, str(member), complete_dir))
         #bring them all
+        print "getting",  exp, member
         figs_dir = TUPA_FIGS_DIR.format(exp, str(member))
         dest_dir = PAPERA_FIGS_DIR.format(exp, str(member))
         get(figs_dir, dest_dir)
@@ -81,8 +82,10 @@ def gen_figures(exp, member=None):
         log.write(loginfo)
         log.close()
     #send them all
+    print "sending", exp, member
     with settings(host_string='opendap@antares', warn_only=True):
-        put(PAPERA_FIGS_DIR.format(exp, str(member)), ANTARES_FIGS_DIR.format(exp, str(member)))
+        print listdir(PAPERA_FIGS_DIR.format(exp, str(member)))
+        put(PAPERA_FIGS_DIR.format(exp, str(member)), ANTARES_FIGS_DIR) #.format(exp, str(member)))
         put(PAPERA_LOG_FILE.format(exp+'_'+str(member)+'log.txt'), ANTARES_LOGS_DIR)
 
 
