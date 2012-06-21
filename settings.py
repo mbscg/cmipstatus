@@ -4,7 +4,7 @@ import os
 ROOTDIR = os.path.realpath(os.path.dirname(__file__))
 
 import yaml
-server_config_file = open('server_config.yaml')
+server_config_file = open(os.path.join(ROOTDIR, 'server_config.yaml'))
 server_configs = yaml.load(server_config_file)
 server_config_file.close()
 
