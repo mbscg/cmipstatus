@@ -1,6 +1,6 @@
 import site
-site_root = /home/opendap/cmipsite #adjust to the server!
-virtualenv_root = /home/opendap/cmipstatusenv #adjust to the server!
+site_root = '/home/opendap/cmipsite' #adjust to the server!
+virtualenv_root = '/home/opendap/cmipstatusenv' #adjust to the server!
 site.addsitedir(os.path.join(virtualenv_root, '/lib/python2.6/site-packages'))
 
 import os
