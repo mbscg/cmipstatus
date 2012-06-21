@@ -11,14 +11,14 @@
 <li>
 
 <!-- signal -->
-{% if member_info.error %}
-    <img src="/media/vermelho.png" title="Error"/>
-{% elif member_info.post %}
+{% if member_info.post %}
     <img src="/media/azul.png" title="Post-Processing"/> <!-- post -->
 {% elif  member_info.running %}
     <img src="/media/verde.png" title="Running"/> <!-- running -->
 {% elif member_info.complete %}
     <img src="/media/final.png" width=10 title="Finished"/>
+{% elif member_info.error %}
+    <img src="/media/vermelho.png" title="Error"/>
 {% else %}
     <img src="/media/amarelo.png" title="Waiting/Copying"/> <!-- waiting -->
 {% endif %}
@@ -32,13 +32,12 @@
 <!-- run info -->
 <span class="exp_progress_details" title="{% if member_info.running %}[{{ member_info.text_run }}% on run {{ member_info.current }}{% else %}[Completed {{ member_info.last }} runs{% endif %} of {{ member_info.total }}]">
 {% if not member_info.complete %}
-    {% if member_info.error %}
-        Error ocurred
-    {% else %}
-        {{ member_info.text_total }}% ({{ member_info.finished_years }} years of {{ member_info.total_years }})
-    {% endif %}
+    {{ member_info.text_total }}% ({{ member_info.finished_years }} years of {{ member_info.total_years }})
 {% else %}
     Completed {{ member_info.finished_years }} years
+{% endif %}
+{% if member_info.error %}
+    Errors ocurred: {{ member_info.total_errors }}
 {% endif %}
 </span>
 </li>
@@ -46,5 +45,7 @@
 {% empty %}No jobs submitted
 {% endfor %}
 </ul>
+<p>Total errors in this list: {{ page_errors }}<p>
+</div>
 {% endblock %}
 

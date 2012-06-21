@@ -17,9 +17,9 @@ class Experiment(models.Model):
     name = models.CharField(max_length=15)
 
     def get_status(self, tupa_data):
-        done, total = check_restart_list(self.name, '')
+        done, total, errors, last_ok = check_restart_list(self.name, '')
         current = check_status(self.name, '', tupa_data)
-        return done, total, current
+        return done, total, errors, last_ok, current
 
     def __unicode__(self):
         return self.name
@@ -30,9 +30,9 @@ class Member(models.Model):
     exp = models.ForeignKey('Experiment')
 
     def get_status(self,tupa_data):
-        done, total = check_restart_list(self.exp.name, self.name)
+        done, total, errors, last_ok = check_restart_list(self.exp.name, self.name)
         current = check_status(self.exp.name, self.name, tupa_data)
-        return done, total, current
+        return done, total, errors, last_ok, current
 
     def __unicode__(self):
         return self.name
@@ -46,15 +46,17 @@ def check_restart_list(exp_name, member_name):
     restarts = 0
     done = 0
     error = 0
+    last_ok = True
     for line in restart_list:
         restarts += 1
         if 'END' in line:
             done += 1
+            last_ok = True
         if 'ERR' in line:
             error += 1
-    if error > 0:
-        done *= -1
-    return done, restarts
+            last_ok = False
+            restarts -= 1
+    return done, restarts, error, last_ok
 
 
 def check_status(exp_name, member_name, tupa_data):

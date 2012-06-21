@@ -32,20 +32,23 @@ def expview(request, expname):
     tupa_data = get_tupa_data()
     runinfo = []
     info = {'exp':exp}
+    page_errors = 0
 
     if members:
         exp = members
 
     for member in exp:
-        done, total, current = member.get_status(tupa_data)
+        done, total, nerrors, last_ok, current = member.get_status(tupa_data)
+        page_errors += nerrors
         finished_prog = float(done) / float(total)
         finished_years = float(done)/12
         total_years = total/12
         run_fraction = 1. / total
-        error = (done < 0)
-        if error:
-            done *= -1
-        minfo = {'member':current[1].split('_',1)[-1], 'last':done, 'current':done, 'total':total, 'error':error}
+        error = not last_ok
+        #if error:
+        #    done *= -1
+        minfo = {'member':current[1].split('_',1)[-1], 'last':done, 'current':done, 'total':total, 'error':error, 
+                 'total_errors':nerrors}
         minfo['complete'] = (done == total)
         minfo['running'] = (current[0] is not None)
         minfo['prog'] = finished_prog
@@ -65,6 +68,7 @@ def expview(request, expname):
         runinfo.append(minfo)
         print minfo
     info['title'] = expname
+    info['page_errors'] = page_errors
     info['minfo'] = runinfo
     return  render_to_response("cmipexpview.html", info)
 
