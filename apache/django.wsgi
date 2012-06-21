@@ -1,7 +1,7 @@
 import site
-import ..settings
-import os.path
-site.addsitedir(os.path.join(settings.server_configs['virtualenv_home'], '/lib/python2.6/site-packages'))
+site_root = /home/opendap/cmipsite #adjust to the server!
+virtualenv_root = /home/opendap/cmipstatusenv #adjust to the server!
+site.addsitedir(os.path.join(virtualenv_root, '/lib/python2.6/site-packages'))
 
 import os
 import sys
@@ -12,6 +12,6 @@ import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
 
 import settings
-path = settings['site_root']
+path = site_root
 if path not in sys.path:
     sys.path.append(path)
