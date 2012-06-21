@@ -1,7 +1,7 @@
 import site
-import cmipsite.settings
+import ..settings
 import os.path
-site.addsitedir(os.path.join(settings['virtualenv_home'], '/lib/python2.6/site-packages'))
+site.addsitedir(os.path.join(settings.server_configs['virtualenv_home'], '/lib/python2.6/site-packages'))
 
 import os
 import sys
