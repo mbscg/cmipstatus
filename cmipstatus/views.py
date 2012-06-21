@@ -3,7 +3,7 @@ from models import Experiment, Member, People, get_tupa_data
 from forms import FormEditProfile, FormPassword
 from django.template import RequestContext
 from os.path import join, exists
-from os import listdir
+from os import listdir, getenv
 import settings
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
@@ -69,6 +69,8 @@ def expview(request, expname):
     return  render_to_response("cmipexpview.html", info)
 
 
+FETCHED_DATA_LOGS_DIR = join(getenv('HOME'), 'cmipsite', 'cmipstatus', 'fetched_data', 'logs')
+
 @login_required
 def expvalview(request, expname):
     #load images for exp
@@ -82,7 +84,7 @@ def expvalview(request, expname):
         imgs.append(join(settings.MEDIA_URL, 'images', expname, 'figures', uri))
     imgs = zip(imgs[::2], imgs[1::2])
     try:
-        logfile = open(join('/home/opendap/cmipsite/cmipstatus/fetched_data/logs', expname+'log.txt'), 'r')
+        logfile = open(join(FETCHED_DATA_LOGS_DIR, expname+'log.txt'), 'r')
         log = logfile.read()
         logfile.close()
     except:
