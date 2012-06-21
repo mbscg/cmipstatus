@@ -3,6 +3,11 @@
 import os
 ROOTDIR = os.path.realpath(os.path.dirname(__file__))
 
+import yaml
+server_config_file = open('server_config.yaml')
+server_configs = yaml.load(server_config_file)
+server_config_file.close()
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -15,7 +20,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/opendap/cmipsite/inpedb.sqlite',                      # Or path to database file if using sqlite3.
+        'NAME': server_configs['database_file'],                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.

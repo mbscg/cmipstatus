@@ -1,0 +1,5 @@
+server: papera
+virtualenv_home: /home/gabriel/cmipstatusenv
+site_root: /home/gabriel/cmipsite/
+database_file: /home/gabriel/cmipsite/inpedb.sqlite
+

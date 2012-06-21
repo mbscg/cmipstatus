@@ -69,6 +69,8 @@ def expview(request, expname):
     return  render_to_response("cmipexpview.html", info)
 
 
+FETCHED_LOGS_DIR = join(settings.server_configs['site_root'], 'cmipstatus', 'fetched_data', 'logs')
+
 @login_required
 def expvalview(request, expname):
     #load images for exp
@@ -82,7 +84,7 @@ def expvalview(request, expname):
         imgs.append(join(settings.MEDIA_URL, 'images', expname, 'figures', uri))
     imgs = zip(imgs[::2], imgs[1::2])
     try:
-        logfile = open(join('/home/opendap/cmipsite/cmipstatus/fetched_data/logs', expname+'log.txt'), 'r')
+        logfile = open(join(FETCHED_LOGS_DIR, expname+'log.txt'), 'r')
         log = logfile.read()
         logfile.close()
     except:
