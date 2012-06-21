@@ -59,11 +59,11 @@ def gen_figures(exp, member=None):
                 log_lines = open(LOG_FILE, 'r').readlines()
                 dates = log_lines[0][:-1].split(', ')
                 logged_dates = (dates[0].split(': ')[-1], dates[1].split(': ')[-1])
-            print "logged_dates", logged_dates
-            print "running_dates", running_dates
-            if logged_dates == running_dates:
-                print "no changes in graphics, skipping", exp, str(member)
-                return
+                print "logged_dates", logged_dates
+                print "running_dates", running_dates
+                if logged_dates == running_dates:
+                    print "no changes in graphics, skipping", exp, str(member)
+                    return
             complete_dir = run('find {0} -type d'.format(incomplete_dir))
             regions = ['SA', 'SH', 'GT', 'NH', 'GB', 'TP', 'TA']
             shuffle(regions)
