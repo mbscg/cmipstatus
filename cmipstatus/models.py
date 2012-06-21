@@ -41,7 +41,6 @@ FETCHED_DATA_DIR = join(settings.server_configs['site_root'], 'cmipstatus', 'fet
 RESTART_FILE = 'RESTARTLIST.{0}.tmp'
 
 def check_restart_list(exp_name, member_name):
-    print "checking restart count..."
     restart_list = open(join(FETCHED_DATA_DIR, RESTART_FILE.format(exp_name+member_name)), 'r')
     restarts = 0
     done = 0
@@ -60,7 +59,6 @@ def check_restart_list(exp_name, member_name):
 
 
 def check_status(exp_name, member_name, tupa_data):
-    print "checking runnning stats"
     if tupa_data:
         lines = tupa_data.split('\n')
         lines.pop(0)

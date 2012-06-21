@@ -8,7 +8,7 @@
 <ul class='exp_list'>
 {% for member_info in minfo %}
 
-<li>
+<li {%if member_info.error %} class="err_exp_info" {% endif %}>
 
 <!-- signal -->
 {% if member_info.post %}
