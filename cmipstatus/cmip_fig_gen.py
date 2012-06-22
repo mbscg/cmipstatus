@@ -66,9 +66,9 @@ def gen_figures(exp, member=None):
             regions = ['SA', 'SH', 'GT', 'NH', 'GB', 'TP', 'TA']
             shuffle(regions)
             with prefix('module load grads'):
+                run('rm -rf {0}'.format(join(TUPA_FIGS_DIR.format(exp, str(member)))))
                 for region in regions:
                     #clean old figs
-                    run('rm -rf {0}'.format(join(TUPA_FIGS_DIR.format(exp, str(member)))))
                     run(SCRIPT_LINE.format(running_dates[0], running_dates[1], region, exp, str(member), complete_dir))
         #bring them all
         print "getting",  exp, member
