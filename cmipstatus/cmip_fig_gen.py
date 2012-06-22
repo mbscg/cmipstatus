@@ -1,7 +1,7 @@
 from fabric.api import run, env, settings, get, put, cd, prefix
 from time import sleep
 from os.path import join, exists
-from os import makedirs, listdir
+from os import makedirs, listdir, remove
 import datetime
 from random import shuffle
 
@@ -29,9 +29,9 @@ def get_running_dates(expname, member):
 TUPA_OUTPUT_DIR_TEMPLATE = '/stornext/{0}/ocean/simulations/{1}/dataout/*/*/{2}/ocean/CGCM/'
 SCRIPT_LINE = "cmip_base_eval_gg.bash {0} {1} {2} {3} {4} '{5}'"
 TUPA_FIGS_DIR = '/scratchin/grupos/ocean/home/ocean/cmip_evaluation/{0}_{1}/*'
-PAPERA_FIGS_DIR = '/home/gabriel/inpe/media/images/{0}_{1}'
+PAPERA_FIGS_DIR = '/home/gabriel/cmipsite/media/images/{0}_{1}'
 ANTARES_FIGS_DIR = '/home/opendap/cmipsite/media/images/'
-PAPERA_LOG_FILE = 'fetched_data/logs/{0}'
+PAPERA_LOG_FILE = '/home/gabriel/cmipsite/cmipstatus/fetched_data/logs/{0}'
 ANTARES_LOGS_DIR = '/home/opendap/cmipsite/cmipstatus/fetched_data/logs/'
 
 def gen_figures(exp, member=None):
@@ -59,8 +59,6 @@ def gen_figures(exp, member=None):
                 log_lines = open(LOG_FILE, 'r').readlines()
                 dates = log_lines[0][:-1].split(', ')
                 logged_dates = (dates[0].split(': ')[-1], dates[1].split(': ')[-1])
-                print "logged_dates", logged_dates
-                print "running_dates", running_dates
                 if logged_dates == running_dates:
                     print "no changes in graphics, skipping", exp, str(member)
                     return
@@ -69,11 +67,18 @@ def gen_figures(exp, member=None):
             shuffle(regions)
             with prefix('module load grads'):
                 for region in regions:
+                    #clean old figs
+                    run('rm -rf {0}'.format(join(TUPA_FIGS_DIR.format(exp, str(member)))))
                     run(SCRIPT_LINE.format(running_dates[0], running_dates[1], region, exp, str(member), complete_dir))
         #bring them all
         print "getting",  exp, member
         figs_dir = TUPA_FIGS_DIR.format(exp, str(member))
         dest_dir = PAPERA_FIGS_DIR.format(exp, str(member))
+        #clean local dir
+        old_figs = listdir(join(dest_dir, 'figures'))
+        for old_fig in old_figs:
+            remove(join(dest_dir, 'figures', old_fig))
+        #get news figs
         get(figs_dir, dest_dir)
         loginfo = 'start date: {0}, end date: {1}\n'.format(running_dates[0], running_dates[1])
         loginfo += 'last generated: {0}\n'.format(str(datetime.datetime.now()))
@@ -84,14 +89,17 @@ def gen_figures(exp, member=None):
     #send them all
     print "sending", exp, member
     with settings(host_string='opendap@antares', warn_only=True):
-        print listdir(PAPERA_FIGS_DIR.format(exp, str(member)))
+        #clean remote dir
+        exp_fig_dirname = exp+'_'+str(member)
+        run('rm -rf {0}'.format(join(ANTARES_FIGS_DIR, exp_fig_dirname)))
+        #copy new figs
         put(PAPERA_FIGS_DIR.format(exp, str(member)), ANTARES_FIGS_DIR) #.format(exp, str(member)))
         put(PAPERA_LOG_FILE.format(exp+'_'+str(member)+'log.txt'), ANTARES_LOGS_DIR)
 
 
 if __name__ == "__main__":
-    restart_interval = 1200
-    exps_with_members = ['016', '004', '006','008','010','012','014', '018','022','023']
+    restart_interval = 60
+    exps_with_members = ['008', '016', '004', '006','010','012','014', '018','022','023']
     shuffle(exps_with_members)
     exps_no_members = ['001','002','005','007','009','011','013','015','017','019','020','021']
     shuffle(exps_no_members)

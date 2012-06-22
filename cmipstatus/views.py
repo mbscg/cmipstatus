@@ -95,6 +95,7 @@ def expvalview(request, expname):
         raise Http404
     for uri in listdir(FIGS_DIR):
         imgs.append(join(settings.MEDIA_URL, 'images', expname, 'figures', uri))
+    imgs.sort()
     imgs = zip(imgs[::2], imgs[1::2])
     try:
         logfile = open(join(FETCHED_LOGS_DIR, expname+'log.txt'), 'r')
