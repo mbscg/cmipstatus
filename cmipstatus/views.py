@@ -7,6 +7,8 @@ from os import listdir
 import settings
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
+import yaml
+
 
 @login_required
 def home(request):
@@ -86,24 +88,33 @@ FETCHED_LOGS_DIR = join(settings.server_configs['site_root'], 'cmipstatus', 'fet
 
 @login_required
 def expvalview(request, expname):
+    #load image classes
+    classes_file = open(join(settings.server_configs['site_root'], 'cmipstatus', 'img_classes.yaml'))
+    classes = yaml.load(classes_file)
+    classes_file.close()
+
     #load images for exp
     if '_' not in expname:
         expname += '_1'
     FIGS_DIR = join(settings.MEDIA_ROOT, 'images', expname, 'figures')
-    imgs = []
     if not exists(FIGS_DIR):
         raise Http404
-    for uri in listdir(FIGS_DIR):
-        imgs.append(join(settings.MEDIA_URL, 'images', expname, 'figures', uri))
-    imgs.sort()
-    imgs = zip(imgs[::2], imgs[1::2])
     try:
         logfile = open(join(FETCHED_LOGS_DIR, expname+'log.txt'), 'r')
         log = logfile.read()
         logfile.close()
     except:
         log = 'unknown'
-    info = {'imgs':imgs, 'expname':expname}
+
+    imgs = []
+    for region in classes['regions']:
+        region_imgs = []
+        for uri in listdir(FIGS_DIR):
+            if region in uri.split('_')[0]:
+                complete_uri = join(settings.MEDIA_URL, 'images', expname, 'figures', uri)
+                region_imgs.append(complete_uri)
+        imgs.append([region, region_imgs])
+
     return render_to_response("cmipexpvalview.html", {'imgs':imgs, 'expname':expname, 'log':log})
 
 

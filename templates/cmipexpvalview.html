@@ -7,10 +7,15 @@
 <div class="graphics_info">
 Graphics info:<br>{{ log|linebreaks }}
 </div>
-{% for img_pair in imgs %}
-<a href="{{ img_pair.0 }}"><img src="{{ img_pair.0 }}" width=300/></a>
-<a href="{{ img_pair.1 }}"><img src="{{ img_pair.1 }}" width=300/></a>
-<br>
+<div id="accordion">
+{% for pair in imgs %}
+    <h3><a href="#">Region {{ pair.0 }}</a></h3>
+    <div>
+    {% for img in pair.1 %}
+        <a href="{{ img }}"><img src="{{ img }}" width=300/></a>
+    {% endfor %}
+    </div>
 {% endfor %}
+</div>
 {% endblock %}
 
