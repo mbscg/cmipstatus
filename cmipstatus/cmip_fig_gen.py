@@ -105,13 +105,19 @@ def gen_figures(exp, member=None):
 
 if __name__ == "__main__":
     restart_interval = 60
-    exps_with_members = ['008', '016', '004', '006','010','012','014', '018','022','023']
-    exps_no_members = ['003', '001','002','005','007','009','011','013','015','017','019','020','021']
+    exps_with_members = [['008', '016', '004', '006','010'], ['012','014', '018','022','023']]
+    exps_no_members = [['003', '001','002','005','007','009'], ['011','013','015','017','019','020','021']]
+    member_option = raw_input('members? (y,n)')
+    list_option = input('list?(0, 1) ')
     while True:
         print "refresh figures"
-        for exp in exps_no_members:
-            gen_figures('cmp'+exp)
-        for exp in exps_with_members:
-            for m in range(1,11):
-                gen_figures('cmp'+exp, m)
+        if member_option == 'n':
+            print "gen figs for", exps_no_members[list_option]
+            for exp in exps_no_members[list_option]:
+                gen_figures('cmp'+exp)
+        else:
+            print "gen figs for", exps_with_members[list_option]
+            for exp in exps_with_members[list_option]:
+                for m in range(1,11):
+                    gen_figures('cmp'+exp, m)
         sleep(restart_interval)
