@@ -9,7 +9,7 @@ from random import shuffle
 
 def get_running_dates(expname, member):
     disk = 'online2'
-    if member > 4:
+    if member > 4 or expname == 'cmp003':
         disk = 'online12'
     member_index = str(member)
     if member < 10:
@@ -38,6 +38,7 @@ def gen_figures(exp, member=None):
     env.use_ssh_config = True
     with settings(host_string='ocean@tupa', warn_only=True):
         with cd('cmipstatus_scripts'):
+            print "--------------", exp
             member_index = '01'
             if member:
                 if member > 4:
@@ -50,7 +51,12 @@ def gen_figures(exp, member=None):
                     member_index = str(member)
                 incomplete_dir = TUPA_OUTPUT_DIR_TEMPLATE.format(disk, exp, member_index)
             else: #only one dir
-                incomplete_dir = TUPA_OUTPUT_DIR_TEMPLATE.format('online2', exp, '01')
+                member = 1
+                disk = 'online2'
+                if exp == 'cmp003':
+                    disk = 'online12'
+                incomplete_dir = TUPA_OUTPUT_DIR_TEMPLATE.format(disk, exp, '01')
+                print "-------------", incomplete_dir
             running_dates = get_running_dates(exp, member)
             LOG_FILE = PAPERA_LOG_FILE.format(exp+'_'+str(member)+'log.txt')
             if not running_dates:
@@ -100,14 +106,12 @@ def gen_figures(exp, member=None):
 if __name__ == "__main__":
     restart_interval = 60
     exps_with_members = ['008', '016', '004', '006','010','012','014', '018','022','023']
-    shuffle(exps_with_members)
-    exps_no_members = ['001','002','005','007','009','011','013','015','017','019','020','021']
-    shuffle(exps_no_members)
+    exps_no_members = ['003', '001','002','005','007','009','011','013','015','017','019','020','021']
     while True:
         print "refresh figures"
+        for exp in exps_no_members:
+            gen_figures('cmp'+exp)
         for exp in exps_with_members:
             for m in range(1,11):
                 gen_figures('cmp'+exp, m)
-        for exp in exps_no_members:
-            gen_figures('cmp'+exp, 1)
         sleep(restart_interval)

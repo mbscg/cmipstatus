@@ -27,14 +27,12 @@ def get_restart_list(exp_name, member_name):
 if __name__ == "__main__":
     restart_interval = 600
     exps_with_members = ['016', '004', '006','008','010','012','014', '018','022','023']
-    shuffle(exps_with_members)
-    exps_no_members = ['001','002','005','007','009','011','013','015','017','019','020','021']
-    shuffle(exps_no_members)
+    exps_no_members = ['003', '001','002','005','007','009','011','013','015','017','019','020','021']
     while True:
         print "refresh status"
+        for exp in exps_no_members:
+            get_restart_list('cmp'+exp, '')
         for exp in exps_with_members:
             for m in range(1,11):
                 get_restart_list('cmp'+exp, '_'+str(m))
-        for exp in exps_no_members:
-            get_restart_list('cmp'+exp, '')
         sleep(restart_interval)
