@@ -12,7 +12,9 @@ def get_running_dates(expname, member):
     if member > 4 or expname == 'cmp003':
         disk = 'online12'
     member_index = str(member)
-    if member < 10:
+    if member < 0:
+        member_index = '*'
+    elif member < 10:
         member_index = '0' + member_index
     output_dir = '/stornext/{0}/ocean/simulations/{1}/dataout/*/*/{2}/output'.format(disk, expname, member_index)
     with settings(host_string='ocean@tupa', warn_only=True):
@@ -35,6 +37,7 @@ PAPERA_LOG_FILE = '/home/gabriel/cmipsite/cmipstatus/fetched_data/logs/{0}'
 ANTARES_LOGS_DIR = '/home/opendap/cmipsite/cmipstatus/fetched_data/logs/'
 
 def gen_figures(exp, member=None):
+    print "-------------gen figures for", exp, member
     env.use_ssh_config = True
     with settings(host_string='ocean@tupa', warn_only=True):
         with cd('cmipstatus_scripts'):
@@ -50,14 +53,15 @@ def gen_figures(exp, member=None):
                 else:
                     member_index = str(member)
                 incomplete_dir = TUPA_OUTPUT_DIR_TEMPLATE.format(disk, exp, member_index)
+                running_dates = get_running_dates(exp, member)
             else: #only one dir
                 member = 1
                 disk = 'online2'
                 if exp == 'cmp003':
                     disk = 'online12'
-                incomplete_dir = TUPA_OUTPUT_DIR_TEMPLATE.format(disk, exp, '01')
-                print "-------------", incomplete_dir
-            running_dates = get_running_dates(exp, member)
+                incomplete_dir = TUPA_OUTPUT_DIR_TEMPLATE.format(disk, exp, '*')
+                running_dates = get_running_dates(exp, -1)
+            print "------------- INCOMPLETE DIR", incomplete_dir
             LOG_FILE = PAPERA_LOG_FILE.format(exp+'_'+str(member)+'log.txt')
             if not running_dates:
                 return
@@ -106,7 +110,7 @@ def gen_figures(exp, member=None):
 if __name__ == "__main__":
     restart_interval = 60
     exps_with_members = [['008', '016', '004', '006','010'], ['012','014', '018','022','023']]
-    exps_no_members = [['003', '001','002','005','007','009'], ['011','013','015','017','019','020','021']]
+    exps_no_members = [['003', '001','002','005','007','009'], ['019', '011','013','015','017','020','021']]
     member_option = raw_input('members? (y,n)')
     list_option = input('list?(0, 1) ')
     while True:
