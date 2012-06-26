@@ -19,11 +19,10 @@ def home(request):
 def explist(request):
     experiments = list(Experiment.objects.all())
     exps_errors, total_errors = experror_util()
-    finished_exps = expfinished_util()
-    [experiments.remove(exp) for exp in exps_errors]
+    finished_exps, aborted_exps = expfinished_util()
     [experiments.remove(exp) for exp in finished_exps]
-    return render_to_response("cmipexplist.html", {'exps': experiments, 'exps_errors': exps_errors, 'total_errors':total_errors,
-                              'finished_exps':finished_exps, 'general_list':True})
+    [experiments.remove(exp) for exp in exps_errors if exp not in finished_exps]
+    return render_to_response("cmipexplist.html", {'exps': experiments, 'exps_errors': exps_errors, 'total_errors':total_errors, 'finished_exps':finished_exps, 'aborted_exps': aborted_exps, 'general_list':True})
 
 @login_required
 def peoplelist(request):
@@ -51,17 +50,20 @@ def expview_util(expname):
 
     for member in exp:
         done, total, nerrors, last_ok, current = member.get_status(tupa_data)
-        page_errors += nerrors
+        print member, done, total, nerrors, last_ok, current
         finished_prog = float(done) / float(total)
         finished_years = float(done)/12
         total_years = total/12
         run_fraction = 1. / total
-        error = not last_ok
-        #if error:
-        #    done *= -1
-        minfo = {'member':current[1].split('_',1)[-1], 'last':done, 'current':done, 'total':total, 'error':error, 
-                 'total_errors':nerrors}
-        minfo['complete'] = (done == total)
+        minfo = {'member':current[1].split('_',1)[-1], 'last':done, 'current':done, 'total':total, 
+                 'errors': not(nerrors == 0)}
+        minfo['aborted'] = (nerrors < 0)
+        if minfo['aborted']:
+            nerrors *= -1
+        page_errors += nerrors
+        minfo['total_errors'] = nerrors
+        minfo['error'] = not last_ok
+        minfo['complete'] = (done == total) or minfo['aborted']
         minfo['running'] = (current[0] is not None)
         minfo['prog'] = finished_prog
         if minfo['running']:
@@ -77,6 +79,7 @@ def expview_util(expname):
         minfo['finished_years'] = '%3.2f' % (minfo['prog'] * total_years)
         minfo['total_years'] = total_years
         minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
+        print minfo
         runinfo.append(minfo)
     info['title'] = expname
     info['page_errors'] = page_errors
@@ -127,7 +130,7 @@ def experror_util():
         exp_info = expview_util(exp.name)
         has_error = False
         for member_info in exp_info['minfo']:
-            if member_info['error']:
+            if member_info['error'] and not member_info['aborted']:
                 has_error = True
                 total_errors += 1
         if has_error:
@@ -138,15 +141,18 @@ def experror_util():
 def expfinished_util():
     all_experiments = Experiment.objects.all()
     finished_exps = []
+    total_aborted = 0
     for exp in all_experiments:
         exp_info = expview_util(exp.name)
         is_complete = True
         for member_info in exp_info['minfo']:
             if not member_info['complete']:
                 is_complete = False
+            if member_info['aborted']:
+                total_aborted += 1
         if is_complete:
             finished_exps.append(exp)
-    return finished_exps
+    return finished_exps, total_aborted
 
 
 @login_required

@@ -39,6 +39,7 @@ class Member(models.Model):
 
 FETCHED_DATA_DIR = join(settings.server_configs['site_root'], 'cmipstatus', 'fetched_data')
 RESTART_FILE = 'RESTARTLIST.{0}.tmp'
+ABORTED = -99
 
 def check_restart_list(exp_name, member_name):
     restart_list = open(join(FETCHED_DATA_DIR, RESTART_FILE.format(exp_name+member_name)), 'r')
@@ -51,10 +52,14 @@ def check_restart_list(exp_name, member_name):
         if 'END' in line:
             done += 1
             last_ok = True
-        if 'ERR' in line:
+        elif 'ERR' in line:
             error += 1
             last_ok = False
             restarts -= 1
+        elif 'ABO' in line:
+            last_ok = False
+            error += 1
+            error *= -1
     return done, restarts, error, last_ok
 
 

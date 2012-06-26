@@ -34,10 +34,18 @@
 {% if not member_info.complete %}
     {{ member_info.text_total }}% ({{ member_info.finished_years }} years of {{ member_info.total_years }})
 {% else %}
-    Completed {{ member_info.finished_years }} years
+    {% if member_info.aborted %}
+        Aborted in
+    {% else %}
+        Completed 
+    {% endif %}
+    {{ member_info.finished_years }} years.
+    {% if member_info.error %}
+        Error ocurred in last run.
+    {% endif %}
 {% endif %}
-{% if member_info.error %}
-    Errors ocurred: {{ member_info.total_errors }}
+{% if member_info.total_errors %}
+    Total errors: {{ member_info.total_errors }}
 {% endif %}
 </span>
 </li>
