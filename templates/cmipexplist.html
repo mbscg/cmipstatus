@@ -15,7 +15,13 @@
         {% for exp in finished_exps %}
             <li><a class="exp_finished_link" href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
         {% endfor %}
-        <p>Total aborted runs: {{ aborted_exps }}</p>
+    </ul>
+    <ul class="exp_list">
+        Finished with aborted
+        {% for exp in finished_aborted_exps %}
+            <li><a class="exp_finished_aborted_link" href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+        {% endfor %}
+        <p>Total aborted runs: {{ total_aborted }}</p>
     </ul>
     <ul class="exp_list">
         Experiments with errors

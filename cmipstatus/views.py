@@ -17,12 +17,13 @@ def home(request):
 
 @login_required
 def explist(request):
-    experiments = list(Experiment.objects.all())
+    running_exps = list(Experiment.objects.all())
     exps_errors, total_errors = experror_util()
-    finished_exps, aborted_exps = expfinished_util()
-    [experiments.remove(exp) for exp in finished_exps]
-    [experiments.remove(exp) for exp in exps_errors if exp not in finished_exps]
-    return render_to_response("cmipexplist.html", {'exps': experiments, 'exps_errors': exps_errors, 'total_errors':total_errors, 'finished_exps':finished_exps, 'aborted_exps': aborted_exps, 'general_list':True})
+    finished_exps, finished_aborted_exps, total_aborted = expfinished_util()
+    [running_exps.remove(exp) for exp in exps_errors] 
+    [running_exps.remove(exp) for exp in finished_exps]
+    [running_exps.remove(exp) for exp in finished_aborted_exps]
+    return render_to_response("cmipexplist.html", {'exps':running_exps, 'exps_errors': exps_errors, 'total_errors':total_errors, 'finished_exps':finished_exps, 'finished_aborted_exps': finished_aborted_exps, 'total_aborted':total_aborted, 'general_list':True})
 
 @login_required
 def peoplelist(request):
@@ -50,7 +51,6 @@ def expview_util(expname):
 
     for member in exp:
         done, total, nerrors, last_ok, current = member.get_status(tupa_data)
-        print member, done, total, nerrors, last_ok, current
         finished_prog = float(done) / float(total)
         finished_years = float(done)/12
         total_years = total/12
@@ -79,7 +79,6 @@ def expview_util(expname):
         minfo['finished_years'] = '%3.2f' % (minfo['prog'] * total_years)
         minfo['total_years'] = total_years
         minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
-        print minfo
         runinfo.append(minfo)
     info['title'] = expname
     info['page_errors'] = page_errors
@@ -141,18 +140,26 @@ def experror_util():
 def expfinished_util():
     all_experiments = Experiment.objects.all()
     finished_exps = []
+    finished_aborted = []
     total_aborted = 0
     for exp in all_experiments:
         exp_info = expview_util(exp.name)
         is_complete = True
+        any_aborted = False
+        local_aborted = 0
         for member_info in exp_info['minfo']:
             if not member_info['complete']:
                 is_complete = False
             if member_info['aborted']:
-                total_aborted += 1
+                any_aborted = True
+                local_aborted += 1
         if is_complete:
-            finished_exps.append(exp)
-    return finished_exps, total_aborted
+            if not any_aborted:
+                finished_exps.append(exp)
+            else:
+                finished_aborted.append(exp)
+                total_aborted += local_aborted
+    return finished_exps, finished_aborted, total_aborted
 
 
 @login_required
