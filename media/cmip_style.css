@@ -69,6 +69,24 @@ a.val_link:visited {color:#000000}
 a.val_link:hover {color:#0f0f00}
 a.val_link:active {color:#000000}
 
+a.accordion_link:link{
+color:#000000;
+font-family:Verdana;
+text-decoration:None;
+}
+a.accordion_link:visited {color:#000000}
+a.accordion_link:hover {color:#0f0f00}
+a.accordion_link:active {color:#000000}
+
+h3.accordion_header{
+background-color:#f0f0f0;
+font-size:1em;
+}
+
+div.accordion_container{
+background-color:#ffffff;
+}
+
 a.logout_link:link{
 color:#ffffff;
 text-decoration:none;
@@ -151,3 +169,5 @@ div.graphics_info{
 font-family:helvetica;
 background-color:#f0fff0;
 }
+
+
