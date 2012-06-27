@@ -1,12 +1,15 @@
 {% extends 'cmiphome.html' %}
 
 {% block body %}
+<div class="list">
 <ul class="exp_list">
     {% if general_list %}
         Running Experiments
     {% endif %}
     {% for exp in exps %}
         <li><a class="exp_link" href="/cmip/expview/{{exp.name}}">{{ exp.name }}</a></li>
+    {% empty %}
+        <p>None.</p>
     {% endfor %}
 </ul>
 {% if general_list %}
@@ -14,12 +17,16 @@
         Finished Experiments
         {% for exp in finished_exps %}
             <li><a class="exp_finished_link" href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+        {% empty %}
+            <p>None.</p>
         {% endfor %}
     </ul>
     <ul class="exp_list">
         Finished with aborted
         {% for exp in finished_aborted_exps %}
             <li><a class="exp_finished_aborted_link" href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+        {% empty %}
+            <p>None.</p>
         {% endfor %}
         <p>Total aborted runs: {{ total_aborted }}</p>
     </ul>
@@ -27,9 +34,12 @@
         Experiments with errors
         {% for exp in exps_errors %}
             <li><a class="exp_error_link" href="/cmip/expview/{{exp.name}}">{{ exp.name }}</a></li>
+        {% empty %}
+            <p>None.</p>
         {% endfor %}
         <p>Total run errors: {{ total_errors }}</p>
     </ul>
 {% endif %}
+</div>
 {% endblock %}
 

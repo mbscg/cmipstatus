@@ -87,9 +87,14 @@ div.accordion_container{
 background-color:#ffffff;
 }
 
+div.list{
+overflow:auto;
+}
+
 a.logout_link:link{
 color:#ffffff;
 text-decoration:none;
+padding:15px;
 }
 a.logout_link:visited {color:#ffffff}
 a.logout_link:hover {color:#ffff99}
