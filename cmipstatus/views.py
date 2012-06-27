@@ -8,6 +8,7 @@ import settings
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 import yaml
+import requests
 
 
 @login_required
@@ -90,34 +91,35 @@ FETCHED_LOGS_DIR = join(settings.server_configs['site_root'], 'cmipstatus', 'fet
 
 @login_required
 def expvalview(request, expname):
-    #load image classes
-    classes_file = open(join(settings.server_configs['site_root'], 'cmipstatus', 'img_classes.yaml'))
-    classes = yaml.load(classes_file)
-    classes_file.close()
-
-    #load images for exp
+    pure_expname = expname
     if '_' not in expname:
         expname += '_1'
-    FIGS_DIR = join(settings.MEDIA_ROOT, 'images', expname, 'figures')
-    if not exists(FIGS_DIR):
-        raise Http404
-    try:
-        logfile = open(join(FETCHED_LOGS_DIR, expname+'log.txt'), 'r')
-        log = logfile.read()
-        logfile.close()
-    except:
-        log = 'unknown'
+    else:
+        pure_expname = pure_expname.split('_')[0]
+    FIGS_URL = settings.server_configs['imgs_info']['figs_url'].format(expname)
+    FIGS_LOG = settings.server_configs['imgs_info']['figs_log'].format(expname)
+    request_info = requests.get(FIGS_LOG)
+    if request_info.status_code == 200:
+        yaml_log = yaml.load(request_info.text)
+        use_backup_imgs = False
+    else:
+        yaml_log = {'start_date':'unknown', 'end_date':'unknown'}
+        use_backup_imgs = True
 
     imgs = []
-    for region in classes['regions']:
+    regions = settings.server_configs['imgs_info']['regions']
+    types = settings.server_configs['imgs_info']['infotype']
+    for region in regions:
         region_imgs = []
-        for uri in listdir(FIGS_DIR):
-            if region in uri.split('_')[0]:
-                complete_uri = join(settings.MEDIA_URL, 'images', expname, 'figures', uri)
-                region_imgs.append(complete_uri)
+        for typ in types:
+            gif = settings.server_configs['imgs_info']['figs_file'].format(region, typ, pure_expname, 
+                                                                    yaml_log['start_date'], yaml_log['end_date'])
+            if use_backup_imgs:
+                gif += 'old'
+            region_imgs.append(FIGS_URL + gif)
         imgs.append([region, region_imgs])
 
-    return render_to_response("cmipexpvalview.html", {'imgs':imgs, 'expname':expname, 'log':log})
+    return render_to_response("cmipexpvalview.html", {'imgs':imgs, 'expname':expname, 'log':yaml_log})
 
 
 

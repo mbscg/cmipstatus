@@ -5,7 +5,10 @@
 <p class="exp_view_section">Validation Images for {{ expname }}</p>
 </div>
 <div class="graphics_info">
-Graphics info:<br>{{ log|linebreaks }}
+Graphics info:<br>
+Start Date: {{ log.start_date }}<br>
+End Date: {{ log.end_date }}<br>
+Last Generated: {{ log.last_generated }}
 </div>
 <div class="accordion_container" id="accordion">
 {% for pair in imgs %}

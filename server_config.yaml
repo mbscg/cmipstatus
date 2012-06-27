@@ -3,3 +3,21 @@ virtualenv_home: /home/gabriel/cmipstatusenv
 site_root: /home/gabriel/cmipsite/
 database_file: /home/gabriel/cmipsite/inpedb.sqlite
 
+imgs_info:
+    infotype:
+        mean_sst: mean_sst
+        mean_sss: mean_sss
+
+    regions:
+        SA: SA
+        SH: SH
+        GT: GT
+        NH: NH
+        GB: GB
+        TP: TP
+        TA: TA
+
+    figs_url: http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/{0}/figures/
+    figs_file: '{0}_{1}_{2}_{3}_{4}.gif'
+    figs_log: http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/{0}/figures/log.yaml
+    
