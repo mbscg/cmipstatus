@@ -2,58 +2,61 @@
 
 {% block body %}
 <div class="exp_view">
-<p class="exp_view_section">Experiment: {{ title }}</p>
-<p>Click exp/member name to see its figures</p>
+    <p class="exp_view_section">Experiment: {{ title }}</p>
+    <p>Click exp/member name to see its figures</p>
 
-<ul class='exp_list'>
-{% for member_info in minfo %}
+    <ul class='exp_list'>
+        {% for member_info in minfo %}
 
-<li {%if member_info.error %} class="err_exp_info" {% endif %}>
+        <li {%if member_info.error %} class="err_exp_info" {% endif %}>
 
-<!-- signal -->
-{% if member_info.post %}
-    <img src="/media/azul.png" title="Post-Processing"/> <!-- post -->
-{% elif  member_info.running %}
-    <img src="/media/verde.png" title="Running"/> <!-- running -->
-{% elif member_info.complete %}
-    <img src="/media/final.png" width=10 title="Finished"/>
-{% elif member_info.error %}
-    <img src="/media/vermelho.png" title="Error"/>
-{% else %}
-    <img src="/media/amarelo.png" title="Waiting/Copying"/> <!-- waiting -->
-{% endif %}
+            <!-- signal -->
+            {% if member_info.post %}
+                <img src="/media/azul.png" title="Post-Processing"/> <!-- post -->
+            {% elif  member_info.running %}
+                <img src="/media/verde.png" title="Running"/> <!-- running -->
+            {% elif member_info.complete %}
+                <img src="/media/final.png" width=10 title="Finished"/>
+            {% elif member_info.error %}
+                <img src="/media/vermelho.png" title="Error"/>
+            {% else %}
+                <img src="/media/amarelo.png" title="Waiting/Copying"/> <!-- waiting -->
+            {% endif %}
 
-<!-- name and link -->
-<a class="val_link" href="/cmip/validation/{{ member_info.member }}">{{ member_info.member }}</a>
+            <!-- name and link -->
+            <a class="val_link" href="/cmip/validation/{{ member_info.member }}">{{ member_info.member }}</a>
+    
+            <!-- progressbar -->
+            <progress class="exp_progress" value={{ member_info.prog }} title="{{ member_info.text_total }}%"></progress>
+    
+            <!-- run info -->
+            <span class="exp_progress_details" 
+                  title="{% if member_info.running %}[{{ member_info.text_run }}% on run {{ member_info.current }}
+                         {% else %}[Completed {{ member_info.last }} runs{% endif %} of {{ member_info.total }}]">
+                {% if not member_info.complete %}
+                    {{ member_info.text_total }}% ({{ member_info.finished_years }} 
+                    years of {{ member_info.total_years }})
+                {% else %}
+                    {% if member_info.aborted %}
+                        Aborted in
+                    {% else %}
+                        Completed 
+                    {% endif %}
+                    {{ member_info.finished_years }} years.
+                    {% if member_info.error %}
+                        Error ocurred in last run.
+                    {% endif %}
+                {% endif %}
+                {% if member_info.total_errors %}
+                    Total errors: {{ member_info.total_errors }}
+                {% endif %}
+            </span>
+        </li>
 
-<!-- progressbar -->
-<progress class="exp_progress" value={{ member_info.prog }} title="{{ member_info.text_total }}%"></progress>
-
-<!-- run info -->
-<span class="exp_progress_details" title="{% if member_info.running %}[{{ member_info.text_run }}% on run {{ member_info.current }}{% else %}[Completed {{ member_info.last }} runs{% endif %} of {{ member_info.total }}]">
-{% if not member_info.complete %}
-    {{ member_info.text_total }}% ({{ member_info.finished_years }} years of {{ member_info.total_years }})
-{% else %}
-    {% if member_info.aborted %}
-        Aborted in
-    {% else %}
-        Completed 
-    {% endif %}
-    {{ member_info.finished_years }} years.
-    {% if member_info.error %}
-        Error ocurred in last run.
-    {% endif %}
-{% endif %}
-{% if member_info.total_errors %}
-    Total errors: {{ member_info.total_errors }}
-{% endif %}
-</span>
-</li>
-
-{% empty %}No jobs submitted
-{% endfor %}
-</ul>
-<p>Total errors in this list: {{ page_errors }}<p>
+        {% empty %}No jobs submitted
+        {% endfor %}
+    </ul>
+    <p>Total errors in this list: {{ page_errors }}<p>
 </div>
 {% endblock %}
 

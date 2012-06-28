@@ -2,48 +2,44 @@
   "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/media/cmip_style.css" />
+        {% block cabecalho %}
+             <title>CMIP Experiments Status</title>
+        {% endblock %}
+        <script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="/media/jquery-ui-1.8.2.custom.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                // Activate accordion.
+                $("#accordion").accordion({
+                    active: false,
+                    collapsible: true
+                });
+            });
+        </script>
+    </head>
 
+    <body>
+        {% block links %}
+            <ul class="nav_bar">
+                <li class="nav_bar"><a class="header_link" href="/cmip/">Home</a></li>
+                <li class="nav_bar"><a class="header_link" href="/cmip/list">Experiments</a></li>
+                <li class="nav_bar"><a class="header_link" href="/cmip/people_list">People</a></li>
+            </ul>
+        {% endblock %}
 
-<head>
-<link rel="stylesheet" type="text/css" href="/media/cmip_style.css" />
-{% block cabecalho %}
-<title>CMIP Experiments Status</title>
-{% endblock %}
-<script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="/media/jquery-ui-1.8.2.custom.min.js"></script>
-<script>
-$(document).ready(function(){
-   // Activate accordion.
-   $("#accordion").accordion({
-       active: false,
-       collapsible: true
-   });
-});
-</script>
-</head>
+        {% block body %}
+            <div class="home">
+                <p>Welcome to INPE-OA CMIP Experiments monitoring!</p>
+            </div>
+        {% endblock %}
 
-<body>
-
-
-{% block links %}
-<ul class="nav_bar">
-<li class="nav_bar"><a class="header_link" href="/cmip/">Home</a></li>
-<li class="nav_bar"><a class="header_link" href="/cmip/list">Experiments</a></li>
-<li class="nav_bar"><a class="header_link" href="/cmip/people_list">People</a></li>
-</ul>
-{% endblock %}
-
-
-{% block body %}
-<div class="home">
-<p>Welcome to INPE-OA CMIP Experiments monitoring!</p>
-</div>
-{% endblock %}
-
-
-{% block footer %}
-<div class="footer">Grupo de Modelagem Oceano-Atmosfera - INPE - Brasil<a class="logout_link" href="/cmip/logout/">Logout</a></div>
-{% endblock %}
-
-</body>
+        {% block footer %}
+            <div class="footer">
+                Grupo de Modelagem Oceano-Atmosfera - INPE - Brasil
+                <a class="logout_link" href="/cmip/logout/">Logout</a>
+            </div>
+        {% endblock %}
+    </body>
 </html>

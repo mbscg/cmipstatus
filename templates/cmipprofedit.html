@@ -1,11 +1,13 @@
 {% extends "cmiphome.html" %}
 
 {% block body %}
-<form class='default_form' method="post" id="form" action="" enctype="multipart/form-data" class="infotabs accfrm">
-{% csrf_token %}
-{{ form.as_p }}
-<button class='default_btn' type="submit">Save Changes</button>
-</form>
-<p><a class="prof_link" href="/cmip/changepass">Change Password</a></p>
+    <form class='default_form' method="post" id="form" action="" enctype="multipart/form-data" class="infotabs accfrm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class='default_btn' type="submit">Save Changes</button>
+    </form>
+    <p>
+        <a class="prof_link" href="/cmip/changepass">Change Password</a>
+    </p>
 {% endblock %}
 

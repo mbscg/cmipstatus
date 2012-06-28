@@ -20,11 +20,17 @@ def explist(request):
     running_exps = list(Experiment.objects.all())
     tupa_data = get_tupa_data()
     exps_errors, total_errors = experror_util(tupa_data)
-    finished_exps, finished_aborted_exps, total_aborted = expfinished_util(tupa_data)
+    finish_exps, finish_ab_exps, total_aborted = expfinished_util(tupa_data)
     [running_exps.remove(exp) for exp in exps_errors] 
-    [running_exps.remove(exp) for exp in finished_exps]
-    [running_exps.remove(exp) for exp in finished_aborted_exps]
-    return render_to_response("cmipexplist.html", {'exps':running_exps, 'exps_errors': exps_errors, 'total_errors':total_errors, 'finished_exps':finished_exps, 'finished_aborted_exps': finished_aborted_exps, 'total_aborted':total_aborted, 'general_list':True})
+    [running_exps.remove(exp) for exp in finish_exps]
+    [running_exps.remove(exp) for exp in finish_ab_exps]
+    return render_to_response("cmipexplist.html", 
+                              {'exps':running_exps, 'exps_errors': exps_errors,
+                              'total_errors':total_errors,
+                              'finished_exps':finish_exps,
+                              'finished_aborted_exps': finish_ab_exps, 
+                              'total_aborted':total_aborted,
+                              'general_list':True})
 
 @login_required
 def peoplelist(request):
@@ -55,8 +61,8 @@ def expview_util(expname, tupa_data):
         finished_years = float(done)/12
         total_years = total/12
         run_fraction = 1. / total
-        minfo = {'member':current[1].split('_',1)[-1], 'last':done, 'current':done, 'total':total, 
-                 'errors': not(nerrors == 0)}
+        minfo = {'member':current[1].split('_',1)[-1], 'last':done, 
+                 'current':done, 'total':total, 'errors': not(nerrors == 0)}
         minfo['aborted'] = (nerrors < 0)
         if minfo['aborted']:
             nerrors *= -1
@@ -86,8 +92,6 @@ def expview_util(expname, tupa_data):
     return info
 
 
-FETCHED_LOGS_DIR = join(settings.server_configs['site_root'], 'cmipstatus', 'fetched_data', 'logs')
-
 @login_required
 def expvalview(request, expname):
     pure_expname = expname
@@ -111,14 +115,16 @@ def expvalview(request, expname):
     for region in regions:
         region_imgs = []
         for typ in types:
-            gif = settings.server_configs['imgs_info']['figs_file'].format(region, typ, pure_expname, 
-                                                                    yaml_log['start_date'], yaml_log['end_date'])
+            gif = settings.server_configs['imgs_info']['figs_file']
+            gif = gif.format(region, typ, pure_expname, yaml_log['start_date'],
+                             yaml_log['end_date'])
             if use_backup_imgs:
                 gif += 'old'
             region_imgs.append(FIGS_URL + gif)
         imgs.append([region, region_imgs])
 
-    return render_to_response("cmipexpvalview.html", {'imgs':imgs, 'expname':expname, 'log':yaml_log})
+    return render_to_response("cmipexpvalview.html", 
+                             {'imgs':imgs, 'expname':expname, 'log':yaml_log})
 
 
 
@@ -169,7 +175,8 @@ def profview(request, profid):
     prof = People.objects.get(id=profid)
     user_prof = People.objects.get(username=request.user)
     editable = prof == user_prof
-    return render_to_response("cmipprofview.html", {'prof':prof, 'editable':editable})
+    return render_to_response("cmipprofview.html", 
+                              {'prof':prof, 'editable':editable})
 
 
 @login_required
@@ -201,12 +208,15 @@ def passwedit(request):
                 request.user.save()
                 return render_to_response("cmipsuccess.html", {})
             else:
-                return render_to_response("cmipchangepassw.html", {'form':form, 'erro':True},
-                context_instance=RequestContext(request))
+                context = RequestContext(request)
+                return render_to_response("cmipchangepassw.html", 
+                                          {'form':form, 'erro':True},
+                                          context_instance=context)
 
     else:
         form = FormPassword()
 
+    context = RequestContext(request)
     return render_to_response("cmipchangepassw.html", {'form':form},
-                context_instance=RequestContext(request))
+                              context_instance=context)
     

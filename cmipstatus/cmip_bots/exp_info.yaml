@@ -41,3 +41,4 @@ paths:
 scripts:
     leo_eval_script: '/stornext/home/g.marcondes/cmip_bots/scripts/cmip_base_eval_gg.bash'
     leo_eval_args: "{0} {1} {2} {3} {4} '{5}'"
+    wget: 'wget --mirror -erobots=off --no-parent --no-host-directories --cut-dirs=2 --directory-prefix=fetched_data http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/'
