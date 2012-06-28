@@ -3,6 +3,7 @@ from datetime import datetime
 from os.path import join
 from django.contrib.auth.models import User
 import settings
+import requests
 
 class People(User):
     name = models.CharField(max_length=100)
@@ -37,12 +38,11 @@ class Member(models.Model):
     def __unicode__(self):
         return self.name
 
-FETCHED_DATA_DIR = join(settings.server_configs['site_root'], 'cmipstatus', 'fetched_data')
-RESTART_FILE = 'RESTARTLIST.{0}.tmp'
-ABORTED = -99
 
 def check_restart_list(exp_name, member_name):
-    restart_list = open(join(FETCHED_DATA_DIR, RESTART_FILE.format(exp_name+member_name)), 'r')
+    print "getting restart list"
+    RESTART_FILE = open(settings.server_configs['restartlist_template'].format(exp_name + member_name), 'r')
+    restart_list = RESTART_FILE.readlines()
     restarts = 0
     done = 0
     error = 0
@@ -69,13 +69,13 @@ def check_status(exp_name, member_name, tupa_data):
         lines.pop(0)
         for line in lines:
             columns = line.split()
-            if len(columns) > 0 and columns[1].endswith(exp_name+member_name):
+            if len(columns) > 2 and columns[1].endswith(exp_name+member_name):
                 return columns
     return [None, 'M_'+exp_name+member_name, None, None, '0%']
 
 
 def get_tupa_data():
-    f = open(join(FETCHED_DATA_DIR, 'running_stats.txt'), 'r')
-    query_result = f.read()
-    f.close()
-    return query_result
+    QSTAT_FILE = open(settings.server_configs['qstat_log'])
+    tupa_data = QSTAT_FILE.read()
+    QSTAT_FILE.close()
+    return tupa_data

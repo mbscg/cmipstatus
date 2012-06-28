@@ -26,14 +26,17 @@ exps:
         - cmp022
         - cmp023
 
+
 paths:
     tupa_exp_output : '/stornext/{0}/ocean/simulations/{1}/dataout/*/*/{2}/output'
     tupa_exp_cgcm: '/stornext/{0}/ocean/simulations/{1}/dataout/*/*/{2}/ocean/CGCM/'
     tupa_figs_dir: '/data/FTP/g.marcondes/PUBLIC/cmip_evaluation/{0}_{1}/figures/new'
     tupa_log_template: '/data/FTP/g.marcondes/PUBLIC/cmip_evaluation/{0}_{1}/figures/log.yaml'
-    #local_figs_dir: '/home/opendap/cmipsite/media/images/'
-    #local_logs_dir: '/home/opendap/cmipsite/cmipstatus/fetched_data/logs/'
-
+    qstat_log: '/data/FTP/g.marcondes/PUBLIC/cmip_evaluation/running_stats.txt'
+    restartlist_origin: '/stornext/home/manoel.baptista/exp_repos/exp/cpld/RESTARTLIST/RESTARTLIST.{0}.tmp'
+    ftp_root: '/data/FTP/g.marcondes/PUBLIC/cmip_evaluation/'
+    web_runstats: 'http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/running_stats.txt'
+    web_restartlist: 'http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/RESTARTLIST.{0}.tmp'
 
 scripts:
     leo_eval_script: '/stornext/home/g.marcondes/cmip_bots/scripts/cmip_base_eval_gg.bash'

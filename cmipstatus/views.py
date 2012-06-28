@@ -15,12 +15,12 @@ import requests
 def home(request):
     return render_to_response("cmiphome.html", {})
 
-
 @login_required
 def explist(request):
     running_exps = list(Experiment.objects.all())
-    exps_errors, total_errors = experror_util()
-    finished_exps, finished_aborted_exps, total_aborted = expfinished_util()
+    tupa_data = get_tupa_data()
+    exps_errors, total_errors = experror_util(tupa_data)
+    finished_exps, finished_aborted_exps, total_aborted = expfinished_util(tupa_data)
     [running_exps.remove(exp) for exp in exps_errors] 
     [running_exps.remove(exp) for exp in finished_exps]
     [running_exps.remove(exp) for exp in finished_aborted_exps]
@@ -34,15 +34,14 @@ def peoplelist(request):
 
 @login_required
 def expview(request, expname):
-    info = expview_util(expname)
+    info = expview_util(expname, get_tupa_data())
     return  render_to_response("cmipexpview.html", info)
 
 
-def expview_util(expname):
+def expview_util(expname, tupa_data):
     exp = Experiment.objects.get(name=expname)
     members = Member.objects.all().filter(exp=exp)
     exp = [exp]
-    tupa_data = get_tupa_data()
     runinfo = []
     info = {'exp':exp}
     page_errors = 0
@@ -123,12 +122,12 @@ def expvalview(request, expname):
 
 
 
-def experror_util():
+def experror_util(tupa_data):
     all_experiments = Experiment.objects.all()
     exps_with_errors = []
     total_errors = 0
     for exp in all_experiments:
-        exp_info = expview_util(exp.name)
+        exp_info = expview_util(exp.name, tupa_data)
         has_error = False
         for member_info in exp_info['minfo']:
             if member_info['error'] and not member_info['aborted']:
@@ -139,13 +138,14 @@ def experror_util():
     return exps_with_errors, total_errors
 
 
-def expfinished_util():
+def expfinished_util(tupa_data):
     all_experiments = Experiment.objects.all()
     finished_exps = []
     finished_aborted = []
     total_aborted = 0
+    tupa_data = get_tupa_data()
     for exp in all_experiments:
-        exp_info = expview_util(exp.name)
+        exp_info = expview_util(exp.name, tupa_data)
         is_complete = True
         any_aborted = False
         local_aborted = 0

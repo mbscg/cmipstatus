@@ -1,10 +1,3 @@
-#from fabric.api import run, env, settings, get, put, cd, prefix
-#from time import sleep
-#from os.path import join, exists
-#from os import makedirs, listdir, remove
-#import datetime
-#from random import shuffle
-
 import yaml
 import os
 import stat
@@ -13,6 +6,7 @@ import subprocess
 import datetime
 import random
 import multiprocessing
+import time
 
 
 #this will run directly on tupa!
@@ -95,11 +89,12 @@ def gen_figures(exp, member=None):
 
 if __name__ == "__main__":
     interval = 7200 #2 hours
-    for exp in all_info['exps']['no-members']:
-        p = multiprocessing.Process(target=gen_figures, args=(exp,))
-        p.start()
-    for member in range(1,11):
-        for exp in all_info['exps']['with-members']:
-            p = multiprocessing.Process(target=gen_figures, args=(exp, member))
+    while True:
+        for exp in all_info['exps']['no-members']:
+            p = multiprocessing.Process(target=gen_figures, args=(exp,))
             p.start()
-    sleep(interval)
+        for member in range(1,11):
+            for exp in all_info['exps']['with-members']:
+                p = multiprocessing.Process(target=gen_figures, args=(exp, member))
+                p.start()
+        time.sleep(interval)

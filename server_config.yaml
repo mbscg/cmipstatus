@@ -20,4 +20,6 @@ imgs_info:
     figs_url: http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/{0}/figures/
     figs_file: '{0}_{1}_{2}_{3}_{4}.gif'
     figs_log: http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/{0}/figures/log.yaml
-    
+
+qstat_log: /home/gabriel/cmipsite/cmipstatus/cmip_bots/fetched_data/running_info.txt
+restartlist_template: /home/gabriel/cmipsite/cmipstatus/cmip_bots/fetched_data/RESTARTLIST.{0}.tmp
