@@ -112,16 +112,14 @@ def expvalview(request, expname):
     imgs = []
     regions = settings.server_configs['imgs_info']['regions']
     types = settings.server_configs['imgs_info']['infotype']
-    for region in regions:
-        region_imgs = []
-        for typ in types:
+    for typ in types:
+        type_imgs = []
+        for region in regions:
             gif = settings.server_configs['imgs_info']['figs_file']
             gif = gif.format(region, typ, pure_expname, yaml_log['start_date'],
                              yaml_log['end_date'])
-            if use_backup_imgs:
-                gif += 'old'
-            region_imgs.append(FIGS_URL + gif)
-        imgs.append([region, region_imgs])
+            type_imgs.append(FIGS_URL + gif)
+        imgs.append([typ, type_imgs])
 
     return render_to_response("cmipexpvalview.html", 
                              {'imgs':imgs, 'expname':expname, 'log':yaml_log})
