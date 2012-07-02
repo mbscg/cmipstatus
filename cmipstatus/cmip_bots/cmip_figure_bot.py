@@ -24,7 +24,10 @@ def get_running_dates(expname, member):
         member_index = '0' + member_index
     output_dir = all_info['paths']['tupa_exp_output']
     output_dir = output_dir.format(disk, expname, member_index)
-    lsresult = os.listdir(glob.glob(output_dir)[0])
+    try:
+        lsresult = os.listdir(glob.glob(output_dir)[0])
+    except:
+        return None
     filtered_ls = [result for result in lsresult if 'fms' in result]
     filtered_ls.sort()
     dates = [line.split('.')[0]+'00' for line in filtered_ls]
