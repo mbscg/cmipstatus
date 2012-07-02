@@ -62,6 +62,13 @@ a.exp_finished_link:visited {color:#009000}
 a.exp_finished_link:hover {color:#009090}
 a.exp_finished_link:active {color:#009000}
 
+a.exp_finished_aborted_link:link{
+color:#f00900;
+}
+a.exp_finished_aborted_link:visited {color:#f09000}
+a.exp_finished_aborted_link:hover {color:#f09090}
+a.exp_finished_aborted_link:active {color:#f09000}
+
 a.val_link:link{
 color:#000000;
 }
@@ -81,6 +88,7 @@ a.accordion_link:active {color:#000000}
 h3.accordion_header{
 background-color:#f0f0f0;
 font-size:1em;
+font-family:Verdana;
 }
 
 div.accordion_container{

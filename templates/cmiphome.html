@@ -9,6 +9,8 @@
         {% endblock %}
         <script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="/media/jquery-ui-1.8.2.custom.min.js"></script>
+        <script type="text/javascript" src="/media/jquery.collapse.js"></script>
+        <script type="text/javascript" src="/media/jquery.easing.js"></script>
         <script>
             $(document).ready(function(){
                 // Activate accordion.
@@ -16,6 +18,16 @@
                     active: false,
                     collapsible: true
                 });
+            });
+        </script>
+        <script>
+            $(function(){
+                $('#collapsible').jqcollapse({
+                   slide: true,
+                   speed: 1000,
+                   easing: 'easeOutCubic'
+                });
+                $(".exp_list").show();
             });
         </script>
     </head>
