@@ -109,4 +109,4 @@ if __name__ == "__main__":
         exps = all_info['exps']['with-members']
         random.shuffle(exps)
         for member in range (1,11):
-            [gen_figures(exp, member) in exps]
+            [gen_figures(exp, member) for exp in exps]
