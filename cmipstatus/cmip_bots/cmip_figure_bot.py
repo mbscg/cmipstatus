@@ -70,7 +70,11 @@ def gen_figures(exp, member=None):
         #generate
         args = [running_dates[0], running_dates[1], region, exp, str(member),
                 complete_dir]
-        subprocess.call([all_info['scripts']['leo_eval_script']] + args)
+        try:
+            subprocess.call([all_info['scripts']['leo_eval_script']] + args)
+        except:
+            print "Error generating for ", args
+            print "Next..."
     #clean old
     new_dir = all_info['paths']['tupa_figs_dir'].format(exp, str(member))
     old_dir = os.path.dirname(new_dir)
