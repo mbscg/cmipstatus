@@ -31,6 +31,10 @@ li.err_exp_info{
 color:#ff0000;
 }
 
+li.abo_exp_info{
+color:#f09000;
+}
+
 a.header_link:link{
 color:#ffffff;
 text-decoration:none;
