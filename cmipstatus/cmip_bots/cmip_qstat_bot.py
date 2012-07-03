@@ -20,7 +20,7 @@ def get_running_stats():
 
 
 if __name__ == "__main__":
-    interval = 900
+    interval = 600
     while True:
         print "refreshing"
         get_running_stats()

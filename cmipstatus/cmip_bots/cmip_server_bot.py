@@ -13,4 +13,4 @@ if __name__ == "__main__":
             subprocess.call(['rm', '-rf', old_dir])
         for cmpdir in glob.glob('fetched_data/cmip_evaluation/cmp*'):
             subprocess.call(['mv', cmpdir, '../../media'])
-        time.sleep(900)
+        time.sleep(150)
