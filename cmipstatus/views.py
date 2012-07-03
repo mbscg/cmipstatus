@@ -3,7 +3,7 @@ from models import Experiment, Member, People, get_tupa_data
 from forms import FormEditProfile, FormPassword
 from django.template import RequestContext
 from os.path import join, exists
-from os import listdir
+import os
 import settings
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
@@ -20,13 +20,18 @@ def explist(request):
     running_exps = list(Experiment.objects.all())
     tupa_data = get_tupa_data()
     exps_errors, total_errors = experror_util(tupa_data)
+    exps_aborted, total_aborted = expaborted_util(tupa_data)
     finish_exps, finish_ab_exps, total_aborted = expfinished_util(tupa_data)
-    [running_exps.remove(exp) for exp in exps_errors] 
-    [running_exps.remove(exp) for exp in finish_exps]
-    [running_exps.remove(exp) for exp in finish_ab_exps]
+    [running_exps.remove(exp) for exp in exps_errors]
+    #[running_exps.remove(exp) for exp in exps_aborted if exp in running_exps]
+    [running_exps.remove(exp) for exp in finish_exps if exp in running_exps]
+    [running_exps.remove(exp) for exp in finish_ab_exps if exp in running_exps]
+    
     return render_to_response("cmipexplist.html", 
                               {'exps':running_exps, 'exps_errors': exps_errors,
                               'total_errors':total_errors,
+                              'with_aborted':exps_aborted, 
+                              'total_aborted':total_aborted,
                               'finished_exps':finish_exps,
                               'finished_aborted_exps': finish_ab_exps, 
                               'total_aborted':total_aborted,
@@ -99,15 +104,13 @@ def expvalview(request, expname):
         expname += '_1'
     else:
         pure_expname = pure_expname.split('_')[0]
-    FIGS_URL = settings.server_configs['imgs_info']['figs_url'].format(expname)
-    FIGS_LOG = settings.server_configs['imgs_info']['figs_log'].format(expname)
-    request_info = requests.get(FIGS_LOG)
-    if request_info.status_code == 200:
-        yaml_log = yaml.load(request_info.text)
-        use_backup_imgs = False
+    FIGS_URL = settings.server_configs['imgs_info']['local_figs'].format(expname)
+    FIGS_LOG = settings.server_configs['imgs_info']['local_logs'].format(expname)
+    FIGS_LOG = os.path.join(settings.server_configs['site_root'], FIGS_LOG)
+    if os.path.exists(FIGS_LOG):
+        yaml_log = yaml.load(open(FIGS_LOG, 'r'))
     else:
         yaml_log = {'start_date':'unknown', 'end_date':'unknown'}
-        use_backup_imgs = True
 
     imgs = []
     regions = settings.server_configs['imgs_info']['regions']
@@ -118,7 +121,7 @@ def expvalview(request, expname):
             gif = settings.server_configs['imgs_info']['figs_file']
             gif = gif.format(region, typ, pure_expname, yaml_log['start_date'],
                              yaml_log['end_date'])
-            type_imgs.append(FIGS_URL + gif)
+            type_imgs.append(os.path.join(FIGS_URL, gif))
         imgs.append([typ, type_imgs])
 
     return render_to_response("cmipexpvalview.html", 
@@ -140,6 +143,26 @@ def experror_util(tupa_data):
         if has_error:
             exps_with_errors.append(exp)
     return exps_with_errors, total_errors
+
+
+def expaborted_util(tupa_data):
+    all_experiments = Experiment.objects.all()
+    exps_with_aborted = []
+    total_aborted = 0
+    total_running = 0
+    for exp in all_experiments:
+        exp_info = expview_util(exp.name, tupa_data)
+        has_aborted = False
+        still_running = True
+        for member_info in exp_info['minfo']:
+            if member_info['complete']:
+                if member_info['aborted']:
+                    total_aborted += 1
+            else:
+                total_running += 1
+        if total_running > 1 and total_aborted > 1:
+            exps_with_aborted.append(exp)
+    return exps_with_aborted, total_aborted
 
 
 def expfinished_util(tupa_data):
