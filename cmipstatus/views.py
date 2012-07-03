@@ -11,31 +11,41 @@ import yaml
 import requests
 
 
+#STATUS
+RUNNING_WITH_ABORTED = 0
+RUNNING_WITH_ERRORS = 1
+RUNNING_OK = 2
+FINISHED_WITH_ABORTED = 3
+FINISHED_OK = 4
+
 @login_required
 def home(request):
     return render_to_response("cmiphome.html", {})
 
+
 @login_required
 def explist(request):
-    running_exps = list(Experiment.objects.all())
+    all_exps = list(Experiment.objects.all())
     tupa_data = get_tupa_data()
-    exps_errors, total_errors = experror_util(tupa_data)
-    exps_aborted, total_aborted = expaborted_util(tupa_data)
-    finish_exps, finish_ab_exps, total_aborted = expfinished_util(tupa_data)
-    [running_exps.remove(exp) for exp in exps_errors]
-    #[running_exps.remove(exp) for exp in exps_aborted if exp in running_exps]
-    [running_exps.remove(exp) for exp in finish_exps if exp in running_exps]
-    [running_exps.remove(exp) for exp in finish_ab_exps if exp in running_exps]
-    
-    return render_to_response("cmipexplist.html", 
-                              {'exps':running_exps, 'exps_errors': exps_errors,
-                              'total_errors':total_errors,
-                              'with_aborted':exps_aborted, 
-                              'total_aborted':total_aborted,
-                              'finished_exps':finish_exps,
-                              'finished_aborted_exps': finish_ab_exps, 
-                              'total_aborted':total_aborted,
-                              'general_list':True})
+    classified = {RUNNING_WITH_ABORTED:[], RUNNING_WITH_ERRORS:[], RUNNING_OK:[],
+                  FINISHED_WITH_ABORTED:[], FINISHED_OK:[]}
+    total_aborted = 0
+    total_error = 0
+    for exp in all_exps:
+        status, error, aborted = expstatus_util(tupa_data, exp.name)
+        total_aborted += aborted
+        total_error += error
+        classified[status].append(exp)
+
+    return render_to_response("cmipexplist.html",
+                              {'running':classified[RUNNING_OK],
+                               'running_errors':classified[RUNNING_WITH_ERRORS],
+                               'running_aborted':classified[RUNNING_WITH_ABORTED],
+                               'finished':classified[FINISHED_OK],
+                               'finished_aborted':classified[FINISHED_WITH_ABORTED],
+                               'total_errors':total_error,
+                               'total_aborted':total_aborted})
+        
 
 @login_required
 def peoplelist(request):
@@ -129,6 +139,39 @@ def expvalview(request, expname):
 
 
 
+def expstatus_util(tupa_data, expname):
+    exp_info = expview_util(expname, tupa_data)
+    error_members = 0
+    aborted_members = 0
+    finished_members = 0
+    running_members = 0
+    status = RUNNING_OK
+    for member in exp_info['minfo']:
+        if member['complete']:
+            if member['aborted']:
+                aborted_members += 1
+            else:
+                finished_members += 1
+        else:
+            if member['error']:
+                error_members += 1
+            else:
+                running_members += 1
+    if running_members > 0:
+        if aborted_members > 0:
+            status = RUNNING_WITH_ABORTED
+        elif error_members > 0:
+            status = RUNNING_WITH_ERRORS
+        else:
+            status = RUNNING_OK
+    elif running_members == 0:
+        if aborted_members > 0:
+            status = FINISHED_WITH_ABORTED
+        else:
+            status = FINISHED_OK
+    return status, error_members, aborted_members
+
+
 def experror_util(tupa_data):
     all_experiments = Experiment.objects.all()
     exps_with_errors = []
@@ -152,7 +195,6 @@ def expaborted_util(tupa_data):
     total_running = 0
     for exp in all_experiments:
         exp_info = expview_util(exp.name, tupa_data)
-        has_aborted = False
         still_running = True
         for member_info in exp_info['minfo']:
             if member_info['complete']:
@@ -160,7 +202,7 @@ def expaborted_util(tupa_data):
                     total_aborted += 1
             else:
                 total_running += 1
-        if total_running > 1 and total_aborted > 1:
+        if total_running > 0 and total_aborted > 0:
             exps_with_aborted.append(exp)
     return exps_with_aborted, total_aborted
 

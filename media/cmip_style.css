@@ -42,11 +42,11 @@ a.header_link:hover {color:#ffff99}
 a.header_link:active {color:#ffffff}
 
 a.exp_link:link{
-color:#000000;
+color:#0000ff;
 }
-a.exp_link:visited {color:#000000}
-a.exp_link:hover {color:#0f0f00}
-a.exp_link:active {color:#000000}
+a.exp_link:visited {color:#0000ff}
+a.exp_link:hover {color:#9090ff}
+a.exp_link:active {color:#0000ff}
 
 a.exp_error_link:link{
 color:#ff0000;
@@ -65,9 +65,9 @@ a.exp_finished_link:active {color:#009000}
 a.exp_finished_aborted_link:link{
 color:#f00900;
 }
-a.exp_finished_aborted_link:visited {color:#f09000}
-a.exp_finished_aborted_link:hover {color:#f09090}
-a.exp_finished_aborted_link:active {color:#f09000}
+a.exp_aborted_link:visited {color:#f09000}
+a.exp_aborted_link:hover {color:#f09090}
+a.exp_aborted_link:active {color:#f09000}
 
 a.val_link:link{
 color:#000000;
@@ -91,12 +91,24 @@ font-size:1em;
 font-family:Verdana;
 }
 
+h3.list_header{
+background-color:#c0c0c0;
+font-size:1em;
+font-family:Verdana;
+}
+
 div.accordion_container{
 background-color:#ffffff;
 }
 
-div.list{
+div.list_running{
 overflow:auto;
+background-color:#f0f0f0;
+}
+
+div.list_finished{
+overflow:auto;
+background-color:#f0f0f0;
 }
 
 a.logout_link:link{

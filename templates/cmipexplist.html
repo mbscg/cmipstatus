@@ -1,55 +1,76 @@
 {% extends 'cmiphome.html' %}
 
 {% block body %}
-    <ul class="exp_list" id="collapsible">
-        <li><a class="accordion_link" href="#">{% if general_list %}Running Experiments{% else %}Experiments...{% endif %}</a>
-            <ul class="exp_list">
-                {% for exp in exps %}
-                    <li><a class="exp_link" href="/cmip/expview/{{exp.name}}">{{ exp.name }}</a></li>
-                {% empty %}
-                    <p>None.</p>
-                {% endfor %}
+    <!-- RUNNING SECTION -->
+    <div class="list_running">
+    <h3 class="list_header">Running Experiments</h3>
+    
+            <ul class="exp_list" id="collapsible">
+                <li>Running OK
+                    <ul class="exp_list">
+                        {% for exp in running %}
+                            <li><a class="exp_link"href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+                        {% empty %}
+                            <li>None.</li>
+                        {% endfor %}
+                    </ul>
+                </li>
             </ul>
-        </li>
-    </ul>
-    {% if general_list %}
-        <ul class="exp_list" id="collapsible">
-            <li><a class="accordion_link" href="#">Finished Experiments</a>
-                <ul class="exp_list">
-                    {% for exp in finished_exps %}
-                        <li><a class="exp_finished_link" href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
-                    {% empty %}
-                        <p>None.</p>
-                    {% endfor %}
-                </ul>
-            </li>
-        </ul>
-        <ul class="exp_list" id="collapsible">
-            <li><a class="accordion_link" href="#">Finished with aborted</a>
-                <ul class="exp_list">
-                    {% for exp in finished_aborted_exps %}
-                        <li>
-                            <a class="exp_finished_aborted_link" href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a>
-                        </li>
-                    {% empty %}
-                        <p>None.</p>
-                    {% endfor %}
-                    <p>Total aborted runs: {{ total_aborted }}</p>
-                </ul>
-            </li>
-        </ul>
-        <ul class="exp_list" id="collapsible">
-            <li><a class="accordion_link" href="#">Experiments with errors</a>
-                <ul class="exp_list">
-                    {% for exp in exps_errors %}
-                        <li><a class="exp_error_link" href="/cmip/expview/{{exp.name}}">{{ exp.name }}</a></li>
-                    {% empty %}
-                        <p>None.</p>
-                    {% endfor %}
-                    <p>Total run errors: {{ total_errors }}</p>
-                </ul>
-            </li>
-        </ul>
-    {% endif %}
+
+            <ul class="exp_list" id="collapsible">        
+                <li>Running with Errors
+                    <ul class="exp_list">
+                        {% for exp in running_errors %}
+                            <li><a class="exp_error_link"href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+                        {% empty %}
+                            <li>None.</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="exp_list" id="collapsible">
+                <li>Running with Aborted
+                    <ul class="exp_list">
+                        {% for exp in running_aborted %}
+                            <li><a class="exp_aborted_link"href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+                        {% empty %}
+                            <li>None.</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+    </div>
+    <!-- END OF RUNNING SECTION -->
+
+    <!-- FINISHED SECTION -->
+    <div class="list_finished">
+    <h3 class="list_header">Finished Experiments</h3>
+
+            <ul class="exp_list" id="collapsible">
+                <li>Finished OK
+                    <ul class="exp_list">
+                        {% for exp in finished %}
+                            <li><a class="exp_finished_link"href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+                        {% empty %}
+                            <li>None.</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="exp_list" id="collapsible">
+                <li>Finished with Aborted
+                    <ul class="exp_list">
+                        {% for exp in finished_aborted %}
+                            <li><a class="exp_aborted_link"href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+                        {% empty %}
+                            <li>None.</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+    </div>
+    <!-- END OF FINISHED SECTION -->
 {% endblock %}
 
