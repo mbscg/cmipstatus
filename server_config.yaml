@@ -17,8 +17,26 @@ imgs_info:
         TP: TP
         TA: TA
 
+    ensembled:
+        variables:
+            - sss
+            - sst
+            - taux
+            - tauy
+            - u
+            - v
+        statistics:
+            - annualmean
+            - gb_series
+            - variance
+        other:
+            - 1_eof_sst
+            - 2_eof_sst
+            - 3_eof_sst
+
     figs_url: http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/{0}/figures/
     local_figs: /media/{0}/figures
+    local_new_figs: media/exp_analysis_figures/{0}
     figs_file: '{0}_{1}_{2}_{3}_{4}.gif'
     figs_log: http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/{0}/figures/log.yaml
     local_logs: media/{0}/figures/log.yaml

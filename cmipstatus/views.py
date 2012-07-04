@@ -59,6 +59,22 @@ def expview(request, expname):
     user = People.objects.get(username=request.user)
     exp = Experiment.objects.get(name=expname)
     info['comments'] = Comment.objects.all().filter(exp=exp)
+    
+    new_figs_dir = settings.server_configs['imgs_info']['local_new_figs'].format(expname)
+    new_figs_dir = os.path.join(settings.server_configs['site_root'], new_figs_dir)
+    has_new_figs = os.path.exists(new_figs_dir)
+    
+    if has_new_figs:
+        figs = os.listdir(new_figs_dir)
+        figs = [os.path.join('/', settings.server_configs['imgs_info']['local_new_figs'].format(expname), f) for f in figs if '.jpg' in f]
+        ensemble_figs = []
+        for variable in settings.server_configs['imgs_info']['ensembled']['variables']:
+            var_figs = []
+            for fig in figs:
+                if '_'+variable+'_' in fig:
+                    var_figs.append(fig)
+            ensemble_figs.append([variable, var_figs])
+
 
     if request.method == 'POST':
         form = FormComment(request.POST, request.FILES)
@@ -71,7 +87,10 @@ def expview(request, expname):
         form = FormComment()
 
     info['form'] = form
+    info['ensemble_figs'] = ensemble_figs
+    info['has_figs'] = has_new_figs
     context = RequestContext(request)
+    print ensemble_figs
     return  render_to_response("cmipexpview.html", info, 
                                context_instance=context)
 
