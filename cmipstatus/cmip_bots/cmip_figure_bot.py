@@ -3,9 +3,9 @@ import os
 import stat
 import glob
 import subprocess
+import multiprocessing
 import datetime
 import random
-import multiprocessing
 import time
 
 
@@ -101,12 +101,34 @@ def gen_figures(exp, member=None):
     [os.chmod(f, permissions) for f in glob.glob(os.path.join(old_dir, '*'))]
 
 
-if __name__ == "__main__":
+def copy_ensemble_figures():
+    while True:
+        subprocess.call(['cp','-r', '/stornext/online13/ocean/workdata/exp_analysis_figures/', 
+                     all_info['paths']['ftp_root']])
+        time.sleep(600)
+
+
+def gen_no_members():
     while True:
         exps = all_info['exps']['no-members']
         random.shuffle(exps)
         [gen_figures(exp) for exp in exps]
+        time.sleep(600)
+
+
+def gen_with_members():
+    while True:
         exps = all_info['exps']['with-members']
         random.shuffle(exps)
         for member in range (1,11):
             [gen_figures(exp, member) for exp in exps]
+        time.sleep(600)
+
+
+if __name__ == "__main__":
+    figs_no_members = multiprocessing.Process(target=gen_no_members)
+    figs_no_members.start()
+    figs_with_members = multiprocessing.Process(target=gen_with_members)
+    figs_with_members.start()
+    copy_figs = multiprocessing.Process(target=copy_ensemble_figures)
+    copy_figs.start()
