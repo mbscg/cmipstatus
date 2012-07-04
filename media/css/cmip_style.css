@@ -90,8 +90,8 @@ a.exp_finished_link:visited {color:#009000}
 a.exp_finished_link:hover {color:#009090}
 a.exp_finished_link:active {color:#009000}
 
-a.exp_finished_aborted_link:link{
-color:#f00900;
+a.exp_aborted_link:link{
+color:#f09000;
 }
 a.exp_aborted_link:visited {color:#f09000}
 a.exp_aborted_link:hover {color:#f09090}
