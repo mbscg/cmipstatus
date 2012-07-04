@@ -12,6 +12,20 @@ font-family:helvetica;
 line-height:1.5em;
 }
 
+ul.discussion_list {
+list-style-type:none;
+background-color:#f0f0f0;
+font-family:helvetica;
+line-height:1.5em;
+}
+
+ul.comment_list {
+list-style-type:none;
+background-color:#f0f0f0;
+font-family:helvetica;
+line-height:1.5em;
+}
+
 ul.prof_list{
 list-style-type:none;
 background-color:#f0f0f0;
@@ -33,6 +47,16 @@ color:#ff0000;
 
 li.abo_exp_info{
 color:#f09000;
+}
+
+li.comment{
+padding-top:25px;
+color:#000000;
+}
+
+li.comment_author{
+color:#000000;
+font-size:0.7em;
 }
 
 a.header_link:link{
@@ -199,4 +223,7 @@ font-family:helvetica;
 background-color:#f0fff0;
 }
 
-
+form.default{
+margin:0px;
+padding:0px;
+}

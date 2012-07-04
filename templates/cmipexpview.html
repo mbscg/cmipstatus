@@ -58,7 +58,28 @@
         {% empty %}No jobs submitted
         {% endfor %}
     </ul>
-    <p>Total errors in this list: {{ page_errors }}<p>
+    <p>Total errors in this list: {{ page_errors }}</p>
+</div>
+
+<div class="discussion">
+    <ul class="discussion_list" id="collapsible">
+        <li><a class="accordion_link" href="#">Discussion</a>
+            <ul class="comment_list">
+                {% for comment in comments %}
+                    <li class="comment">{{ comment.text }}</li>
+                    <li class="comment_author">{{ comment.author }}</li>
+                {% empty %}
+                    <li>No comments in this experiment.</li>
+                {% endfor %}
+                <li>
+                   <form style='display:inline' class='default' method="post" id="form" action="" enctype="multipart/form-data">
+                       {% csrf_token %}
+                       <p>{{ form.as_p }}<button class='default_btn' type="submit">Submit Comment</button></p>
+                    </form>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </div>
 {% endblock %}
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response
-from models import Experiment, Member, People, get_tupa_data
-from forms import FormEditProfile, FormPassword
+from models import Experiment, Member, People, Comment, get_tupa_data
+from forms import FormEditProfile, FormPassword, FormComment
 from django.template import RequestContext
 from os.path import join, exists
 import os
@@ -56,7 +56,24 @@ def peoplelist(request):
 @login_required
 def expview(request, expname):
     info = expview_util(expname, get_tupa_data())
-    return  render_to_response("cmipexpview.html", info)
+    user = People.objects.get(username=request.user)
+    exp = Experiment.objects.get(name=expname)
+    info['comments'] = Comment.objects.all().filter(exp=exp)
+
+    if request.method == 'POST':
+        form = FormComment(request.POST, request.FILES)
+        if form.is_valid():
+            text = form.cleaned_data['comment']
+            new_comment = Comment(author=user, exp=exp, text=text)
+            new_comment.save()
+            form = FormComment()
+    else:
+        form = FormComment()
+
+    info['form'] = form
+    context = RequestContext(request)
+    return  render_to_response("cmipexpview.html", info, 
+                               context_instance=context)
 
 
 def expview_util(expname, tupa_data):

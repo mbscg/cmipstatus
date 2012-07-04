@@ -39,6 +39,12 @@ class Member(models.Model):
         return self.name
 
 
+class Comment(models.Model):
+    exp = models.ForeignKey('Experiment')
+    author = models.ForeignKey('People')
+    text = models.TextField(max_length=2048, default='')
+
+
 def check_restart_list(exp_name, member_name):
     print "getting restart list"
     RESTART_FILE = open(settings.server_configs['restartlist_template'].format(exp_name + member_name), 'r')
