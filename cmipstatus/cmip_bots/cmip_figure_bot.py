@@ -106,7 +106,7 @@ def copy_ensemble_figures():
         ensemble_figures = '/stornext/online13/ocean/workdata/exp_analysis_figures/'
         subprocess.call(['cp','-r', ensemble_figures, all_info['paths']['ftp_root']])
         subprocess.call(['chmod', '-R', '775', 
-                         os.path.join(all_info['paths']['ftp_root'], 'exp_analysis_figures']) 
+                         os.path.join(all_info['paths']['ftp_root'], 'exp_analysis_figures')]) 
         time.sleep(600)
 
 
