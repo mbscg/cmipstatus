@@ -74,7 +74,7 @@
 
 <div class="discussion">
     <ul class="discussion_list" id="collapsible">
-        <li><a class="accordion_link" href="#">Discussion</a>
+        <li><a class="accordion_link" href="#">Discussion ({{ comments.count  }})</a>
             <ul class="comment_list">
                 {% for comment in comments %}
                     <li class="comment">{{ comment.text }}</li>
