@@ -149,13 +149,20 @@ a.logout_link:hover {color:#ffff99}
 a.logout_link:active {color:#ffffff}
 
 progress.exp_progress{
-position:fixed;
-left:160px;;
 }
 
 span.exp_progress_details{
-position:fixed;
-left:340px;
+}
+
+span.signal{
+}
+
+table.exp_line{
+}
+
+tr:exp_line{
+align:center;
+padding:0px;
 }
 
 a.prof_link:link{

@@ -9,28 +9,35 @@
         {% for member_info in minfo %}
 
         <li {%if member_info.error %} class="err_exp_info" {% endif %}>
-
+            <table class="exp_line"><tr class="exp_line">
             <!-- signal -->
+            <td width=120>
+            <span class="signal">
             {% if member_info.post %}
-                <img src="/media/azul.png" title="Post-Processing"/> <!-- post -->
+                <img src="/media/azul.png" width=10 title="Post-Processing"/> <!-- post -->
             {% elif  member_info.running %}
-                <img src="/media/verde.png" title="Running"/> <!-- running -->
+                <img src="/media/verde.png" width=10 title="Running"/> <!-- running -->
             {% elif member_info.aborted %}
-                <img src="/media/vermelho.png" title="Error"/>
+                <img src="/media/vermelho.png" width=10 title="Error"/>
             {% elif member_info.complete %}
                 <img src="/media/final.png" width=10 title="Finished"/>
             {% elif member_info.error %}
-                <img src="/media/vermelho.png" title="Error"/>
+                <img src="/media/vermelho.png" width=10 title="Error"/>
             {% else %}
-                <img src="/media/amarelo.png" title="Waiting/Copying"/> <!-- waiting -->
+                <img src="/media/amarelo.png" width=10 title="Waiting/Copying"/> <!-- waiting -->
             {% endif %}
 
             <!-- name and link -->
             <a class="val_link" href="/cmip/validation/{{ member_info.member }}">{{ member_info.member }}</a>
-    
+            </span>
+            </td>
+
+            <td width=200>
             <!-- progressbar -->
             <progress class="exp_progress" value={{ member_info.prog }} title="{{ member_info.text_total }}%"></progress>
-    
+            </td>
+
+            <td>
             <!-- run info -->
             <span class="exp_progress_details" 
                   title="{% if member_info.running %}[{{ member_info.text_run }}% on run {{ member_info.current }}
@@ -53,7 +60,10 @@
                     Total errors: {{ member_info.total_errors }}
                 {% endif %}
             </span>
+            </td>
+            </tr></table>
         </li>
+        
 
         {% empty %}No jobs submitted
         {% endfor %}
