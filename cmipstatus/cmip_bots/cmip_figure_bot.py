@@ -105,8 +105,12 @@ def copy_ensemble_figures():
     while True:
         ensemble_figures = '/stornext/online13/ocean/workdata/exp_analysis_figures/'
         subprocess.call(['cp','-r', ensemble_figures, all_info['paths']['ftp_root']])
-        subprocess.call(['chmod', '-R', '775', 
-                         os.path.join(all_info['paths']['ftp_root'], 'exp_analysis_figures')]) 
+        new_dir = os.path.join(all_info['paths']['ftp_root'], 'exp_analysis_figures')
+        for dotfig in glob.glob(os.path.join(new_dir, '*.fig')):
+            subprocess.call(['rm', dotfig])
+        for dotfig in glob.glob(os.path.join(new_dir, '*', '*.fig')):
+            subprocess.call(['rm', dotfig])
+        subprocess.call(['chmod', '-R', '775', new_dir]) 
         time.sleep(600)
 
 
