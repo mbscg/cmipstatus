@@ -164,7 +164,7 @@ def expvalview(request, expname):
         if candidate:
             new_figs_dir = candidate[0]
             media_figs_dir = os.path.join(media_figs_dir, os.path.split(new_figs_dir)[1]) 
-    has_new_figs = os.path.exists(new_figs_dir)
+    has_new_figs = os.path.exists(new_figs_dir) and [f for f in os.listdir(new_figs_dir) if '.jpg' in f]
     ensemble_figs = []
     
     if has_new_figs:
