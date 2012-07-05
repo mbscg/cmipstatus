@@ -66,8 +66,12 @@ def expview(request, expname):
     
     if has_new_figs:
         figs = os.listdir(new_figs_dir)
-        figs = [os.path.join('/', settings.server_configs['imgs_info']['local_new_figs'].format(expname), f) for f in figs if '.jpg' in f]
+        figs = [os.path.join('/', 
+                settings.server_configs['imgs_info']['local_new_figs'].format(expname), 
+                f) 
+                for f in figs if '.jpg' in f]
         ensemble_figs = []
+        figs.sort()
         for variable in settings.server_configs['imgs_info']['ensembled']['variables']:
             var_figs = []
             for fig in figs:
