@@ -19,6 +19,17 @@
                 {% endfor %}
             </div>
         {% endfor %}
+{% if has_figs %}
+        {% for variable in ensemble_figs %}
+            <h3 class="accordion_header"><a class="accordion_link" href="#">{{ variable.0 }}</a></h3>
+            <div>
+                {% for img in variable.1 %}
+                    <a href="{{ img }}" rel="lightbox[{{ variable }}]"><img src={{ img }} width=300/></a>
+                {% endfor %}
+            </div>
+        {% endfor %}
     </div>
+{% endif %}
+
 {% endblock %}
 

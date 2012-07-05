@@ -9,6 +9,7 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 import yaml
 import requests
+import glob
 
 
 #STATUS
@@ -59,36 +60,8 @@ def expview(request, expname):
     user = People.objects.get(username=request.user)
     exp = Experiment.objects.get(name=expname)
     info['comments'] = Comment.objects.all().filter(exp=exp)
-    
-    new_figs_dir = settings.server_configs['imgs_info']['local_new_figs'].format(expname)
-    new_figs_dir = os.path.join(settings.server_configs['site_root'], new_figs_dir)
-    has_new_figs = os.path.exists(new_figs_dir)
-    ensemble_figs = []
-    
-    if has_new_figs:
-        figs = os.listdir(new_figs_dir)
-        figs = [os.path.join('/', 
-                settings.server_configs['imgs_info']['local_new_figs'].format(expname), 
-                f) 
-                for f in figs if '.jpg' in f]
-        figs.sort()
-        for variable in settings.server_configs['imgs_info']['ensembled']['variables']:
-            var_figs = []
-            for fig in figs:
-                if '_'+variable+'_' in fig or '_'+variable+'.' in fig:
-                    var_figs.append(fig)
-            ensemble_figs.append([variable, var_figs])
-        scalar_figs = []
-        print figs
-        for scalar in settings.server_configs['imgs_info']['ensembled']['scalars']:
-            print  "scalar", scalar
-            for fig in figs:
-                if scalar in fig:
-                    scalar_figs.append(fig)
-        print scalar_figs
-        ensemble_figs.append(['other scalar stats', scalar_figs])
 
-
+    
     if request.method == 'POST':
         form = FormComment(request.POST, request.FILES)
         if form.is_valid():
@@ -100,8 +73,6 @@ def expview(request, expname):
         form = FormComment()
 
     info['form'] = form
-    info['ensemble_figs'] = ensemble_figs
-    info['has_figs'] = has_new_figs
     context = RequestContext(request)
     return  render_to_response("cmipexpview.html", info, 
                                context_instance=context)
@@ -157,11 +128,14 @@ def expview_util(expname, tupa_data):
 
 @login_required
 def expvalview(request, expname):
-    pure_expname = expname
+    is_member = False
     if '_' not in expname:
+        pure_expname = expname 
         expname += '_1'
     else:
-        pure_expname = pure_expname.split('_')[0]
+        pure_expname = expname.split('_')[0]
+        member = expname.split('_')[1]
+        is_member = True
     FIGS_URL = settings.server_configs['imgs_info']['local_figs'].format(expname)
     FIGS_LOG = settings.server_configs['imgs_info']['local_logs'].format(expname)
     FIGS_LOG = os.path.join(settings.server_configs['site_root'], FIGS_LOG)
@@ -182,8 +156,38 @@ def expvalview(request, expname):
             type_imgs.append(os.path.join(FIGS_URL, gif))
         imgs.append([typ, type_imgs])
 
+
+    media_figs_dir = settings.server_configs['imgs_info']['local_new_figs'].format(pure_expname)
+    new_figs_dir = os.path.join(settings.server_configs['site_root'], media_figs_dir)
+    if is_member:
+        candidate = glob.glob(os.path.join(new_figs_dir, '*'+member))
+        if candidate:
+            new_figs_dir = candidate[0]
+            media_figs_dir = os.path.join(media_figs_dir, os.path.split(new_figs_dir)[1]) 
+    has_new_figs = os.path.exists(new_figs_dir)
+    ensemble_figs = []
+    
+    if has_new_figs:
+        figs = os.listdir(new_figs_dir)
+        figs = [os.path.join('/', media_figs_dir, f) for f in figs if '.jpg' in f]
+        figs.sort()
+        for variable in settings.server_configs['imgs_info']['ensembled']['variables']:
+            var_figs = []
+            for fig in figs:
+                if '_'+variable+'_' in fig or '_'+variable+'.' in fig:
+                    var_figs.append(fig)
+            ensemble_figs.append([variable, var_figs])
+        scalar_figs = []
+        for scalar in settings.server_configs['imgs_info']['ensembled']['scalars']:
+            for fig in figs:
+                if scalar in fig:
+                    scalar_figs.append(fig)
+        ensemble_figs.append(['other scalar stats', scalar_figs])
+        
+        
     return render_to_response("cmipexpvalview.html", 
-                             {'imgs':imgs, 'expname':expname, 'log':yaml_log})
+                             {'imgs':imgs, 'expname':expname, 'log':yaml_log,
+                              'ensemble_figs': ensemble_figs, 'has_figs':has_new_figs})
 
 
 
