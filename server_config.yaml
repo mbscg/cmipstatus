@@ -29,10 +29,16 @@ imgs_info:
             - annualmean
             - gb_series
             - variance
-        other:
-            - 1_eof_sst
-            - 2_eof_sst
-            - 3_eof_sst
+            - eof
+        scalars:
+            - eta_nonsteric
+            - eta_steric
+            - total_eta
+            - pme
+            - salt_total
+            - temp_total
+            - total_ke
+            - total_pe
 
     figs_url: http://ftp-supercomputacao.inpe.br/public/g.marcondes/cmip_evaluation/{0}/figures/
     local_figs: /media/{0}/figures

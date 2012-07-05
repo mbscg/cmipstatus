@@ -75,9 +75,18 @@ def expview(request, expname):
         for variable in settings.server_configs['imgs_info']['ensembled']['variables']:
             var_figs = []
             for fig in figs:
-                if '_'+variable+'_' in fig:
+                if '_'+variable+'_' in fig or '_'+variable+'.' in fig:
                     var_figs.append(fig)
             ensemble_figs.append([variable, var_figs])
+        scalar_figs = []
+        print figs
+        for scalar in settings.server_configs['imgs_info']['ensembled']['scalars']:
+            print  "scalar", scalar
+            for fig in figs:
+                if scalar in fig:
+                    scalar_figs.append(fig)
+        print scalar_figs
+        ensemble_figs.append(['other scalar stats', scalar_figs])
 
 
     if request.method == 'POST':
@@ -94,7 +103,6 @@ def expview(request, expname):
     info['ensemble_figs'] = ensemble_figs
     info['has_figs'] = has_new_figs
     context = RequestContext(request)
-    print ensemble_figs
     return  render_to_response("cmipexpview.html", info, 
                                context_instance=context)
 
