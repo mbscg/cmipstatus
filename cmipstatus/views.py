@@ -19,7 +19,6 @@ RUNNING_OK = 2
 FINISHED_WITH_ABORTED = 3
 FINISHED_OK = 4
 
-@login_required
 def home(request):
     return render_to_response("cmiphome.html", {})
 
