@@ -54,7 +54,6 @@ def peoplelist(request):
     return render_to_response("cmipproflist.html", {'people': people})
 
 
-@login_required
 def expview(request, expname):
     info = expview_util(expname, get_tupa_data())
     user = People.objects.get(username=request.user)
@@ -126,7 +125,6 @@ def expview_util(expname, tupa_data):
     return info
 
 
-@login_required
 def expvalview(request, expname):
     is_member = False
     if '_' not in expname:
