@@ -24,7 +24,6 @@ def home(request):
     return render_to_response("cmiphome.html", {})
 
 
-@login_required
 def explist(request):
     all_exps = list(Experiment.objects.all())
     tupa_data = get_tupa_data()
