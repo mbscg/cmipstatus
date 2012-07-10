@@ -4,11 +4,11 @@
     <!-- RUNNING SECTION -->
     <div class="list_running">
     <p class="list_header">Running Experiments</p>
-            <ul class="exp_list">
+            <ul class="exp_list" id="collapsible">
                 <li>Running OK
                     <ul class="exp_list">
                         {% for exp in running %}
-                            <li><a class="exp_link"  href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                            <li><a class="exp_link"  href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a></li>
                             <ul class="exp_list" id="collapsible">
                                 <li class="exp_sub_list_expander">+Progress...
                                     <ul class="exp_sub_list">
@@ -18,7 +18,6 @@
                                     </ul>
                                 </li>
                             </ul>
-                        </li>
                         {% empty %}
                             <li>None.</li>
                         {% endfor %}
@@ -26,11 +25,11 @@
                 </li>
             </ul>
 
-            <ul class="exp_list"> 
+            <ul class="exp_list" id="collapsible"> 
                 <li>Running with Errors
                     <ul class="exp_list">
                         {% for exp in running_errors %}
-                            <li><a class="exp_error_link" href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                            <li><a class="exp_error_link" href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a></li>
                             <ul class="exp_list" id="collapsible">
                                 <li class="exp_sub_list_expander">+Progress...
                                     <ul class="exp_sub_list">
@@ -40,7 +39,6 @@
                                     </ul>
                                 </li>
                             </ul>
-                        </li>
                         {% empty %}
                             <li>None.</li>
                         {% endfor %}
@@ -49,11 +47,11 @@
                 <li class="err_exp_info">Total errors: {{ total_errors }}</li>
             </ul>
 
-            <ul class="exp_list">
+            <ul class="exp_list" id="collapsible">
                 <li>Running with Aborted
                     <ul class="exp_list">
                         {% for exp in running_aborted %}
-                            <li><a class="exp_aborted_link"  href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                            <li><a class="exp_aborted_link"  href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a></li>
                             <ul class="exp_list" id="collapsible">
                                 <li class="exp_sub_list_expander">+Progress...
                                     <ul class="exp_sub_list">
@@ -63,7 +61,6 @@
                                     </ul>
                                 </li>
                             </ul>
-                        </li>
                         {% empty %}
                             <li>None.</li>
                         {% endfor %}
