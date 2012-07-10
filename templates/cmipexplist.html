@@ -13,7 +13,7 @@
                                 <li class="exp_sub_list_expander">+Progress...
                                     <ul class="exp_sub_list">
                             {% for minfo in  exp.1.minfo %}
-                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }}></progress></li>
+                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }} title="{{ minfo.text_total }}%"></progress></li>
                             {% endfor %}
                                     </ul>
                                 </li>
@@ -34,7 +34,7 @@
                                 <li class="exp_sub_list_expander">+Progress...
                                     <ul class="exp_sub_list">
                             {% for minfo in  exp.1.minfo %}
-                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }}></progress></li>
+                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }} title="{{ minfo.text_total }}%"></progress></li>
                             {% endfor %}
                                     </ul>
                                 </li>
@@ -56,7 +56,7 @@
                                 <li class="exp_sub_list_expander">+Progress...
                                     <ul class="exp_sub_list">
                             {% for minfo in  exp.1.minfo %}
-                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }}></progress></li>
+                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }} title="{{ minfo.text_total }}%"></progress></li>
                             {% endfor %}
                                     </ul>
                                 </li>
