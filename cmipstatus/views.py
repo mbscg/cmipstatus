@@ -33,9 +33,10 @@ def explist(request):
     total_error = 0
     for exp in all_exps:
         status, error, aborted = expstatus_util(tupa_data, exp.name)
+        info = expview_util(exp.name, tupa_data)
         total_aborted += aborted
         total_error += error
-        classified[status].append(exp)
+        classified[status].append([exp, info])
 
     return render_to_response("cmipexplist.html",
                               {'running':classified[RUNNING_OK],
@@ -45,7 +46,6 @@ def explist(request):
                                'finished_aborted':classified[FINISHED_WITH_ABORTED],
                                'total_errors':total_error,
                                'total_aborted':total_aborted})
-        
 
 @login_required
 def peoplelist(request):
@@ -56,25 +56,21 @@ def peoplelist(request):
 @login_required
 def expview(request, expname):
     info = expview_util(expname, get_tupa_data())
-    try:
-        user = People.objects.get(username=request.user)
-    except:
-        user = None
+    user = People.objects.get(username=request.user)
     exp = Experiment.objects.get(name=expname)
     info['comments'] = Comment.objects.all().filter(exp=exp)
 
-    if user:
-        if request.method == 'POST':
-            form = FormComment(request.POST, request.FILES)
-            if form.is_valid():
-                text = form.cleaned_data['comment']
-                new_comment = Comment(author=user, exp=exp, text=text)
-                new_comment.save()
-                form = FormComment()
-        else:
+    if request.method == 'POST':
+        form = FormComment(request.POST, request.FILES)
+        if form.is_valid():
+            text = form.cleaned_data['comment']
+            new_comment = Comment(author=user, exp=exp, text=text)
+            new_comment.save()
             form = FormComment()
-
+    else:
+        form = FormComment()
         info['form'] = form
+
     info['logged'] = (user is not None)
     context = RequestContext(request)
     return  render_to_response("cmipexpview.html", info, 

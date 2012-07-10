@@ -8,7 +8,17 @@
                 <li>Running OK
                     <ul class="exp_list">
                         {% for exp in running %}
-                            <li><a class="exp_link"   href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+                            <li><a class="exp_link"  href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                            <ul class="exp_list" id="collapsible">
+                                <li class="exp_sub_list_expander">+Progress...
+                                    <ul class="exp_sub_list">
+                            {% for minfo in  exp.1.minfo %}
+                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }}></progress></li>
+                            {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                         {% empty %}
                             <li>None.</li>
                         {% endfor %}
@@ -20,7 +30,17 @@
                 <li>Running with Errors
                     <ul class="exp_list">
                         {% for exp in running_errors %}
-                            <li><a class="exp_error_link"   href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+                            <li><a class="exp_error_link" href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                            <ul class="exp_list" id="collapsible">
+                                <li class="exp_sub_list_expander">+Progress...
+                                    <ul class="exp_sub_list">
+                            {% for minfo in  exp.1.minfo %}
+                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }}></progress></li>
+                            {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                         {% empty %}
                             <li>None.</li>
                         {% endfor %}
@@ -33,7 +53,17 @@
                 <li>Running with Aborted
                     <ul class="exp_list">
                         {% for exp in running_aborted %}
-                            <li><a class="exp_aborted_link"   href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+                            <li><a class="exp_aborted_link"  href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                            <ul class="exp_list" id="collapsible">
+                                <li class="exp_sub_list_expander">+Progress...
+                                    <ul class="exp_sub_list">
+                            {% for minfo in  exp.1.minfo %}
+                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }}></progress></li>
+                            {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                         {% empty %}
                             <li>None.</li>
                         {% endfor %}
@@ -52,7 +82,7 @@
                 <li>Finished OK
                     <ul class="exp_list">
                         {% for exp in finished %}
-                            <li><a class="exp_finished_link"   href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
+                            <li><a class="exp_finished_link" href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a></li>
                         {% empty %}
                             <li>None.</li>
                         {% endfor %}
@@ -63,7 +93,7 @@
             <ul class="exp_list" id="collapsible">
                 <li>Finished with Aborted
                     <ul class="exp_list">
-                        {% for exp in finished_aborted %}
+                        {% for exp in finished_aborted.0 %}
                             <li><a class="exp_aborted_link"   href="/cmip/expview/{{ exp.name }}">{{ exp.name }}</a></li>
                         {% empty %}
                             <li>None.</li>

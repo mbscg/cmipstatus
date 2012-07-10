@@ -12,6 +12,17 @@ font-family:helvetica;
 line-height:1.5em;
 }
 
+ul.exp_sub_list {
+list-style-type:none;
+background-color:#f0f0f0;
+font-family:helvetica;
+line-height:1.5em;
+}
+
+li.exp_sub_list_expander {
+font-size:0.7em;
+}
+
 ul.discussion_list {
 list-style-type:none;
 background-color:#f0f0f0;
@@ -149,6 +160,10 @@ a.logout_link:hover {color:#ffff99}
 a.logout_link:active {color:#ffffff}
 
 progress.exp_progress{
+}
+
+progress.exp_progress_small{
+width:50px;
 }
 
 span.exp_progress_details{
