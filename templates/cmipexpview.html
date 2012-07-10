@@ -71,7 +71,7 @@
     <p>Total errors in this list: {{ page_errors }}</p>
 </div>
 
-
+{% if logged %}
 <div class="discussion">
     <ul class="discussion_list" id="collapsible">
         <li><a class="accordion_link" href="#">Discussion ({{ comments.count  }})</a>
@@ -92,5 +92,6 @@
         </li>
     </ul>
 </div>
+{% endif %}
 {% endblock %}
 

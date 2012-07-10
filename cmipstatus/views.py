@@ -19,12 +19,10 @@ RUNNING_OK = 2
 FINISHED_WITH_ABORTED = 3
 FINISHED_OK = 4
 
-@login_required
 def home(request):
     return render_to_response("cmiphome.html", {})
 
 
-@login_required
 def explist(request):
     all_exps = list(Experiment.objects.all())
     tupa_data = get_tupa_data()
@@ -54,25 +52,28 @@ def peoplelist(request):
     return render_to_response("cmipproflist.html", {'people': people})
 
 
-@login_required
 def expview(request, expname):
     info = expview_util(expname, get_tupa_data())
-    user = People.objects.get(username=request.user)
+    try:
+        user = People.objects.get(username=request.user)
+    except:
+        user = None
     exp = Experiment.objects.get(name=expname)
     info['comments'] = Comment.objects.all().filter(exp=exp)
 
-    
-    if request.method == 'POST':
-        form = FormComment(request.POST, request.FILES)
-        if form.is_valid():
-            text = form.cleaned_data['comment']
-            new_comment = Comment(author=user, exp=exp, text=text)
-            new_comment.save()
+    if user:
+        if request.method == 'POST':
+            form = FormComment(request.POST, request.FILES)
+            if form.is_valid():
+                text = form.cleaned_data['comment']
+                new_comment = Comment(author=user, exp=exp, text=text)
+                new_comment.save()
+                form = FormComment()
+        else:
             form = FormComment()
-    else:
-        form = FormComment()
 
-    info['form'] = form
+        info['form'] = form
+    info['logged'] = (user is not None)
     context = RequestContext(request)
     return  render_to_response("cmipexpview.html", info, 
                                context_instance=context)
@@ -126,7 +127,6 @@ def expview_util(expname, tupa_data):
     return info
 
 
-@login_required
 def expvalview(request, expname):
     is_member = False
     if '_' not in expname:
