@@ -23,6 +23,7 @@ def home(request):
     return render_to_response("cmiphome.html", {})
 
 
+@login_required
 def explist(request):
     all_exps = list(Experiment.objects.all())
     tupa_data = get_tupa_data()
@@ -52,6 +53,7 @@ def peoplelist(request):
     return render_to_response("cmipproflist.html", {'people': people})
 
 
+@login_required
 def expview(request, expname):
     info = expview_util(expname, get_tupa_data())
     try:
@@ -127,6 +129,7 @@ def expview_util(expname, tupa_data):
     return info
 
 
+@login_required
 def expvalview(request, expname):
     is_member = False
     if '_' not in expname:
