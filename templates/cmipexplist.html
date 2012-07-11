@@ -82,7 +82,7 @@
                 <li>Finished OK
                     <ul class="exp_list">
                         {% for exp in finished %}
-                            <li><a class="exp_finished_link" href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a> {{ exp.1.co2 }}</li>
+                            <li><a class="exp_finished_link" href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a> <span class="other_small_info">CO2: {{ exp.1.co2 }}</span></li>
                         {% empty %}
                             <li>None.</li>
                         {% endfor %}
@@ -94,7 +94,7 @@
                 <li>Finished with Aborted
                     <ul class="exp_list">
                         {% for expa in finished_aborted %}
-                            <li><a class="exp_aborted_link" href="/cmip/expview/{{ expa.1.title }}">{{ expa.1.title }}</a> {{ expa.1.co2 }}</li>
+                            <li><a class="exp_aborted_link" href="/cmip/expview/{{ expa.1.title }}">{{ expa.1.title }}</a> <span class="other_small_info">CO2: {{ expa.1.co2 }}</span></li>
                         {% empty %}
                             <li>None.</li>
                         {% endfor %}
