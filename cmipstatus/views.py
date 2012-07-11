@@ -87,6 +87,15 @@ def expview_util(expname, tupa_data):
 
     if members:
         exp = members
+    
+    if expname in settings.server_configs['CO2_info']['fixed']:
+        info['co2'] = 'Fixed'
+    elif expname in settings.server_configs['CO2_info']['increment']:
+        info['co2'] = '1% incr.'
+    elif expname in settings.server_configs['CO2_info']['mauna-loa']:
+        info['co2'] = 'Mauna Loa'
+    else:
+        info['co2'] = 'No info'
 
     for member in exp:
         done, total, nerrors, last_ok, current = member.get_status(tupa_data)
