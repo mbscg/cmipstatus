@@ -110,6 +110,8 @@ def copy_ensemble_figures():
             subprocess.call(['rm', dotfig])
         for dotfig in glob.glob(os.path.join(new_dir, '*', '*.fig')):
             subprocess.call(['rm', dotfig])
+        for nc in glob.glob(os.path.join(new_dir, '*', '*.nc')):
+            subprocess.call(['rm', nc])
         subprocess.call(['chmod', '-R', '775', new_dir]) 
         time.sleep(600)
 
