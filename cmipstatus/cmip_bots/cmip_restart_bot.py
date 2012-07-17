@@ -21,10 +21,11 @@ def get_restart_list(exp_name, member_name):
 if __name__ == "__main__":
     restart_interval = 1200
     while True:
-        [get_restart_list(exp, '') for exp in all_info['exps']['no-members']]
+        for exp in all_info['exps']['no-members']:
+            get_restart_list(exp, '')
         for member in range(1,11):
-            [get_restart_list(exp, '_'+str(member)) 
-             for exp in all_info['exps']['with-members']]
+            for exp in all_info['exps']['with-members']:            
+                get_restart_list(exp, '_'+str(member))
         [os.chmod(restart, permissions) for restart
          in glob.glob(os.path.join(all_info['paths']['ftp_root'],'RESTART*'))]
         time.sleep(restart_interval)
