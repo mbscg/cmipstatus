@@ -3,7 +3,6 @@ import os
 import stat
 import glob
 import subprocess
-import multiprocessing
 import datetime
 import random
 import time
@@ -74,7 +73,7 @@ def gen_figures(exp, member=None):
         args = [running_dates[0], running_dates[1], region, exp, str(member),
                 complete_dir]
         try:
-            subprocess.call([all_info['scripts']['leo_eval_script']] + args)
+            subprocess.check_call([all_info['scripts']['leo_eval_script']] + args)
         except:
             print "Error generating for ", args
             print "Next..."
@@ -102,41 +101,37 @@ def gen_figures(exp, member=None):
 
 
 def copy_ensemble_figures():
-    while True:
-        ensemble_figures = '/stornext/online13/ocean/workdata/exp_analysis_figures/'
-        subprocess.call(['cp','-r', ensemble_figures, all_info['paths']['ftp_root']])
-        new_dir = os.path.join(all_info['paths']['ftp_root'], 'exp_analysis_figures')
-        for dotfig in glob.glob(os.path.join(new_dir, '*.fig')):
-            subprocess.call(['rm', dotfig])
-        for dotfig in glob.glob(os.path.join(new_dir, '*', '*.fig')):
-            subprocess.call(['rm', dotfig])
-        for nc in glob.glob(os.path.join(new_dir, '*', '*.nc')):
-            subprocess.call(['rm', nc])
-        subprocess.call(['chmod', '-R', '775', new_dir]) 
-        time.sleep(600)
+    ensemble_figures = '/stornext/online13/ocean/workdata/exp_analysis_figures/cmp*'
+    new_dir = os.path.join(all_info['paths']['ftp_root'], 'exp_analysis_figures')
+    for folder in glob.glob(ensemble_figures):
+        subprocess.check_call(['cp','-r', folder, new_dir])
+    for dotfig in glob.glob(os.path.join(new_dir, '*.fig')):
+        subprocess.check_call(['rm', dotfig])
+    for dotfig in glob.glob(os.path.join(new_dir, '*', '*.fig')):
+        subprocess.check_call(['rm', dotfig])
+    for nc in glob.glob(os.path.join(new_dir, 'data', '*')):
+        subprocess.check_call(['rm', nc])
+    subprocess.check_call(['chmod', '-R', '775', new_dir]) 
 
 
 def gen_no_members():
-    while True:
-        exps = all_info['exps']['no-members']
-        random.shuffle(exps)
-        [gen_figures(exp) for exp in exps]
-        time.sleep(600)
+    exps = all_info['exps']['no-members']
+    random.shuffle(exps)
+    for exp in exps:
+        gen_figures(exp)
 
 
 def gen_with_members():
-    while True:
-        exps = all_info['exps']['with-members']
-        random.shuffle(exps)
-        for member in range (1,11):
-            [gen_figures(exp, member) for exp in exps]
-        time.sleep(600)
+    exps = all_info['exps']['with-members']
+    random.shuffle(exps)
+    for member in range (1,11):
+        for exp in exps:
+            gen_figures(exp, member)
 
 
 if __name__ == "__main__":
-    figs_no_members = multiprocessing.Process(target=gen_no_members)
-    figs_no_members.start()
-    figs_with_members = multiprocessing.Process(target=gen_with_members)
-    figs_with_members.start()
-    copy_figs = multiprocessing.Process(target=copy_ensemble_figures)
-    copy_figs.start()
+    while True:
+        copy_ensemble_figures()
+        gen_no_members()
+        gen_with_members()
+        time.sleep(1200)

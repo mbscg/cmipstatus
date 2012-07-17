@@ -19,7 +19,7 @@ def get_restart_list(exp_name, member_name):
         shutil.copy(RESTART_FILE, RESTART_FILE_DEST)
 
 if __name__ == "__main__":
-    restart_interval = 600
+    restart_interval = 1200
     while True:
         [get_restart_list(exp, '') for exp in all_info['exps']['no-members']]
         for member in range(1,11):
