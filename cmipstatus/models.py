@@ -58,7 +58,7 @@ class Experiment(models.Model):
         minfo['total_years'] = total_years
         minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
 
-        new_status = 'UNK'
+        new_status = None
         if minfo['complete']:
             new_status = 'END'
         elif minfo['error']:
@@ -67,7 +67,7 @@ class Experiment(models.Model):
             new_status = 'RUN'
         elif minfo['aborted']:
             new_status = 'ABO'
-        if not new_status == report.status:
+        if new_status and not new_status == report.status:
             message = '{0} has changed from {1} to {2}'.format(self.name, report.status, new_status)
             report.status = new_status
             report.save()
@@ -117,7 +117,7 @@ class Member(models.Model):
         minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
         minfo['report'] = report.status
         
-        new_status = 'UNK'
+        new_status = None
         if minfo['complete']:
             new_status = 'END'
         elif minfo['error']:
@@ -126,7 +126,7 @@ class Member(models.Model):
             new_status = 'RUN'
         elif minfo['aborted']:
             new_status = 'ABO'
-        if not new_status == report.status:
+        if new_status and not new_status == report.status:
             message = '{0} member {1} has changed from {2} to {3}'.format(self.exp.name, self.name, report.status, new_status)
             report.status = new_status
             report.save()
