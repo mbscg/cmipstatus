@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
+from cmipstatus.models import FeedFetcher
 
 admin.autodiscover()
 
@@ -12,6 +13,8 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^cmip/$', 'cmipstatus.views.home'),
     url(r'^cmip/list/$', 'cmipstatus.views.explist'),
+    url(r'^cmip/news/$', 'cmipstatus.views.newsview'),
+    url(r'^cmip/news/feed$', FeedFetcher()),
     url(r'^cmip/expview/(.*)/$', 'cmipstatus.views.expview'),
     url(r'^cmip/validation/(.*)/$', 'cmipstatus.views.expvalview'),
     url(r'^cmip/people_list/$', 'cmipstatus.views.peoplelist'),
