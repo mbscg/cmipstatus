@@ -63,10 +63,10 @@ class Experiment(models.Model):
             new_status = 'END'
         elif minfo['error']:
             new_status = 'ERR'
-        elif minfo['running']:
-            new_status = 'RUN'
         elif minfo['aborted']:
             new_status = 'ABO'
+        else: # minfo['running'] or waiting
+            new_status = 'RUN'
         if new_status and not new_status == report.status:
             message = '{0} has changed from {1} to {2}'.format(self.name, report.status, new_status)
             report.status = new_status
@@ -122,10 +122,10 @@ class Member(models.Model):
             new_status = 'END'
         elif minfo['error']:
             new_status = 'ERR'
-        elif minfo['running']:
-            new_status = 'RUN'
         elif minfo['aborted']:
             new_status = 'ABO'
+        else: # minfo['running'] or waiting
+            new_status = 'RUN'
         if new_status and not new_status == report.status:
             message = '{0} member {1} has changed from {2} to {3}'.format(self.exp.name, self.name, report.status, new_status)
             report.status = new_status
