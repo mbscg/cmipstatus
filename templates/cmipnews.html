@@ -1,0 +1,12 @@
+{% extends "cmiphome.html" %}
+
+{% block body %}
+<ul>
+{% for log in logs %}
+    <li>{{ log|linebreaks }}</li>
+{% empty %}
+<li>No logs</li>
+{% endfor %}
+</ul>
+{% endblock %}
+
