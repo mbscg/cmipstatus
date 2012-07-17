@@ -1,7 +1,8 @@
 {% extends "cmiphome.html" %}
 
 {% block body %}
-<a class="rss_link" href="/cmip/news/feed/"><img src="/media/feed-icon-28x28.png"/>RSS Feed</a>
+<p class="list_header">Showing all log entries</p>
+<p class="prof_about">You can subscribe to the <a class="rss_link" href="/cmip/news/feed/"><img src="/media/feed-icon-28x28.png"/>RSS Feed</a></p>
 <ul class="log_list">
 {% for log in logs %}
     <li class="log_item">
