@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-from models import Experiment, Member, People, Comment, get_tupa_data
+from models import Experiment, Member, People, Comment, ReportChangeLog, get_tupa_data
 from forms import FormEditProfile, FormPassword, FormComment
 from django.template import RequestContext
 from os.path import join, exists
@@ -98,40 +98,20 @@ def expview_util(expname, tupa_data):
         info['co2'] = 'No info'
 
     for member in exp:
-        done, total, nerrors, last_ok, current = member.get_status(tupa_data)
-        finished_prog = float(done) / float(total)
-        finished_years = float(done)/12
-        total_years = total/12
-        run_fraction = 1. / total
-        minfo = {'member':current[1].split('_',1)[-1], 'last':done, 
-                 'current':done, 'total':total, 'errors': not(nerrors == 0)}
-        minfo['aborted'] = (nerrors < 0)
-        if minfo['aborted']:
-            nerrors *= -1
-        page_errors += nerrors
-        minfo['total_errors'] = nerrors
-        minfo['error'] = not last_ok
-        minfo['complete'] = (done == total) or minfo['aborted']
-        minfo['running'] = (current[0] is not None)
-        minfo['prog'] = finished_prog
-        if minfo['running']:
-            minfo['job_id'] = current[0]
-            if 'aux' in minfo['job_id']:
-                minfo['post'] = True
-                minfo['text_run'] = 100
-                minfo['prog'] += run_fraction
-            else:
-                minfo['post'] = False
-                minfo['text_run'] = current[-1][:-1]
-                minfo['prog'] += float(minfo['text_run'])/100.0 * run_fraction
-        minfo['finished_years'] = '%3.2f' % (minfo['prog'] * total_years)
-        minfo['total_years'] = total_years
-        minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
+        minfo = member.get_status(tupa_data)
+        page_errors += minfo['total_errors']
         runinfo.append(minfo)
     info['title'] = expname
     info['page_errors'] = page_errors
     info['minfo'] = runinfo
     return info
+
+
+@login_required
+def newsview(request):
+    logs = ReportChangeLog.objects.all()
+    return render_to_response('cmipnews.html', {'logs':logs})
+
 
 
 @login_required

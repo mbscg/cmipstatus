@@ -2,8 +2,16 @@ from django.db import models
 from datetime import datetime
 from os.path import join
 from django.contrib.auth.models import User
+from django.contrib.syndication.views import Feed
 import settings
 import requests
+
+REPORT_CHOICES = (
+    ('UNK', 'Unknown'),
+    ('RUN', 'Running'), 
+    ('END', 'Finished'),
+    ('ABO', 'Aborted'),
+    ('ERR', 'Error'))
 
 class People(User):
     name = models.CharField(max_length=100)
@@ -20,7 +28,52 @@ class Experiment(models.Model):
     def get_status(self, tupa_data):
         done, total, errors, last_ok = check_restart_list(self.name, '')
         current = check_status(self.name, '', tupa_data)
-        return done, total, errors, last_ok, current
+        report = ExpReport.objects.get(exp=self)
+
+        finished_prog = float(done) / float(total)
+        finished_years = float(done)/12
+        total_years = total/12
+        run_fraction = 1. / total
+        minfo = {'member':current[1].split('_',1)[-1], 'last':done,
+                 'current':done, 'total':total, 'errors': not(errors == 0)}
+        minfo['aborted'] = (errors < 0)
+        if minfo['aborted']:
+            errors *= -1
+        minfo['total_errors'] = errors
+        minfo['error'] = not last_ok
+        minfo['complete'] = (done == total) or minfo['aborted']
+        minfo['running'] = (current[0] is not None)
+        minfo['prog'] = finished_prog
+        if minfo['running']:
+            minfo['job_id'] = current[0]
+            if 'aux' in minfo['job_id']:
+                minfo['post'] = True
+                minfo['text_run'] = 100
+                minfo['prog'] += run_fraction
+            else:
+                minfo['post'] = False
+                minfo['text_run'] = current[-1][:-1]
+                minfo['prog'] += float(minfo['text_run'])/100.0 * run_fraction
+        minfo['finished_years'] = '%3.2f' % (minfo['prog'] * total_years)
+        minfo['total_years'] = total_years
+        minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
+
+        new_status = 'UNK'
+        if minfo['complete']:
+            new_status = 'END'
+        elif minfo['error']:
+            new_status = 'ERR'
+        elif minfo['running']:
+            new_status = 'RUN'
+        elif minfo['aborted']:
+            new_status = 'ABO'
+        if not new_status == report.status:
+            message = '{0} has changed from {1} to {2}'.format(self.name, report.status, new_status)
+            report.status = new_status
+            report.save()
+            change_log = ReportChangeLog(message=message)
+            change_log.save()
+        return minfo
 
     def __unicode__(self):
         return self.name
@@ -33,7 +86,53 @@ class Member(models.Model):
     def get_status(self,tupa_data):
         done, total, errors, last_ok = check_restart_list(self.exp.name, self.name)
         current = check_status(self.exp.name, self.name, tupa_data)
-        return done, total, errors, last_ok, current
+        report = MemberReport.objects.get(member=self)
+        
+        finished_prog = float(done) / float(total)
+        finished_years = float(done)/12
+        total_years = total/12
+        run_fraction = 1. / total
+        minfo = {'member':current[1].split('_',1)[-1], 'last':done,
+                 'current':done, 'total':total, 'errors': not(errors == 0)}
+        minfo['aborted'] = (errors < 0)
+        if minfo['aborted']:
+            errors *= -1
+        minfo['total_errors'] = errors
+        minfo['error'] = not last_ok
+        minfo['complete'] = (done == total) or minfo['aborted']
+        minfo['running'] = (current[0] is not None)
+        minfo['prog'] = finished_prog
+        if minfo['running']:
+            minfo['job_id'] = current[0]
+            if 'aux' in minfo['job_id']:
+                minfo['post'] = True
+                minfo['text_run'] = 100
+                minfo['prog'] += run_fraction
+            else:
+                minfo['post'] = False
+                minfo['text_run'] = current[-1][:-1]
+                minfo['prog'] += float(minfo['text_run'])/100.0 * run_fraction
+        minfo['finished_years'] = '%3.2f' % (minfo['prog'] * total_years)
+        minfo['total_years'] = total_years
+        minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
+        minfo['report'] = report.status
+        
+        new_status = 'UNK'
+        if minfo['complete']:
+            new_status = 'END'
+        elif minfo['error']:
+            new_status = 'ERR'
+        elif minfo['running']:
+            new_status = 'RUN'
+        elif minfo['aborted']:
+            new_status = 'ABO'
+        if not new_status == report.status:
+            message = '{0} member {1} has changed from {2} to {3}'.format(self.exp.name, self.name, report.status, new_status)
+            report.status = new_status
+            report.save()
+            change_log = ReportChangeLog(message=message)
+            change_log.save()
+        return minfo
 
     def __unicode__(self):
         return self.name
@@ -43,6 +142,43 @@ class Comment(models.Model):
     exp = models.ForeignKey('Experiment')
     author = models.ForeignKey('People')
     text = models.TextField(max_length=2048, default='')
+
+
+class ExpReport(models.Model):
+    status = models.CharField(max_length=3, choices=REPORT_CHOICES)
+    exp = models.ForeignKey('Experiment')
+
+
+class MemberReport(models.Model):
+    status = models.CharField(max_length=3, choices=REPORT_CHOICES)
+    member = models.ForeignKey('Member')
+
+
+class ReportChangeLog(models.Model):
+    message = models.CharField(max_length=512)
+    when = models.DateTimeField(auto_now_add=True)
+    
+    def __unicode__(self):
+        text = '{0}\n({1})'.format(self.message, self.when)
+        return text
+
+
+class FeedFetcher(Feed):
+    title = "CMIP5 Status Site News"
+    link = '/news/'
+    description = "Latest changes in exp status"
+
+    def items(self):
+        return ReportChangeLog.objects.order_by('-when')[:10]
+
+    def item_title(self, item):
+        return item
+
+    def item_description(self, item):
+        return item
+
+    def item_link(self, item):
+        return ''
 
 
 def check_restart_list(exp_name, member_name):
