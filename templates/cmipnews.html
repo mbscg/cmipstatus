@@ -1,11 +1,16 @@
 {% extends "cmiphome.html" %}
 
 {% block body %}
-<ul>
+<ul class="log_list">
 {% for log in logs %}
-    <li>{{ log|linebreaks }}</li>
+    <li class="log_item">
+        <ul class="log_item_list">
+            <li class="log_item_message">{{ log.message }}</li>
+            <li class="log_item_timestamp">{{ log.when }}</li>
+        </ul>
+    </li>
 {% empty %}
-<li>No logs</li>
+    <li class="log_item">No logs</li>
 {% endfor %}
 </ul>
 {% endblock %}

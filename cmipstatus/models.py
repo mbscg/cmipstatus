@@ -159,7 +159,7 @@ class ReportChangeLog(models.Model):
     when = models.DateTimeField(auto_now_add=True)
     
     def __unicode__(self):
-        text = '{0}\n({1})'.format(self.message, self.when)
+        text = '{0}\n(on {1})'.format(self.message, self.when)
         return text
 
 

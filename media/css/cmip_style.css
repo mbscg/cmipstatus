@@ -50,6 +50,25 @@ list-style-type:none;
 font-family:helvetica;
 }
 
+ul.log_list{
+font-family:helvetica;
+list-style-type:none;
+padding:5px;
+}
+
+ul.log_item_list{
+font-family:helvetica;
+list-style-type:none;
+padding:5px;
+}
+
+li.log_item_message{
+}
+
+li.log_item_timestamp{
+font-size:0.7em;
+font-style:italic;
+}
 
 li.nav_bar {display:inline;}
 
