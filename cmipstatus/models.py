@@ -168,7 +168,7 @@ class ReportChangeLog(models.Model):
 
 class FeedFetcher(Feed):
     title = "CMIP5 Status Site News"
-    link = "/news/"
+    link = "http://antares.ccst.inpe.br/cmip/news/"
     description = "Latest changes in exp status"
 
     def items(self):
