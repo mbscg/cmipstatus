@@ -162,7 +162,7 @@ class ReportChangeLog(models.Model):
         text = '{0}\n(on {1})'.format(self.message, self.when)
         return text
 
-    def get_absolute_path(self):
+    def get_absolute_url(self):
         return 'http://antares.ccst.inpe.br/cmip/list'
 
 
