@@ -163,7 +163,7 @@ class ReportChangeLog(models.Model):
         return text
 
     def get_absolute_url(self):
-        return 'http://antares.ccst.inpe.br/cmip/log/' + self.id
+        return 'http://antares.ccst.inpe.br/cmip/log/' + str(self.id)
 
 
 class FeedFetcher(Feed):
