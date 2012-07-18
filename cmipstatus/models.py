@@ -162,6 +162,9 @@ class ReportChangeLog(models.Model):
         text = '{0}\n(on {1})'.format(self.message, self.when)
         return text
 
+    def get_absolute_path(self):
+        return 'http://antares.ccst.inpe.br/cmip/list'
+
 
 class FeedFetcher(Feed):
     title = "CMIP5 Status Site News"
@@ -172,13 +175,11 @@ class FeedFetcher(Feed):
         return ReportChangeLog.objects.order_by('-when')[:100]
 
     def item_title(self, item):
-        return item
+        return item.message
 
     def item_description(self, item):
-        return item
+        return item.message
 
-    def item_link(self, item):
-        return ''
 
 
 def check_restart_list(exp_name, member_name):
