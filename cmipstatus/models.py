@@ -177,7 +177,7 @@ class FeedFetcher(Feed):
         return item.message
 
     def item_description(self, item):
-        return ''.join(item.message, '\n', item.when)
+        return ' '.join(item.message, '\n', item.when)
 
 
 
