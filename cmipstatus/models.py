@@ -168,7 +168,6 @@ class ReportChangeLog(models.Model):
 
 class FeedFetcher(Feed):
     title = "CMIP5 Status Site News"
-    link = '/news/'
     description = "Latest changes in exp status"
 
     def items(self):
@@ -178,7 +177,7 @@ class FeedFetcher(Feed):
         return item.message
 
     def item_description(self, item):
-        return item.message
+        return ''.join(item.message, '\n', item.when)
 
 
 
