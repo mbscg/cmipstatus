@@ -172,7 +172,7 @@ class FeedFetcher(Feed):
     description = "Latest changes in exp status"
 
     def items(self):
-        return ReportChangeLog.objects.order_by('-when')[:5]
+        return ReportChangeLog.objects.order_by('-when')[:50]
 
     def item_title(self, item):
         return item.message
