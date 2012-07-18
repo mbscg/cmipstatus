@@ -1,12 +1,14 @@
 {% extends 'cmiphome.html' %}
 
 {% block body %}
+
     <!-- RUNNING SECTION -->
     <div class="list_running">
     <p class="list_header">Running Experiments</p>
             <ul class="exp_list" id="collapsible">
                 <li>Running OK
                     <ul class="exp_list">
+        <input type=button value="Expand All" id="expandbtn" onclick="expandlists();">
                         {% for exp in running %}
                             <li><a class="exp_link"  href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a></li>
                             <ul class="exp_list" id="collapsible">

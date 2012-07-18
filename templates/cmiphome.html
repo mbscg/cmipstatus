@@ -32,6 +32,18 @@
                 $(".exp_list").show();
             });
         </script>
+        <script>
+            function expandlists(){
+                $(".exp_sub_list").show();
+                document.getElementById('expandbtn').onclick = hidelists
+                document.getElementById('expandbtn').value = "Collapse All"
+            }
+            function hidelists(){
+                $(".exp_sub_list").hide();
+                document.getElementById('expandbtn').onclick = expandlists
+                document.getElementById('expandbtn').value = "Expand All"
+            }
+        </script>
     </head>
 
     <body>
