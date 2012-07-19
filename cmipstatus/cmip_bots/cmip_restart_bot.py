@@ -36,6 +36,7 @@ def get_conversion_status():
         try:
             ls = os.listdir(directory)
         except:
+            text_lines.append(' '.join([decade, 'NOT FOUND', '\n']))
             continue
         expected = 120.0
         if decade in decades30:
