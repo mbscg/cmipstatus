@@ -23,6 +23,15 @@ def home(request):
     return render_to_response("cmiphome.html", {})
 
 
+def forcefeed():
+    # to be called via django cron
+    print "forcing list for feed"
+    all_exps = list(Experiment.objects.all())
+    tupa_data = get_tupa_data()
+    for exp in all_exps:
+        expview_util(exp.name, tupa_data)
+
+
 @login_required
 def explist(request):
     all_exps = list(Experiment.objects.all())
