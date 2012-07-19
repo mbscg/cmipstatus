@@ -294,11 +294,13 @@ def outputsview(request):
         else:
             current = float(split_line[1])
             expected = float(split_line[2])
+            count_error = (current > expected)
             progress = float(current) / float(expected)
             text_progress = '%3.2f' % (100 * progress) + '%'
             info.append({'decade':decade, 'current':int(current), 'expected':int(expected),
                         'progress':progress, 'text_progress':text_progress,
-                        'finished':(current == expected), 'error':False})
+                        'finished':(current == expected), 'error':False,
+                        'count_error':count_error})
     return render_to_response("cmipoutputs.html", {'info':info})
 
 

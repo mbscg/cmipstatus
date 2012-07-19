@@ -10,6 +10,11 @@
             {{ entry.decade }}
             <progress title="Error" value=0></progress>
             (No information)
+        {% elif entry.count_error %}
+            <img src="/media/amarelo.png" width=10 title="Warning"/>
+            {{ entry.decade }}
+            <progress title="Warning" value={{ entry.progress }}></progress>
+            (Current > Expected. Check conversion/copy)
         {% else %}
             {% if entry.finished %}
                 <img src="/media/final.png" width=10 title="Finished"/>
