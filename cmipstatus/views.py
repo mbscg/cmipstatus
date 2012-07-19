@@ -29,8 +29,8 @@ def forcefeed():
     all_exps = list(Experiment.objects.order_by('name'))
     tupa_data = get_tupa_data()
     for exp in all_exps:
-        expview_util(exp.name, tupa_data)
-    outputs_util()
+        expview_util(exp.name, tupa_data, forcing=True)
+    outputs_util(forcing=True)
 
 
 @login_required
@@ -87,7 +87,7 @@ def expview(request, expname):
                                context_instance=context)
 
 
-def expview_util(expname, tupa_data):
+def expview_util(expname, tupa_data, forcing=False):
     exp = Experiment.objects.get(name=expname)
     members = Member.objects.all().filter(exp=exp) #no ordering!
     exp = [exp]
@@ -108,7 +108,7 @@ def expview_util(expname, tupa_data):
         info['co2'] = 'No info'
 
     for member in exp:
-        minfo = member.get_status(tupa_data)
+        minfo = member.get_status(tupa_data, forcing=forcing)
         page_errors += minfo['total_errors']
         runinfo.append(minfo)
     info['title'] = expname
@@ -288,7 +288,7 @@ def outputsview(request):
     return outputs_util()
 
 
-def outputs_util():
+def outputs_util(forcing=False):
     conversion_log = open(settings.server_configs['conversion_log']).readlines()
     info = []
     conversion_log.sort()
@@ -318,13 +318,14 @@ def outputs_util():
                 status = 'END'
             else:
                 status = 'RUN'
-        if report and not report.status == status:
-            old_status = report.status
-            report.status = status
-            report.save()
-            message = 'Decade {0} changed from {1} to {2}'.format(decade, old_status, status)
-            new_log = ReportChangeLog(message=message)
-            new_log.save()
+        if forcing:
+            if report and not report.status == status:
+                old_status = report.status
+                report.status = status
+                report.save()
+                message = 'Decade {0} changed from {1} to {2}'.format(decade, old_status, status)
+                new_log = ReportChangeLog(message=message)
+                new_log.save()
     return render_to_response("cmipoutputs.html", {'info':info})
 
 

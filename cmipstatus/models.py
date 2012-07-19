@@ -32,7 +32,7 @@ class People(User):
 class Experiment(models.Model):
     name = models.CharField(max_length=15)
 
-    def get_status(self, tupa_data):
+    def get_status(self, tupa_data, forcing=False):
         done, total, errors, last_ok = check_restart_list(self.name, '')
         current = check_status(self.name, '', tupa_data)
         report = ExpReport.objects.get(exp=self)
@@ -65,21 +65,22 @@ class Experiment(models.Model):
         minfo['total_years'] = total_years
         minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
 
-        new_status = None
-        if minfo['complete']:
-            new_status = 'END'
-        elif minfo['error']:
-            new_status = 'ERR'
-        elif minfo['aborted']:
-            new_status = 'ABO'
-        else: # minfo['running'] or waiting
-            new_status = 'RUN'
-        if new_status and not new_status == report.status:
-            message = '{0} has changed from {1} to {2}'.format(self.name, report.status, new_status)
-            report.status = new_status
-            report.save()
-            change_log = ReportChangeLog(message=message)
-            change_log.save()
+        if forcing:
+            new_status = None
+            if minfo['complete']:
+                new_status = 'END'
+            elif minfo['error']:
+                new_status = 'ERR'
+            elif minfo['aborted']:
+                new_status = 'ABO'
+            else: # minfo['running'] or waiting
+                new_status = 'RUN'
+            if new_status and not new_status == report.status:
+                message = '{0} has changed from {1} to {2}'.format(self.name, report.status, new_status)
+                report.status = new_status
+                report.save()
+                change_log = ReportChangeLog(message=message)
+                change_log.save()
         return minfo
 
     def __unicode__(self):
@@ -90,7 +91,7 @@ class Member(models.Model):
     name = models.CharField(max_length=3)
     exp = models.ForeignKey('Experiment')
 
-    def get_status(self,tupa_data):
+    def get_status(self,tupa_data, forcing=False):
         done, total, errors, last_ok = check_restart_list(self.exp.name, self.name)
         current = check_status(self.exp.name, self.name, tupa_data)
         report = MemberReport.objects.get(member=self)
@@ -124,21 +125,22 @@ class Member(models.Model):
         minfo['text_total'] = "%3.2f" % (minfo['prog']*100)
         minfo['report'] = report.status
         
-        new_status = None
-        if minfo['complete']:
-            new_status = 'END'
-        elif minfo['error']:
-            new_status = 'ERR'
-        elif minfo['aborted']:
-            new_status = 'ABO'
-        else: # minfo['running'] or waiting
-            new_status = 'RUN'
-        if new_status and not new_status == report.status:
-            message = '{0} member {1} has changed from {2} to {3}'.format(self.exp.name, self.name, report.status, new_status)
-            report.status = new_status
-            report.save()
-            change_log = ReportChangeLog(message=message)
-            change_log.save()
+        if forcing:
+            new_status = None
+            if minfo['complete']:
+                new_status = 'END'
+            elif minfo['error']:
+                new_status = 'ERR'
+            elif minfo['aborted']:
+                new_status = 'ABO'
+            else: # minfo['running'] or waiting
+                new_status = 'RUN'
+            if new_status and not new_status == report.status:
+                message = '{0} member {1} has changed from {2} to {3}'.format(self.exp.name, self.name, report.status, new_status)
+                report.status = new_status
+                report.save()
+                change_log = ReportChangeLog(message=message)
+                change_log.save()
         return minfo
 
     def __unicode__(self):
