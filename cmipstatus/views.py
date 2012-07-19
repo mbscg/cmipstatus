@@ -25,8 +25,7 @@ def home(request):
 
 def forcefeed():
     # to be called via django cron
-    print "forcing list for feed"
-    all_exps = list(Experiment.objects.all())
+    all_exps = list(Experiment.objects.order_by('name'))
     tupa_data = get_tupa_data()
     for exp in all_exps:
         expview_util(exp.name, tupa_data)
@@ -58,7 +57,7 @@ def explist(request):
 
 @login_required
 def peoplelist(request):
-    people = People.objects.all()
+    people = People.objects.order_by('name')
     return render_to_response("cmipproflist.html", {'people': people})
 
 
@@ -88,7 +87,7 @@ def expview(request, expname):
 
 def expview_util(expname, tupa_data):
     exp = Experiment.objects.get(name=expname)
-    members = Member.objects.all().filter(exp=exp)
+    members = Member.objects.order_by('name').filter(exp=exp)
     exp = [exp]
     runinfo = []
     info = {'exp':exp}
@@ -222,7 +221,7 @@ def expstatus_util(tupa_data, expname):
 
 
 def experror_util(tupa_data):
-    all_experiments = Experiment.objects.all()
+    all_experiments = Experiment.objects.order_by('name')
     exps_with_errors = []
     total_errors = 0
     for exp in all_experiments:
@@ -238,7 +237,7 @@ def experror_util(tupa_data):
 
 
 def expaborted_util(tupa_data):
-    all_experiments = Experiment.objects.all()
+    all_experiments = Experiment.objects.order_by('name')
     exps_with_aborted = []
     total_aborted = 0
     total_running = 0
@@ -257,7 +256,7 @@ def expaborted_util(tupa_data):
 
 
 def expfinished_util(tupa_data):
-    all_experiments = Experiment.objects.all()
+    all_experiments = Experiment.objects.order_by('name')
     finished_exps = []
     finished_aborted = []
     total_aborted = 0
