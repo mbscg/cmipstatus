@@ -30,6 +30,7 @@ def get_conversion_status():
     variable = 'tas'
     condition = 'r1i1p1'
 
+    text_lines = []
     for decade in decades:
         directory = os.path.join(root, decade, frequency, component, variable, condition)
         try:
@@ -41,12 +42,18 @@ def get_conversion_status():
             expected = 360.0
         current = float(len(ls))
         progress = current/expected
+        text_lines.append(' '.join([decade, current, expected, progress, '\n']))
 
+    DEST_PATH = os.path.join(all_info['paths']['ftp_root'], 'conversion.txt')
+    DEST_FILE = open(DEST_PATH, 'w')
+    DEST_FILE.writelines(text_lines)
+    DEST_FILE.close()
 
 
 if __name__ == "__main__":
     restart_interval = 1200
     while True:
+        get_conversion_status()
         for exp in all_info['exps']['no-members']:
             get_restart_list(exp, '')
         for member in range(1,11):
