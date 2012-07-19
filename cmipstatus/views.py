@@ -34,7 +34,7 @@ def forcefeed():
 
 @login_required
 def explist(request):
-    all_exps = list(Experiment.objects.all())
+    all_exps = list(Experiment.objects.order_by('name'))
     tupa_data = get_tupa_data()
     classified = {RUNNING_WITH_ABORTED:[], RUNNING_WITH_ERRORS:[], RUNNING_OK:[],
                   FINISHED_WITH_ABORTED:[], FINISHED_OK:[]}
