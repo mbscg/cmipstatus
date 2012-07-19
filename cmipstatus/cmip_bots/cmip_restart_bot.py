@@ -42,7 +42,8 @@ def get_conversion_status():
             expected = 360.0
         current = float(len(ls))
         progress = current/expected
-        text_lines.append(' '.join([decade, current, expected, progress, '\n']))
+        text_lines.append(' '.join([decade, str(current), str(expected), 
+                          str(progress), '\n']))
 
     DEST_PATH = os.path.join(all_info['paths']['ftp_root'], 'conversion.txt')
     DEST_FILE = open(DEST_PATH, 'w')
