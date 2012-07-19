@@ -18,6 +18,32 @@ def get_restart_list(exp_name, member_name):
     if os.path.exists(RESTART_FILE):
         shutil.copy(RESTART_FILE, RESTART_FILE_DEST)
 
+def get_conversion_status():
+    decades30 = ['decadal1960', 'decadal1980', 'decadal2005']
+    decades10 = ['decadal1965', 'decadal1970', 'decadal1975', 'decadal1985', 
+                 'decadal1990', 'decadal1995', 'decadal2000']
+    decades = decadas_30 + decadas_10
+
+    root = '/stornext/online13/ocean/simulations/cmip5/CMIP5/output/INPE/INPE-OA2-3/'
+    frequency = 'mon'
+    component = 'atmos'
+    variable = 'tas'
+    condition = 'r1i1p1'
+
+    for decade in decades:
+        directory = os.path.join(root, decade, frequency, component, variable, condition)
+        try:
+            ls = os.listdir(directory)
+        except:
+            continue
+        expected = 120.0
+        if decade in decades30:
+            expected = 360.0
+        current = float(len(ls))
+        progress = current/expected
+
+
+
 if __name__ == "__main__":
     restart_interval = 1200
     while True:
