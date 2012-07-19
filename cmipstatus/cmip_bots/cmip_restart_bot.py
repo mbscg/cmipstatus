@@ -49,6 +49,7 @@ def get_conversion_status():
     DEST_FILE = open(DEST_PATH, 'w')
     DEST_FILE.writelines(text_lines)
     DEST_FILE.close()
+    os.chmod(DEST_PATH, permissions)
 
 
 if __name__ == "__main__":
