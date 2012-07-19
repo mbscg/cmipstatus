@@ -22,7 +22,7 @@ def get_conversion_status():
     decades30 = ['decadal1960', 'decadal1980', 'decadal2005']
     decades10 = ['decadal1965', 'decadal1970', 'decadal1975', 'decadal1985', 
                  'decadal1990', 'decadal1995', 'decadal2000']
-    decades = decadas_30 + decadas_10
+    decades = decades30 + decades10
 
     root = '/stornext/online13/ocean/simulations/cmip5/CMIP5/output/INPE/INPE-OA2-3/'
     frequency = 'mon'
