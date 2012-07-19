@@ -274,6 +274,23 @@ def expfinished_util(tupa_data):
 
 
 @login_required
+def outputsview(request):
+    conversion_log = open(settings.server_configs['conversion_log']).readlines()
+    info = []
+    for line in conversion_log:
+        split_line = line.split()
+        decade = split_line[0]
+        current = float(split_line[1])
+        expected = float(split_line[2])
+        progress = float(current) / float(expected)
+        text_progress = '%3.2f' % (100 * progress)
+        info.append({'decade':decade, 'current':int(current), 'expected':int(expected),
+                        'progress':progress, 'text_progress':text_progress,
+                        'finished':(current == expected)})
+    return render_to_response("cmipoutputs.html", {'info':info})
+
+
+@login_required
 def profview(request, profid):
     prof = People.objects.get(id=profid)
     user_prof = People.objects.get(username=request.user)

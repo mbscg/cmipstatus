@@ -1,0 +1,12 @@
+{% extends "cmiphome.html" %}
+
+{% block body %}
+<ul class="exp_list">
+{% for entry in info %}
+    <li>{{ entry.decade }} {{ entry.text_progress }}%</li>
+{% empty %}
+    <li>oops</li>
+{% endfor %}
+</ul>
+{% endblock %}
+
