@@ -13,6 +13,13 @@ REPORT_CHOICES = (
     ('ABO', 'Aborted'),
     ('ERR', 'Error'))
 
+CONVERT_CHOICES = (
+    ('UNK', 'Unknown'),
+    ('RUN', 'Running'),
+    ('END', 'Finished'),
+    ('ERR', 'Error'))
+
+
 class People(User):
     name = models.CharField(max_length=100)
     about = models.TextField(default='INPE GMAO Researcher')
@@ -152,6 +159,11 @@ class ExpReport(models.Model):
 class MemberReport(models.Model):
     status = models.CharField(max_length=3, choices=REPORT_CHOICES)
     member = models.ForeignKey('Member')
+
+
+class ConvReport(models.Model):
+    status = models.CharField(max_length=3, choices=CONVERT_CHOICES)
+    member = models.CharField(max_length=64)
 
 
 class ReportChangeLog(models.Model):

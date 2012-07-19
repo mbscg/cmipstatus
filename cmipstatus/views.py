@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
 from models import Experiment, Member, People, Comment, ReportChangeLog, get_tupa_data
+from models import ConvReport
 from forms import FormEditProfile, FormPassword, FormComment
 from django.template import RequestContext
 from os.path import join, exists
@@ -29,6 +30,7 @@ def forcefeed():
     tupa_data = get_tupa_data()
     for exp in all_exps:
         expview_util(exp.name, tupa_data)
+    outputs_util()
 
 
 @login_required
@@ -283,14 +285,25 @@ def expfinished_util(tupa_data):
 
 @login_required
 def outputsview(request):
+    return outputs_util()
+
+
+def outputs_util():
     conversion_log = open(settings.server_configs['conversion_log']).readlines()
     info = []
     conversion_log.sort()
+
     for line in conversion_log:
         split_line = line.split()
         decade = split_line[0]
+        try:
+            report = ConvReport.objects.get(member=decade)
+        except:
+            report = ConvReport(member=decade, status='UNK')
+        status = 'UNK'
         if len(split_line) < 4: # ERROR LINE
             info.append({'decade':decade, 'error':True})
+            status = 'ERR'
         else:
             current = float(split_line[1])
             expected = float(split_line[2])
@@ -301,6 +314,17 @@ def outputsview(request):
                         'progress':progress, 'text_progress':text_progress,
                         'finished':(current == expected), 'error':False,
                         'count_error':count_error})
+            if current == expected:
+                status = 'END'
+            else:
+                status = 'RUN'
+        if report and not report.status == status:
+            old_status = report.status
+            report.status = status
+            report.save()
+            message = 'Decade {0} changed from {1} to {2}'.format(decade, old_status, status)
+            new_log = ReportChangeLog(message=message)
+            new_log.save()
     return render_to_response("cmipoutputs.html", {'info':info})
 
 
