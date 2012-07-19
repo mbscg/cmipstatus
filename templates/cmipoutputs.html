@@ -1,9 +1,15 @@
 {% extends "cmiphome.html" %}
 
 {% block body %}
+<p class="list_header">Conversion Progress</p>
 <ul class="exp_list">
 {% for entry in info %}
-    <li>{{ entry.decade }} {{ entry.text_progress }}%</li>
+    <li>
+        {{ entry.decade }}
+        <progress title={{ entry.text_progress }} value={{ entry.progress }}></progress>
+        {{ entry.text_progress }}
+        ({{ entry.current }} months of {{ entry.expected }})
+    </li>
 {% empty %}
     <li>oops</li>
 {% endfor %}
