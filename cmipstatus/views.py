@@ -281,13 +281,16 @@ def outputsview(request):
     for line in conversion_log:
         split_line = line.split()
         decade = split_line[0]
-        current = float(split_line[1])
-        expected = float(split_line[2])
-        progress = float(current) / float(expected)
-        text_progress = '%3.2f' % (100 * progress) + '%'
-        info.append({'decade':decade, 'current':int(current), 'expected':int(expected),
+        if len(split_line) < 4: # ERROR LINE
+            info.append({'decade':decade, 'error':True})
+        else:
+            current = float(split_line[1])
+            expected = float(split_line[2])
+            progress = float(current) / float(expected)
+            text_progress = '%3.2f' % (100 * progress) + '%'
+            info.append({'decade':decade, 'current':int(current), 'expected':int(expected),
                         'progress':progress, 'text_progress':text_progress,
-                        'finished':(current == expected)})
+                        'finished':(current == expected), 'error':False})
     return render_to_response("cmipoutputs.html", {'info':info})
 
 

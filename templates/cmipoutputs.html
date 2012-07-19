@@ -5,10 +5,22 @@
 <ul class="exp_list">
 {% for entry in info %}
     <li>
-        {{ entry.decade }}
-        <progress title={{ entry.text_progress }} value={{ entry.progress }}></progress>
-        {{ entry.text_progress }}
-        ({{ entry.current }} months of {{ entry.expected }})
+        {% if entry.error %}
+            <img src="/media/vermelho.png" width=10 title="Error"/>
+            {{ entry.decade }}
+            <progress title="Error" value=0></progress>
+            (No information)
+        {% else %}
+            {% if entry.finished %}
+                <img src="/media/final.png" width=10 title="Finished"/>
+            {% else %}
+                <img src="/media/verde.png" width=10 title="Running"/>
+            {% endif %}
+            {{ entry.decade }}
+            <progress title={{ entry.text_progress }} value={{ entry.progress }}></progress>
+            {{ entry.text_progress }}
+            ({{ entry.current }} months of {{ entry.expected }})
+        {% endif %}
     </li>
 {% empty %}
     <li>oops</li>
