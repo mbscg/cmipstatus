@@ -130,8 +130,6 @@ def gen_with_members():
 
 
 if __name__ == "__main__":
-    while True:
-        copy_ensemble_figures()
-        gen_no_members()
-        gen_with_members()
-        time.sleep(1200)
+    copy_ensemble_figures()
+    gen_no_members()
+    gen_with_members()

@@ -20,8 +20,5 @@ def get_running_stats():
 
 
 if __name__ == "__main__":
-    interval = 1200
-    while True:
-        print "refreshing"
-        get_running_stats()
-        time.sleep(interval)
+    print "refreshing"
+    get_running_stats()

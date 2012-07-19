@@ -54,14 +54,11 @@ def get_conversion_status():
 
 
 if __name__ == "__main__":
-    restart_interval = 1200
-    while True:
-        get_conversion_status()
-        for exp in all_info['exps']['no-members']:
-            get_restart_list(exp, '')
-        for member in range(1,11):
-            for exp in all_info['exps']['with-members']:            
-                get_restart_list(exp, '_'+str(member))
-        [os.chmod(restart, permissions) for restart
-         in glob.glob(os.path.join(all_info['paths']['ftp_root'],'RESTART*'))]
-        time.sleep(restart_interval)
+    get_conversion_status()
+    for exp in all_info['exps']['no-members']:
+        get_restart_list(exp, '')
+    for member in range(1,11):
+        for exp in all_info['exps']['with-members']:            
+            get_restart_list(exp, '_'+str(member))
+    [os.chmod(restart, permissions) for restart
+     in glob.glob(os.path.join(all_info['paths']['ftp_root'],'RESTART*'))]
