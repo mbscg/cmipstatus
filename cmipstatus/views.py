@@ -87,7 +87,7 @@ def expview(request, expname):
 
 def expview_util(expname, tupa_data):
     exp = Experiment.objects.get(name=expname)
-    members = Member.objects.order_by('name').filter(exp=exp)
+    members = Member.objects.all().filter(exp=exp) #no ordering!
     exp = [exp]
     runinfo = []
     info = {'exp':exp}
