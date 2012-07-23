@@ -21,7 +21,8 @@ FINISHED_WITH_ABORTED = 3
 FINISHED_OK = 4
 
 def home(request):
-    return render_to_response("cmiphome.html", {})
+    user = request.user
+    return render_to_response("cmiphome.html", {'user':user})
 
 
 def forcefeed():
@@ -35,6 +36,7 @@ def forcefeed():
 
 @login_required
 def explist(request):
+    user = request.user
     all_exps = list(Experiment.objects.order_by('name'))
     tupa_data = get_tupa_data()
     classified = {RUNNING_WITH_ABORTED:[], RUNNING_WITH_ERRORS:[], RUNNING_OK:[],
@@ -55,16 +57,19 @@ def explist(request):
                                'finished':classified[FINISHED_OK],
                                'finished_aborted':classified[FINISHED_WITH_ABORTED],
                                'total_errors':total_error,
-                               'total_aborted':total_aborted})
+                               'total_aborted':total_aborted,
+                               'user':user})
 
 @login_required
 def peoplelist(request):
     people = People.objects.order_by('name')
-    return render_to_response("cmipproflist.html", {'people': people})
+    user = request.user
+    return render_to_response("cmipproflist.html", {'people': people, 'user':user})
 
 
 @login_required
 def expview(request, expname):
+    suser = request.user
     info = expview_util(expname, get_tupa_data())
     user = People.objects.get(username=request.user)
     exp = Experiment.objects.get(name=expname)
@@ -82,6 +87,7 @@ def expview(request, expname):
         info['form'] = form
 
     info['logged'] = (user is not None)
+    info['user'] = suser
     context = RequestContext(request)
     return  render_to_response("cmipexpview.html", info, 
                                context_instance=context)
@@ -120,12 +126,14 @@ def expview_util(expname, tupa_data, forcing=False):
 @login_required
 def newsview(request):
     logs = ReportChangeLog.objects.order_by('-when')
-    return render_to_response('cmipnews.html', {'logs':logs})
+    user = request.user
+    return render_to_response('cmipnews.html', {'logs':logs, 'user':user})
 
 
 
 @login_required
 def expvalview(request, expname):
+    user = request.user
     is_member = False
     if '_' not in expname:
         pure_expname = expname 
@@ -185,7 +193,8 @@ def expvalview(request, expname):
         
     return render_to_response("cmipexpvalview.html", 
                              {'imgs':imgs, 'expname':expname, 'log':yaml_log,
-                              'ensemble_figs': ensemble_figs, 'has_figs':has_new_figs})
+                              'ensemble_figs': ensemble_figs, 'has_figs':has_new_figs,
+                              'user':user})
 
 
 
@@ -285,7 +294,9 @@ def expfinished_util(tupa_data):
 
 @login_required
 def outputsview(request):
-    return outputs_util()
+    info = outputs_util()
+    user = request.user
+    return render_to_response("cmipoutputs.html", {'info':info, 'user':user})
 
 
 def outputs_util(forcing=False):
@@ -326,36 +337,40 @@ def outputs_util(forcing=False):
                 message = 'Decade {0} changed from {1} to {2}'.format(decade, old_status, status)
                 new_log = ReportChangeLog(message=message)
                 new_log.save()
-    return render_to_response("cmipoutputs.html", {'info':info})
+    return info
 
 
 @login_required
 def profview(request, profid):
+    user = request.user
     prof = People.objects.get(id=profid)
     user_prof = People.objects.get(username=request.user)
     editable = prof == user_prof
     return render_to_response("cmipprofview.html", 
-                              {'prof':prof, 'editable':editable})
+                              {'prof':prof, 'editable':editable,
+                               'user':user})
 
 
 @login_required
 def profedit(request):
+    user = request.user
     profile = People.objects.get(username=request.user)
 
     if request.method == 'POST':
         form = FormEditProfile(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return render_to_response("cmipsuccess.html", {})
+            return render_to_response("cmipsuccess.html", {'user':user})
     else:
         form = FormEditProfile(instance=profile)
 
-    return render_to_response("cmipprofedit.html", {'form':form},
+    return render_to_response("cmipprofedit.html", {'form':form, 'user':user},
                 context_instance=RequestContext(request))
 
 
 @login_required
 def passwedit(request):
+    user = request.user
     if request.method == 'POST':
         profile = People.objects.get(username=request.user)
         form = FormPassword(request.POST, request.FILES)
@@ -365,17 +380,18 @@ def passwedit(request):
                 new_passw = form.cleaned_data['new_passw']
                 request.user.set_password(new_passw)
                 request.user.save()
-                return render_to_response("cmipsuccess.html", {})
+                return render_to_response("cmipsuccess.html", {'user':user})
             else:
                 context = RequestContext(request)
                 return render_to_response("cmipchangepassw.html", 
-                                          {'form':form, 'erro':True},
+                                          {'form':form, 'erro':True,
+                                           'user':user},
                                           context_instance=context)
 
     else:
         form = FormPassword()
 
     context = RequestContext(request)
-    return render_to_response("cmipchangepassw.html", {'form':form},
+    return render_to_response("cmipchangepassw.html", {'form':form, 'user':user},
                               context_instance=context)
     
