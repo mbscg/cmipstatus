@@ -1,0 +1,11 @@
+{% extends 'gmaobase.html' %}
+
+{% block body %}
+<div class="news_view">
+    <div class="news_title"><h3>{{ news.title }}</h3></div>
+    <div class="news_timestamp">{{ news.when }}</div>
+    <div class="author">{{ news.author }}</div>
+    <div class="news_body">{{ news.content }}</div>
+</div>
+{% endblock %}
+

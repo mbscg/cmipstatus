@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cmipstatus',
+    'groupsite',
     'cronjobs',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -155,6 +156,6 @@ LOGGING = {
     }
 }
 
-LOGIN_URL = "/cmip/login"
-LOGOUT_URL = "/cmip/logout"
-LOGIN_REDIRECT_URL = "/cmip"
+LOGIN_URL = "/gmao/login"
+LOGOUT_URL = "/gmao/logout"
+LOGIN_REDIRECT_URL = "/gmao/" 

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/media/css/gmao_style.css" />
+        <link rel="stylesheet" type="text/css" href="/media/css/lightbox.css" />
+        {% block cabecalho %}
+             <title>GMAO Page</title>
+        {% endblock %}
+        <script type="text/javascript" src="/media/js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="/media/js/jquery-ui-1.8.2.custom.min.js"></script>
+        <script type="text/javascript" src="/media/js/jquery.collapse.js"></script>
+        <script type="text/javascript" src="/media/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="/media/js/lightbox.js"></script>
+        <script type="text/javascript" src="/media/js/slides.min.jquery.js"></script>
+        <script>
+            $(function(){
+                $("#slides").slides({
+                    play: 5000,
+                    pause: 2500,
+                    hoverPause: true,
+                    animationStart: function(current){
+                        $('.caption').animate({
+                            bottom:-35
+                        },100);
+                    },
+                    animationComplete: function(current){
+                        $('.caption').animate({
+                            bottom:0
+                        },200);
+                    },
+                    slidesLoaded: function() {
+                        $('.caption').animate({
+                            bottom:0
+                        },200);
+                    },
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <div class="header">
+            {{ request }}
+            <ul class="nav_bar">
+                <li class="nav_bar"><a class="header_link" href="/gmao/">Home</a></li>
+                <li class="nav_bar"><a class="header_link" href="/gmao/news/">News</a></li>
+                <li class="nav_bar"><a class="header_link" href="/gmao/scientific_data">Scientific Data</a></li>
+                <li class="nav_bar"><a class="header_link" href="/gmao/people">People</a></li>
+                <li class="nav_bar"><a class="header_link" href="/cmip/">CMIPStatus</a></li>
+                <li class="nav_bar"><a class="header_link" href="/gmao/login">Login</a></li>
+                <li class="nav_bar"><a class="header_link" href="/gmao/logout">Logout</a></li>
+            </ul>
+        </div>
+
+        {% block body %}
+            BASE PAGE
+        {% endblock %}
+
+        <div class="footer">
+            <p>INPE GMAO - Grupo de Modelagem Acoplada Oceano-Atmosfera</p>
+        </div>
+    </body>
+</html>
