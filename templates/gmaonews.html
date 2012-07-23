@@ -1,12 +1,13 @@
 {% extends 'gmaobase.html' %}
 
 {% block body %}
+<div class="news">
     <ul class="news_list">
         {% for n in news %}
-            <li>
-                <a class="news_link" href="/gmao/news/{{n.id}}">{{ n.title }}</a>
-            </li>
+            <li class="news_list"><a class="news_link" href="/gmao/news/{{n.id}}">{{ n.title }}</a></li>
+            <li class="news_timestamp">{{ n.when }}</li>
         {% endfor %}
     </ul>
+</div>
 {% endblock %}
 

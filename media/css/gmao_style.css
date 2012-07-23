@@ -86,6 +86,16 @@ li.nav_bar{
 display:inline;
 }
 
+li.news_list{
+}
+
+li.news_timestamp{
+font-size:0.7em;
+line-height:0.7em;
+font-style:italic;
+padding-bottom:10px;
+}
+
 p{
 font-family:helvetica;
 color:#ffffff;
@@ -136,10 +146,15 @@ height:270px;
 display:block;
 }
 
+ul.news_list{
+list-style-type:none;
+font-family:helvetica;
+line-height:2em;
+}
+
 ul.nav_bar{
 list-style-type:none;
 background-color:#909090;
 font-family:helvetica;
-line-height:2em;
 }
 
