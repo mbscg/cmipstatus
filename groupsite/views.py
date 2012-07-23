@@ -6,26 +6,27 @@ from models import News, NewsImg
 
 def home(request):
     return render_to_response("gmaohome.html", 
-        {'imgs':get_imgs_news(), 'news':get_latest_news()}
+        {'imgs':get_imgs_news(), 'news':get_latest_news(),
+         'user':request.user}
         )
 
 @login_required
 def news(request):
     return render_to_response("gmaonews.html",
-        {'news':get_lot_of_news()}
+        {'news':get_lot_of_news(), 'user':request.user}
         )
 
 
 def news_view(request, news_id):
     news = get_object_or_404(News, pk=news_id)
     return render_to_response("gmaonewsview.html",
-        {'news':news}
+        {'news':news, 'user':request.user}
         )
 
 @login_required
 def people(request):
     all_people = People.objects.all()
-    return render_to_response("gmaopeople.html", {'people':all_people})
+    return render_to_response("gmaopeople.html", {'people':all_people, 'user':request.user})
 
 
 def get_imgs_news():

@@ -42,15 +42,17 @@
 
     <body>
         <div class="header">
-            {{ request }}
             <ul class="nav_bar">
                 <li class="nav_bar"><a class="header_link" href="/gmao/">Home</a></li>
                 <li class="nav_bar"><a class="header_link" href="/gmao/news/">News</a></li>
                 <li class="nav_bar"><a class="header_link" href="/gmao/scientific_data">Scientific Data</a></li>
                 <li class="nav_bar"><a class="header_link" href="/gmao/people">People</a></li>
                 <li class="nav_bar"><a class="header_link" href="/cmip/">CMIPStatus</a></li>
-                <li class="nav_bar"><a class="header_link" href="/gmao/login">Login</a></li>
-                <li class="nav_bar"><a class="header_link" href="/gmao/logout">Logout</a></li>
+                {% if user.is_authenticated %}
+                    <li class="nav_bar"><a class="header_link" href="/gmao/logout">Logout</a></li>
+                {% else %}
+                    <li class="nav_bar"><a class="header_link" href="/gmao/login">Login</a></li>
+                {% endif %}
             </ul>
         </div>
 
