@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from cmipsite.cmipstatus.models import People
+from cmipstatus.models import People
 import os
 from models import News, NewsImg
 

@@ -1,5 +1,5 @@
 from django.db import models
-from cmipsite.cmipstatus.models import People
+from cmipstatus.models import People
 
 class News(models.Model):
     title = models.CharField(max_length=200)
