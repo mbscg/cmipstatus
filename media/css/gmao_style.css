@@ -18,6 +18,16 @@ a.news_link:visited {color:#00000f;}
 a.news_link:hover {color:#0000ff;}
 a.news_link:active {color:#00000f;}
 
+a.prof_link:link{
+color:#00000f;
+text-decoration:none;
+padding-left:20px;
+padding-right:20px;
+}
+a.prof_link:visited {color:#00000f;}
+a.prof_link:hover {color:#0000ff;}
+a.prof_link:active {color:#00000f;}
+
 .caption {
     z-index:500;
     position:relative;
@@ -53,7 +63,9 @@ text-align:center;
 }
 
 div.news{
-text-align:center;
+}
+
+div.people{
 }
 
 div.site_banner{
@@ -147,6 +159,12 @@ display:block;
 }
 
 ul.news_list{
+list-style-type:none;
+font-family:helvetica;
+line-height:2em;
+}
+
+ul.prof_list{
 list-style-type:none;
 font-family:helvetica;
 line-height:2em;

@@ -1,12 +1,14 @@
 {% extends 'gmaobase.html' %}
 
 {% block body %}
+<div class="people">
     <ul class="prof_list">
         {% for p in people %}
-            <li>
+            <li class="prof_list">
                 <a class="prof_link" href="/cmip/profview/{{p.id}}">{{ p.name }}</a>
             </li>
         {% endfor %}
     </ul>
+</div>
 {% endblock %}
 
