@@ -1,36 +1,80 @@
 {% extends "gmaobase.html" %}
 
 {% block body %}
-<div class="site_banner">
-    <h2 class="site_banner">INPE - GMAO</h3>
-    <h3 class="site_banner">Grupo de Modelagem Acoplada Oceano-Atmosfera</h2>
+<div class="banner">
+<div class="container">
+<div class="row"><br>
+<div class="span12">
+    <h2>INPE - GMAO</h2>
+    <h3>Grupo de Modelagem Acoplada Oceano-Atmosfera</h3>
+</div>
+</div>
+</div>
 </div>
 
-<div class="slide_show">
-    <h4 class="section_title">Destaques</h4>
-    <div id="slides" align=center>
-        <div class="slides_container" width=600 height=200>
-            {% for img in imgs %}
-                <div class="slide">
-                    <a href="/gmao/news/{{ img.news }}"><img title="{{ img.caption }}" src="/media/{{ img.img }}" height=260></a>
-                    <div class="caption">
-                        <p>{{ img.caption }}</p>
+<div class="slideshow">
+<div class="container">
+<div class="row"><br>
+<div class="span12">
+    <h4>Destaques</h4>
+    <div id="rotativenews" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="active item car-img">
+                <a href="/gmao/news/{{ img.news }}"><img height=400 src="/media/{{ imgs.0.img }}"/></a>
+                <div class="carousel-caption">
+                    <h4>{{ imgs.0.caption }}</h4>
+                </div>
+            </div>
+            {% for img in imgs|slice:"1:" %}
+                <div class="item car-img">
+                    <a href="/gmao/news/{{ img.news }}"><img height=400 class="car-img" src="/media/{{ img.img }}"/></a>
+                    <div class="carousel-caption">
+                        <h4>{{ img.caption }}</h4>
                     </div>
                 </div>
             {% endfor %}
         </div>
+        <!-- carousel nav -->
+        <a class="carousel-control left" href="#rotativenews" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#rotativenews" data-slide="next">&rsaquo;</a>
     </div>
 </div>
+</div>
+</div>
+</div>
 
-<div class="home_news">
-    <h4 class="section_title">Notícias Recentes</h4>
-    {% for entry in news %}
-        <div class="entry">
-            <p class="news_title"><strong><a class="news_link" href="/gmao/news/{{ entry.id }}">{{ entry.title }}</a></strong></p>
-            <p class="news_entry">{{ entry.content }}</p>
+<div class="homenews">
+<div class="container">
+<div class="row"><br>
+<div class="span12">
+    <h4>Notícias Recentes</h4>
+    {# consider 4 news coming #}
+
+    <div class="container">
+        <div class="row"><br>
+            <div class="span6">
+                <p><strong><a href="/gmao/news/{{ news.0.id }}">{{ news.0.title }}</a></strong></p>
+                <p>{{ news.0.when }}</p>
+            </div>    
+            <div class="span6">
+                <p><strong><a href="/gmao/news/{{ news.1.id }}">{{ news.1.title }}</a></strong></p>
+                <p>{{ news.0.when }}</p>
+            </div>    
         </div>
-    {% empty %}
-        vazio
-    {% endfor %}
+        <div class="row"><br>
+            <div class="span6">
+                <p><strong><a href="/gmao/news/{{ news.2.id }}">{{ news.2.title }}</a></strong></p>
+                <p>{{ news.0.when }}</p>
+            </div>    
+            <div class="span6">
+                <p><strong><a href="/gmao/news/{{ news.3.id }}">{{ news.3.title }}</a></strong></p>
+                <p>{{ news.0.when }}</p>
+            </div>    
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
 </div>
 {% endblock %}
