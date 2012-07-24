@@ -11,8 +11,6 @@ a.header_link:active {color:#ffffff;}
 a.news_link:link{
 color:#00000f;
 text-decoration:none;
-padding-left:20px;
-padding-right:20px;
 }
 a.news_link:visited {color:#00000f;}
 a.news_link:hover {color:#0000ff;}
@@ -42,6 +40,7 @@ a.prof_link:active {color:#00000f;}
     text-shadow:none;
 }
 
+
 div.footer{
 background-color:#909090;
 text-align:center;
@@ -59,6 +58,10 @@ text-align:center;
 }
 
 div.header{
+text-align:center;
+}
+
+div.home_news{
 text-align:center;
 }
 
