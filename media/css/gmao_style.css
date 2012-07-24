@@ -40,7 +40,6 @@ div.slideshow{
 }
 
 li.news-item{
-    list-style-type:none;
 }
 
 li.news-timestamp{
@@ -48,4 +47,8 @@ li.news-timestamp{
     font-size:0.7em;
     font-style:italic;
     padding-bottom:10px;
+}
+
+ul.news-list{
+    list-style-type:none;
 }

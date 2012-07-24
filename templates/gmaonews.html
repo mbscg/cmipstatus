@@ -9,7 +9,7 @@
 <div class="container">
 <div class="row"><br>
     <div class="span12">
-        <ul>
+        <ul class="news-list">
             {% for n in news %}
                 <li class="news-item"><a href="/gmao/news/{{n.id}}">{{ n.title }}</a></li>
                 <li class="news-timestamp">{{ n.when }}</li>
