@@ -10,7 +10,6 @@ def home(request):
          'user':request.user}
         )
 
-@login_required
 def news(request):
     return render_to_response("gmaonews.html",
         {'news':get_lot_of_news(), 'user':request.user}
@@ -23,7 +22,6 @@ def news_view(request, news_id):
         {'news':news, 'user':request.user}
         )
 
-@login_required
 def people(request):
     all_people = People.objects.all()
     return render_to_response("gmaopeople.html", {'people':all_people, 'user':request.user})
