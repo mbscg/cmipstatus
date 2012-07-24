@@ -40,23 +40,43 @@
 <div class="recent">
 <div class="container">
 <div class="row"><br>
-<div class="span6">
+
+<div class="span8">
+    <h4>Notícias Recentes</h4>
+</div>
+<div class="span4">
+    <h4>Destaques Científicos</h4>
+</div>
+
+</div>
+
+<div class="row"><br>
+<div class="span4">
 {# place for news #}
 
-    <h4>Notícias Recentes</h4>
-    {% for n in news %}
+    {% for n in news|slice:":2" %}
         <p><strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong></p>
-        <p>{{ n.when }}</p>
+        <p>{{ n.when }}</p><p></p>
     {% endfor %}
 
 </div>
 
-<div class="span6">
+<div class="span4">
+{# place for news #}
+
+    {% for n in news|slice:"2:" %}
+        <p><strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong></p>
+        <p>{{ n.when }}</p><p></p>
+    {% endfor %}
+
+</div>
+
+<div class="span4">
 {# place for science #}
-    <h4>Destaques Científicos</h4>
     {% for sci_pair in science %}
-        <p><iframe width="200" height="160" src="{{ sci_pair.0.video_link }}" frameborder="0" allowfullscreen></iframe></p>
-        <p>{{ sci_pair.1.short }}</p>
+<!--        <p><iframe width="200" height="160" src="{{ sci_pair.0.video_link }}" frameborder="0" allowfullscreen></iframe></p> -->
+        <p><strong><a href="/gmao/scientific_data/">{{ sci_pair.1.short }}</a></strong></p>
+<!--        <p>{{ sci_pair.1.short }}</p> -->
     {% endfor %}
 </div>
 
