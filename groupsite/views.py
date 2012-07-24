@@ -28,7 +28,7 @@ def people(request):
 
 
 def get_imgs_news():
-    all_imgs = NewsImg.objects.all()
+    all_imgs = NewsImg.objects.order_by('-id')[:4]
     imgs = [{'img':img.img, 'caption':img.news.title, 'news':img.news.id} for img in all_imgs]
     return imgs
 
