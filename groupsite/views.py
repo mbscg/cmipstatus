@@ -39,6 +39,11 @@ def people(request):
     return render_to_response("gmaopeople.html", {'people':all_people, 'user':request.user})
 
 
+def people_view(request, people_id):
+    people = get_object_or_404(People, pk=people_id)
+    return render_to_response("gmaopeopleview.html", {'people':people, 'user':request.user})
+    
+
 def get_imgs_news():
     all_imgs = NewsImg.objects.order_by('-id')[:4]
     imgs = [{'img':img.img, 'caption':img.news.title, 'news':img.news.id} for img in all_imgs]

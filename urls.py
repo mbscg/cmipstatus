@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     
     url(r'^gmao/$', 'groupsite.views.home'),
     url(r'^gmao/people/$', 'groupsite.views.people'),
+    url(r'^gmao/people/(.*)/$', 'groupsite.views.people_view'),
     url(r'^gmao/news/$', 'groupsite.views.news'),
     url(r'^gmao/news/(.*)/$', 'groupsite.views.news_view'),
     url(r'^gmao/scientific_data/$', 'groupsite.views.science'),
