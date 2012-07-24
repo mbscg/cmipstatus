@@ -1,11 +1,24 @@
 {% extends 'gmaobase.html' %}
 
+{% block pagebanner %}
+    <h2>{{ news.title }}</h2>
+{% endblock %}
+
 {% block body %}
-<div class="news_view">
-    <div class="news_title"><h3>{{ news.title }}</h3></div>
-    <div class="news_timestamp">{{ news.when }}</div>
-    <div class="author">{{ news.author }}</div>
-    <div class="news_body">{{ news.content }}</div>
+<div class="news-view">
+<div class="container">
+<div class="row"><br>
+    <div class="span12">
+        <p class="news-timestamp">{{ news.when }}</p>
+    </div>
+    <div class="span12">
+        <p class="author">Por: {{ news.author }}</p>
+    </div>
+    <div class="span12">
+        <p class="news-body">{{ news.content }}</p>
+    </div>
+</div>
+</div>
 </div>
 {% endblock %}
 

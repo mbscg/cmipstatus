@@ -49,6 +49,18 @@ li.news-timestamp{
     padding-bottom:10px;
 }
 
+p.news-timestamp{
+    font-size:0.8em;
+    font-style:italic;
+}
+
+p.author{
+}
+
+p.news-body{
+    font-size:1.2em;
+}
+
 ul.news-list{
     list-style-type:none;
 }
