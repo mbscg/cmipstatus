@@ -7,7 +7,7 @@ from models import News, NewsImg, ScienceThing, YoutubeVideo
 def home(request):
     return render_to_response("gmaohome.html", 
         {'imgs':get_imgs_news(), 'news':get_news(latest=True),
-         'science':get_science(latest=True), 'user':request.user}
+         'sciences':get_sciences(latest=True), 'user':request.user}
         )
 
 def news(request):
@@ -22,10 +22,16 @@ def news_view(request, news_id):
         {'news':news, 'user':request.user}
         )
 
-def science_view(request):
-    #only videos for now
+def science(request):
     return render_to_response("gmaoscience.html", 
-        {'video_pairs':get_science(), 'user':request.user})
+        {'sciences':get_sciences(), 'user':request.user})
+
+
+def science_view(request, thing_id):
+    science = get_object_or_404(ScienceThing, pk=thing_id)
+    video = get_object_or_404(YoutubeVideo, science_thing=science)
+    return render_to_response("gmaoscienceview.html", 
+        {'science':science, 'video':video, 'user':request.user})
 
 
 def people(request):
@@ -46,10 +52,9 @@ def get_news(latest=False):
     return many_news
 
 
-def get_science(latest=False):
-    all_videos = YoutubeVideo.objects.order_by('-id')
-    video_pairs = [[video, video.science_thing] for video in all_videos]
+def get_sciences(latest=False):
+    sciences = ScienceThing.objects.order_by('-id')
     if latest:
-        video_pairs = video_pairs[:4]
-    return video_pairs
+        sciences = sciences[:4]
+    return sciences
     

@@ -8,13 +8,13 @@
 <div class="news">
 <div class="container">
 <div class="row"><br>
-    {% for pair in video_pairs %}
-        <div class="span10 offset1">
-            <p><iframe width="510" height="383" src="{{ pair.0.video_link }}" frameborder="0" allowfullscreen></iframe></p>
-            <h3>{{ pair.1.short }}</h3>
-            <p>{{ pair.1.description }}</p>
-        </div>
-    {% endfor %}
+    <div class="span12">
+    <ul class="news-list">
+        {% for sci in sciences %}
+            <li class="sci-item"><a href="/gmao/science/{{ sci.id }}">{{ sci.short }}</a></li>
+        {% endfor %}
+    </ul>
+    </div>
 </div>
 </div>
 </div>
