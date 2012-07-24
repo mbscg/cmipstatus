@@ -1,14 +1,22 @@
 {% extends 'gmaobase.html' %}
 
+{% block pagebanner %}
+    <h2>Equipe GMAO</h2>
+{% endblock %}
+
 {% block body %}
 <div class="people">
-    <ul class="prof_list">
-        {% for p in people %}
-            <li class="prof_list">
-                <a class="prof_link" href="/cmip/profview/{{p.id}}">{{ p.name }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+<div class="container">
+<div class="row"><br>
+    <div class="span12">
+        <ul class="people-list">
+            {% for p in people %}
+                <li><a href="/cmip/profview/{{p.id}}">{{ p.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
 </div>
 {% endblock %}
 
