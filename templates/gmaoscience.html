@@ -8,9 +8,13 @@
 <div class="news">
 <div class="container">
 <div class="row"><br>
-    <div class="span12">
-        <iframe class="youtube" src="http://www.youtube.com/watch?v=kK4VImbHxAc"></iframe>
-    </div>
+    {% for pair in video_pairs %}
+        <div class="span10 offset1">
+            <p><iframe width="510" height="383" src="{{ pair.0.video_link }}" frameborder="0" allowfullscreen></iframe></p>
+            <h3>{{ pair.1.short }}</h3>
+            <p>{{ pair.1.description }}</p>
+        </div>
+    {% endfor %}
 </div>
 </div>
 </div>

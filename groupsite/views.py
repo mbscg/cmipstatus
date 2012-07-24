@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from cmipstatus.models import People
 import os
-from models import News, NewsImg
+from models import News, NewsImg, ScienceThing, YoutubeVideo
 
 def home(request):
     return render_to_response("gmaohome.html", 
@@ -23,7 +23,11 @@ def news_view(request, news_id):
         )
 
 def science_view(request):
-    return render_to_response("gmaoscience.html", {})
+    #only videos for now
+    all_videos = YoutubeVideo.objects.order_by('-id')
+    video_pairs = [[video, video.science_thing] for video in all_videos]
+    return render_to_response("gmaoscience.html", 
+        {'video_pairs':video_pairs, 'user':request.user})
 
 
 def people(request):
