@@ -39,3 +39,13 @@ div.slideshow{
     padding-top:5px;
 }
 
+li.news-item{
+    list-style-type:none;
+}
+
+li.news-timestamp{
+    list-style-type:none;
+    font-size:0.7em;
+    font-style:italic;
+    padding-bottom:10px;
+}
