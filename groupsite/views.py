@@ -6,13 +6,13 @@ from models import News, NewsImg, ScienceThing, YoutubeVideo
 
 def home(request):
     return render_to_response("gmaohome.html", 
-        {'imgs':get_imgs_news(), 'news':get_latest_news(),
-         'user':request.user}
+        {'imgs':get_imgs_news(), 'news':get_news(latest=True),
+         'science':get_science(latest=True), 'user':request.user}
         )
 
 def news(request):
     return render_to_response("gmaonews.html",
-        {'news':get_lot_of_news(), 'user':request.user}
+        {'news':get_news(), 'user':request.user}
         )
 
 
@@ -24,10 +24,8 @@ def news_view(request, news_id):
 
 def science_view(request):
     #only videos for now
-    all_videos = YoutubeVideo.objects.order_by('-id')
-    video_pairs = [[video, video.science_thing] for video in all_videos]
     return render_to_response("gmaoscience.html", 
-        {'video_pairs':video_pairs, 'user':request.user})
+        {'video_pairs':get_science(), 'user':request.user})
 
 
 def people(request):
@@ -41,11 +39,17 @@ def get_imgs_news():
     return imgs
 
 
-def get_latest_news():
-    latest_news = News.objects.order_by('-when')[:6]
-    return latest_news
-
-
-def get_lot_of_news():
+def get_news(latest=False):
     many_news = News.objects.order_by('-when')[:50]
+    if latest:
+        many_news = many_news[:4]
     return many_news
+
+
+def get_science(latest=False):
+    all_videos = YoutubeVideo.objects.order_by('-id')
+    video_pairs = [[video, video.science_thing] for video in all_videos]
+    if latest:
+        video_pairs = video_pairs[:4]
+    return video_pairs
+    
