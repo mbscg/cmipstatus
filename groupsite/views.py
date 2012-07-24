@@ -22,6 +22,10 @@ def news_view(request, news_id):
         {'news':news, 'user':request.user}
         )
 
+def science_view(request):
+    return render_to_response("gmaoscience.html", {})
+
+
 def people(request):
     all_people = People.objects.all()
     return render_to_response("gmaopeople.html", {'people':all_people, 'user':request.user})
