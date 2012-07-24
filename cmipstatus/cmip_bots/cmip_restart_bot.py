@@ -24,7 +24,8 @@ def get_conversion_status():
                  'decadal1990', 'decadal1995', 'decadal2000']
     decades = decades30 + decades10
 
-    root = '/stornext/online13/ocean/simulations/cmip5/CMIP5/output/INPE/INPE-OA2-3/'
+    #root = '/stornext/online13/ocean/simulations/cmip5/CMIP5/output/INPE/INPE-OA2-3/'
+    root = '/stornext/online13/ocean/simulations/CMIP/CMIP5/output/INPE/BESM-OA2-3/'
     frequency = 'mon'
     component = 'atmos'
     variable = 'tas'
