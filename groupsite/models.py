@@ -34,3 +34,14 @@ class YoutubeVideo(models.Model):
 
     def __unicode__(self):
         return self.science_thing.short
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=512)
+    description = models.TextField(default=" ")
+    content = models.TextField(default=" ")
+    when = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(People)
+
+    def __unicode__(self):
+        return self.title

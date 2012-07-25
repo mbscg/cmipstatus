@@ -5,7 +5,7 @@ from cmipstatus.models import People
 import os
 from models import News, NewsImg, ScienceThing, YoutubeVideo
 from cmipstatus.forms import FormEditProfile, FormPassword
-from forms import FormNews
+from forms import FormNews, FormPost
 
 
 def home(request):
@@ -106,6 +106,31 @@ def create_news(request):
 
     context = RequestContext(request)
     return render_to_response("gmaocreatenews.html", {'form':form, 'user':user},
+                              context_instance=context)    
+
+@login_required
+def create_post(request):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+
+    if request.method == 'POST':
+        form = FormPost(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.instance
+            post.author = people
+            post.save()
+            return render_to_response("gmaook.html", {'user':user})
+        else:
+            context = RequestContext(request)
+            return render_to_response("gmaocreatepost.html",
+                                      {'form':form, 'user':user, 'erro':True},
+                                      context_instance=context)
+
+    else:
+        form = FormPost()
+
+    context = RequestContext(request)
+    return render_to_response("gmaocreatepost.html", {'form':form, 'user':user},
                               context_instance=context)    
 
 
