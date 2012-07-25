@@ -1,7 +1,9 @@
 {% extends "gmaobase.html" %}
 
 {% block pagebanner %}
+<div class="hero-unit">
     <h2>{{ people.name }}</h2>
+</div>
 {% endblock %}
 
 {% block body %}
@@ -10,7 +12,9 @@
 <div class="row"><br>
 
 <div class="span4">
+    <div class="well">
         <img src="{{ people.photo.url }}"/>
+    </div>
 </div>
 
 <div class="span8">
