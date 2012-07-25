@@ -70,7 +70,7 @@ def post_view(request, post_id):
 
 
 def people(request):
-    all_people = People.objects.all()
+    all_people = People.objects.order_by('name')
     return render_to_response("gmaopeople.html", {'people':all_people, 'user':request.user})
 
 
