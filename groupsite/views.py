@@ -45,7 +45,7 @@ def edit_profile(request):
         form = FormEditProfile(request.POST, request.FILES, instance=people)
         if form.is_valid():
             form.save()
-            return render_to_response("cmipsuccess.html", {'user':user})
+            return render_to_response("gmaook.html", {'user':user})
     else:
         form = FormEditProfile(instance=people)
 
@@ -66,7 +66,7 @@ def edit_configs(request):
                 new_passw = form.cleaned_data['new_passw']
                 request.user.set_password(new_passw)
                 request.user.save()
-                return render_to_response("cmipsuccess.html", {'user':user})
+                return render_to_response("gmaook.html", {'user':user})
             else:
                 context = RequestContext(request)
                 return render_to_response("gmaoeditconfigs.html",
