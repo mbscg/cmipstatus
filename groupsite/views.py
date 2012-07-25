@@ -76,7 +76,7 @@ def people(request):
 
 def people_view(request, people_id):
     people = get_object_or_404(People, pk=people_id)
-    posts = Post.objects.filter(author=people)
+    posts = Post.objects.filter(author=people).order_by('-when')
     return render_to_response("gmaopeopleview.html", 
         {'people':people, 'user':request.user, 'posts':posts}
         )
