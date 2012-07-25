@@ -36,6 +36,7 @@ urlpatterns = patterns('',
     url(r'^gmao/restricted/configs/$', 'groupsite.views.edit_configs'),
     url(r'^gmao/restricted/create_news/$', 'groupsite.views.create_news'),
     url(r'^gmao/restricted/create_post/$', 'groupsite.views.create_post'),
+    url(r'^gmao/restricted/create_video/$', 'groupsite.views.create_video'),
     url(r'^gmao/login/$', 'django.contrib.auth.views.login', {'template_name' : 'gmaologin.html'}),
     url(r'^gmao/logout/$', 'django.contrib.auth.views.logout_then_login', {'login_url' : '/gmao/login/'}),
 
