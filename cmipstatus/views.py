@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from models import Experiment, Member, People, Comment, ReportChangeLog, get_tupa_data
 from models import ConvReport
-from forms import FormEditProfile, FormPassword, FormComment
+from forms import FormComment
 from django.template import RequestContext
 from os.path import join, exists
 import os
@@ -338,60 +338,3 @@ def outputs_util(forcing=False):
                 new_log = ReportChangeLog(message=message)
                 new_log.save()
     return info
-
-
-@login_required
-def profview(request, profid):
-    user = request.user
-    prof = People.objects.get(id=profid)
-    user_prof = People.objects.get(username=request.user)
-    editable = prof == user_prof
-    return render_to_response("cmipprofview.html", 
-                              {'prof':prof, 'editable':editable,
-                               'user':user})
-
-
-@login_required
-def profedit(request):
-    user = request.user
-    profile = People.objects.get(username=request.user)
-
-    if request.method == 'POST':
-        form = FormEditProfile(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return render_to_response("cmipsuccess.html", {'user':user})
-    else:
-        form = FormEditProfile(instance=profile)
-
-    return render_to_response("cmipprofedit.html", {'form':form, 'user':user},
-                context_instance=RequestContext(request))
-
-
-@login_required
-def passwedit(request):
-    user = request.user
-    if request.method == 'POST':
-        profile = People.objects.get(username=request.user)
-        form = FormPassword(request.POST, request.FILES)
-        if form.is_valid():
-            curr_passw = form.cleaned_data['current_passw']
-            if request.user.check_password(curr_passw):
-                new_passw = form.cleaned_data['new_passw']
-                request.user.set_password(new_passw)
-                request.user.save()
-                return render_to_response("cmipsuccess.html", {'user':user})
-            else:
-                context = RequestContext(request)
-                return render_to_response("cmipchangepassw.html", 
-                                          {'form':form, 'erro':True,
-                                           'user':user},
-                                          context_instance=context)
-
-    else:
-        form = FormPassword()
-
-    context = RequestContext(request)
-    return render_to_response("cmipchangepassw.html", {'form':form, 'user':user},
-                              context_instance=context)
-    
