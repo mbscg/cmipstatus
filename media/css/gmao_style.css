@@ -60,6 +60,11 @@ p.news-timestamp{
 p.author{
 }
 
+p.news-description{
+    font-size:1.2em;
+    font-style:italic;
+}
+
 p.news-body{
     font-size:1.2em;
 }
