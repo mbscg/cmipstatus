@@ -1,8 +1,10 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
 from cmipstatus.models import People
 import os
 from models import News, NewsImg, ScienceThing, YoutubeVideo
+from cmipstatus.forms import FormEditProfile, FormPassword
 
 def home(request):
     return render_to_response("gmaohome.html", 
@@ -32,6 +34,52 @@ def science_view(request, thing_id):
     video = get_object_or_404(YoutubeVideo, science_thing=science)
     return render_to_response("gmaoscienceview.html", 
         {'science':science, 'video':video, 'user':request.user})
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+
+    if request.method == 'POST':
+        form = FormEditProfile(request.POST, request.FILES, instance=people)
+        if form.is_valid():
+            form.save()
+            return render_to_response("cmipsuccess.html", {'user':user})
+    else:
+        form = FormEditProfile(instance=people)
+
+    return render_to_response("gmaoeditprofile.html", {'form':form, 'user':user},
+                context_instance=RequestContext(request))
+
+
+@login_required
+def edit_configs(request):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+
+    if request.method == 'POST':
+        form = FormPassword(request.POST, request.FILES)
+        if form.is_valid():
+            curr_passw = form.cleaned_data['current_passw']
+            if request.user.check_password(curr_passw):
+                new_passw = form.cleaned_data['new_passw']
+                request.user.set_password(new_passw)
+                request.user.save()
+                return render_to_response("cmipsuccess.html", {'user':user})
+            else:
+                context = RequestContext(request)
+                return render_to_response("gmaoeditconfigs.html",
+                                          {'form':form, 'user':user, 'erro':True},
+                                          context_instance=context)
+
+    else:
+        form = FormPassword()
+
+    context = RequestContext(request)
+    return render_to_response("gmaoeditconfigs.html", {'form':form, 'user':user},
+                              context_instance=context)
+
 
 
 def people(request):

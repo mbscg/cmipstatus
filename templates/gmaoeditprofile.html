@@ -1,0 +1,16 @@
+{% extends "gmaobase.html" %}
+
+{% block pagebanner %}
+    <h2>Edite suas informações</h2>
+{% endblock %}
+
+{% block body %}
+<div class="profile-edit">
+    <form class="well" method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
+

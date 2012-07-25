@@ -1,0 +1,27 @@
+{% extends "gmaobase.html" %}
+
+{% block pagebanner %}
+    <h2>Modifique suas configurações</h2>
+{% endblock %}
+
+{% block body %}
+<div class="configs-edit">
+
+<div class="passw-edit">
+    <h3>Password</h3>
+    {% if erro %}
+        <div class="alert alert-error">  
+            <a class="close" data-dismiss="alert">×</a>  
+            <strong>Erro!</strong><br>Senha atual errada
+        </div> 
+    {% endif %}
+    <form class="well" method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Change</button>
+    </form>
+</div>
+
+</div>
+{% endblock %}
+

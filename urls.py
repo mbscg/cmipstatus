@@ -31,6 +31,8 @@ urlpatterns = patterns('',
     url(r'^gmao/news/(.*)/$', 'groupsite.views.news_view'),
     url(r'^gmao/science/$', 'groupsite.views.science'),
     url(r'^gmao/science/(.*)/$', 'groupsite.views.science_view'),
+    url(r'^gmao/restricted/edit/$', 'groupsite.views.edit_profile'),
+    url(r'^gmao/restricted/configs/$', 'groupsite.views.edit_configs'),
     url(r'^gmao/login/$', 'django.contrib.auth.views.login', {'template_name' : 'gmaologin.html'}),
     url(r'^gmao/logout/$', 'django.contrib.auth.views.logout_then_login', {'login_url' : '/gmao/login/'}),
 
