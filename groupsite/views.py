@@ -23,6 +23,13 @@ def news(request):
         )
 
 
+def newspaper(request):
+    # like a blog, but for news
+    return render_to_response("gmaonewspaper.html",
+        {'news':get_news()[:8], 'user':request.user}
+        )
+
+
 def news_view(request, news_id):
     news = get_object_or_404(News, pk=news_id)
     return render_to_response("gmaonewsview.html",
