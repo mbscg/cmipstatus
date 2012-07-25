@@ -4,6 +4,7 @@ from cmipstatus.models import People
 class News(models.Model):
     title = models.CharField(max_length=200)
     content = models.CharField(max_length=4096)
+    long_content = models.TextField(default=" ")
     when = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(People)
 
