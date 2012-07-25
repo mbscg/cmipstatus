@@ -57,8 +57,11 @@
 {# place for news #}
 
     {% for n in news|slice:":2" %}
-        <p><strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong></p>
-        <p>{{ n.when }}</p><p></p>
+        <p>
+        <strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong><br>
+        {{ n.content }}<br>
+        <span class="timestamp">{{ n.when }}</span>
+        </p>
     {% endfor %}
 
 </div>
@@ -67,8 +70,11 @@
 {# place for news #}
 
     {% for n in news|slice:"2:" %}
-        <p><strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong></p>
-        <p>{{ n.when }}</p><p></p>
+        <p>
+        <strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong><br>
+        {{ n.content }}<br>
+        <span class="timestamp">{{ n.when }}</span>
+        </p>
     {% endfor %}
 
 </div>

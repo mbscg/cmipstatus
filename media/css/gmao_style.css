@@ -68,6 +68,12 @@ p.sci-body{
     font-size:1.2em;
 }
 
+span.timestamp{
+    font-size:0.7em;
+    font-style:italic;
+    padding-bottom:10px;
+}
+
 ul.news-list{
     list-style-type:none;
 }
