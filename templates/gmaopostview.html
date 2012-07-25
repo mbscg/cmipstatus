@@ -1,0 +1,27 @@
+{% extends 'gmaobase.html' %}
+
+{% block pagebanner %}
+    <h2>{{ post.title }}</h2>
+{% endblock %}
+
+{% block body %}
+<div class="post-view">
+<div class="container">
+<div class="row"><br>
+    <div class="span12">
+        <p class="post-timestamp">{{ post.when }}</p>
+    </div>
+    <div class="span12">
+        <p class="author">Por: {{ post.author }}</p>
+    </div>
+    <div class="span12">
+        <p class="post-description">{{ post.description }}</p>
+    </div>
+    <div class="span12">
+        <p class="post-body">{{ post.content }}</p>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+

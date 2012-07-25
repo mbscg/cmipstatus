@@ -3,15 +3,18 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from cmipstatus.models import People
 import os
-from models import News, NewsImg, ScienceThing, YoutubeVideo
+from models import News, NewsImg, ScienceThing, YoutubeVideo, Post
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost
+
+# PUBLIC VIEWS SECTION
 
 
 def home(request):
     return render_to_response("gmaohome.html", 
         {'imgs':get_imgs_news(), 'news':get_news(latest=True),
-         'sciences':get_sciences(latest=True), 'user':request.user}
+         'sciences':get_sciences(latest=True), 'posts':get_posts(latest=True),
+         'user':request.user}
         )
 
 def news(request):
@@ -26,6 +29,7 @@ def news_view(request, news_id):
         {'news':news, 'user':request.user}
         )
 
+
 def science(request):
     return render_to_response("gmaoscience.html", 
         {'sciences':get_sciences(), 'user':request.user})
@@ -36,6 +40,32 @@ def science_view(request, thing_id):
     video = get_object_or_404(YoutubeVideo, science_thing=science)
     return render_to_response("gmaoscienceview.html", 
         {'science':science, 'video':video, 'user':request.user})
+
+
+def posts(request):
+    return render_to_response("gmaoposts.html",
+        {'posts':get_posts(), 'user':request.user}
+        )
+
+
+def post_view(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    return render_to_response("gmaopostview.html",
+        {'post':post, 'user':request.user}
+        )
+
+
+def people(request):
+    all_people = People.objects.all()
+    return render_to_response("gmaopeople.html", {'people':all_people, 'user':request.user})
+
+
+def people_view(request, people_id):
+    people = get_object_or_404(People, pk=people_id)
+    return render_to_response("gmaopeopleview.html", {'people':people, 'user':request.user})
+    
+
+# RESTRICTED VIEWS SECTION
 
 
 @login_required
@@ -134,15 +164,8 @@ def create_post(request):
                               context_instance=context)    
 
 
-def people(request):
-    all_people = People.objects.all()
-    return render_to_response("gmaopeople.html", {'people':all_people, 'user':request.user})
+# UTILITIES SECTION
 
-
-def people_view(request, people_id):
-    people = get_object_or_404(People, pk=people_id)
-    return render_to_response("gmaopeopleview.html", {'people':people, 'user':request.user})
-    
 
 def get_imgs_news():
     all_imgs = NewsImg.objects.order_by('-id')[:4]
@@ -162,4 +185,10 @@ def get_sciences(latest=False):
     if latest:
         sciences = sciences[:4]
     return sciences
-    
+
+
+def get_posts(latest=False):
+    posts = Post.objects.order_by('-when')
+    if latest:
+        posts = posts[:2]
+    return posts

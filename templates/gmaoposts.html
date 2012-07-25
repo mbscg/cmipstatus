@@ -1,0 +1,23 @@
+{% extends 'gmaobase.html' %}
+
+{% block pagebanner %}
+    <h2>Posts</h2>
+{% endblock %}
+
+{% block body %}
+<div class="posts">
+<div class="container">
+<div class="row"><br>
+    <div class="span12">
+        <ul class="post-list">
+            {% for post in posts %}
+                <li class="post-item"><a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a></li>
+                <li class="post-timestamp">{{ post.when }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+

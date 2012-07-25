@@ -74,6 +74,16 @@
                 </p>
             {% endfor %}
         </div>
+        <div class="span4"><br>
+            {# place for posts #}
+            {% for post in posts %}
+                <p>
+                    <strong><a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a></strong><br>
+                    {{ post.description }}<br>
+                    <span class="timestamp">{{ post.when }}</span>
+                </p>
+            {% endfor %}
+        </div>
     </div>
 
 </div>

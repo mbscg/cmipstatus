@@ -49,10 +49,22 @@ li.news-timestamp{
     padding-bottom:10px;
 }
 
+li.post-timestamp{
+    list-style-type:none;
+    font-size:0.7em;
+    font-style:italic;
+    padding-bottom:10px;
+}
+
 li.sci-item{
 }
 
 p.news-timestamp{
+    font-size:0.8em;
+    font-style:italic;
+}
+
+p.post-timestamp{
     font-size:0.8em;
     font-style:italic;
 }
@@ -65,7 +77,16 @@ p.news-description{
     font-style:italic;
 }
 
+p.post-description{
+    font-size:1.2em;
+    font-style:italic;
+}
+
 p.news-body{
+    font-size:1.2em;
+}
+
+p.post-body{
     font-size:1.2em;
 }
 
@@ -80,6 +101,10 @@ span.timestamp{
 }
 
 ul.news-list{
+    list-style-type:none;
+}
+
+ul.post-list{
     list-style-type:none;
 }
 
