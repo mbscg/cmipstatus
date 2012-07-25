@@ -12,13 +12,13 @@
         <p class="post-timestamp">{{ post.when }}</p>
     </div>
     <div class="span12">
-        <p class="author">Por: {{ post.author }}</p>
+        <p class="author">Por: <a href="/gmao/people/{{ post.author.id }}">{{ post.author }}</a></p>
     </div>
     <div class="span12">
-        <p class="post-description">{{ post.description }}</p>
+        <p class="post-description">{{ post.description|linebreaks }}</p>
     </div>
     <div class="span12">
-        <p class="post-body">{{ post.content }}</p>
+        <p class="post-body">{{ post.content|linebreaks }}</p>
     </div>
 </div>
 </div>

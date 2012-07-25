@@ -48,6 +48,13 @@ def posts(request):
         )
 
 
+def blog(request):
+    # shows 5 more recent, expanded
+    return render_to_response("gmaoblog.html",
+        {'posts':get_posts()[:5], 'user':request.user}
+        )
+
+
 def post_view(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render_to_response("gmaopostview.html",

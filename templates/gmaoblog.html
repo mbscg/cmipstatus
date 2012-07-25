@@ -1,0 +1,32 @@
+{% extends 'gmaobase.html' %}
+
+{% block pagebanner %}
+    <h2>GMAO Blog</h2>
+{% endblock %}
+
+{% block body %}
+<div class="post-view">
+<div class="container">
+<div class="row"><br>
+
+    <div class="span12">
+    {% for post in posts %}
+    <div class="well">
+            <p><h3><a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a></h3></p>
+            <p class="post-timestamp">{{ post.when }}</p>
+            <p class="author">Por: <a href="/gmao/people/{{ post.author.id }}">{{ post.author }}</a></p>
+            <p class="post-description">{{ post.description|linebreaks }}</p>
+            <p class="post-body">{{ post.content|linebreaks }}</p>
+    </div>
+    {% endfor %}
+    </div>
+
+    <div class="span12">
+        <p><a href="/gmao/posts/">Lista de todos os posts</a></p>
+    </div>
+    
+</div>
+</div>
+</div>
+{% endblock %}
+
