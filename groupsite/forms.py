@@ -1,5 +1,5 @@
 from django import forms
-from models import News, Post, ScienceThing, YoutubeVideo
+from models import News, Post, ScienceThing, YoutubeVideo, NewsImg
 
 class FormNews(forms.ModelForm):
     class Meta:
@@ -17,3 +17,9 @@ class FormVideo(forms.Form):
     youtube_link = forms.CharField(max_length=1024)
     short = forms.CharField(max_length=256)
     description = forms.CharField(max_length=2048)
+
+
+class FormImage(forms.ModelForm):
+    class Meta:
+        model = NewsImg
+        

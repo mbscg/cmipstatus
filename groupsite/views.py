@@ -5,7 +5,8 @@ from cmipstatus.models import People
 import os
 from models import News, NewsImg, ScienceThing, YoutubeVideo, Post
 from cmipstatus.forms import FormEditProfile, FormPassword
-from forms import FormNews, FormPost, FormVideo
+from forms import FormNews, FormPost, FormVideo, FormImage
+
 
 # PUBLIC VIEWS SECTION
 
@@ -155,6 +156,7 @@ def create_news(request):
     return render_to_response("gmaocreatenews.html", {'form':form, 'user':user},
                               context_instance=context)    
 
+
 @login_required
 def create_post(request):
     user = request.user
@@ -208,6 +210,29 @@ def create_video(request):
 
     context = RequestContext(request)
     return render_to_response("gmaocreatevideo.html", {'form':form, 'user':user},
+                              context_instance=context)    
+
+
+@login_required
+def create_image(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = FormImage(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render_to_response("gmaook.html", {'user':user})
+        else:
+            context = RequestContext(request)
+            return render_to_response("gmaocreateimage.html",
+                                      {'form':form, 'user':user, 'erro':True},
+                                      context_instance=context)
+
+    else:
+        form = FormImage()
+
+    context = RequestContext(request)
+    return render_to_response("gmaocreateimage.html", {'form':form, 'user':user},
                               context_instance=context)    
 
 
