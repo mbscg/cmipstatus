@@ -1,5 +1,7 @@
 {% extends "gmaobase.html" %}
 
+{% load thumbnail %}
+
 {% block pagebanner %}
 <div class="hero-unit">
     <h2>{{ people.name }}</h2>
@@ -13,7 +15,9 @@
 
 <div class="span3">
     <div class="thumbnail">
-        <img src="{{ people.photo.url }}"/>
+        {% thumbnail people.photo "x300" crop="center" as photo %}
+            <img src="{{ photo.url }}">
+        {% endthumbnail %}
     </div>
 </div>
 
