@@ -1,22 +1,35 @@
 {% extends 'gmaobase.html' %}
 
+{% load thumbnail %}
+
 {% block pagebanner %}
     <h2>Equipe GMAO</h2>
 {% endblock %}
 
 {% block body %}
 <div class="people">
-<div class="container">
-<div class="row"><br>
-    <div class="span12">
-        <ul class="people-list">
-            {% for p in people %}
-                <li><a href="/gmao/people/{{ p.id }}">{{ p.name }}</a></li>
-            {% endfor %}
-        </ul>
+    <div class="container">
+        {% for row in people %}
+            <div class="row"><br>
+                {% for p in row %}
+                    <div class="span4">
+                        <div class="well">
+                            <a href="/gmao/people/{{ p.id }}">
+                                <div class="span1">
+                                    {% thumbnail p.photo "x30" crop="center" as photo %}
+                                        <img src="{{ photo.url }}">
+                                    {% endthumbnail %}
+                                </div>
+                                <div class="span2">
+                                    {{ p.name }}
+                                </div>
+                            </a>
+                        </div>                
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
     </div>
-</div>
-</div>
 </div>
 {% endblock %}
 

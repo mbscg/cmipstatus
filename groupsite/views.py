@@ -78,6 +78,7 @@ def post_view(request, post_id):
 
 def people(request):
     all_people = People.objects.order_by('name')
+    all_people = [all_people[i:i+3] for i in range(0, len(all_people), 3)]
     return render_to_response("gmaopeople.html", {'people':all_people, 'user':request.user})
 
 
