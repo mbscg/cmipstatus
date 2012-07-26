@@ -6,6 +6,7 @@ import os
 from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication, NetworkInfo
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
+from forms import FormNetwork
 import requests
 from bs4 import BeautifulSoup
 
@@ -92,10 +93,13 @@ def people_view(request, people_id):
     paper_div = []
     if network:
         network = network[0]
-        lattes_data = requests.get(network.lattes)
-        soup = BeautifulSoup(lattes_data.text)
-        paper_div = soup.findAll('div', {'class':"artigo-completo"})
-        paper_div = [get_text_from_lattes(div) for div in paper_div]
+        try:
+            lattes_data = requests.get(network.lattes)
+            soup = BeautifulSoup(lattes_data.text)
+            paper_div = soup.findAll('div', {'class':"artigo-completo"})
+            paper_div = [get_text_from_lattes(div) for div in paper_div]
+        except:
+            pass
     
     return render_to_response("gmaopeopleview.html", 
         {'people':people, 'user':request.user, 'posts':posts, 'publications':publications,
@@ -119,6 +123,31 @@ def edit_profile(request):
         form = FormEditProfile(instance=people)
 
     return render_to_response("gmaoeditprofile.html", {'form':form, 'user':user},
+                context_instance=RequestContext(request))
+
+
+@login_required
+def edit_network(request):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    network = NetworkInfo.objects.filter(people=people)
+    if network:
+        network = network[0]
+    else:
+        network = NetworkInfo(people=people)
+        network.save()
+
+    if request.method == 'POST':
+        form = FormNetwork(request.POST, request.FILES, instance=network)
+        if form.is_valid():
+            network = form.instance
+            network.people = people
+            network.save()
+            return render_to_response("gmaook.html", {'user':user})
+    else:
+        form = FormNetwork(instance=network)
+
+    return render_to_response("gmaoeditnetworking.html", {'form':form, 'user':user},
                 context_instance=RequestContext(request))
 
 

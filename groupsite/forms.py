@@ -1,5 +1,6 @@
 from django import forms
-from models import News, Post, ScienceThing, YoutubeVideo, NewsImg, Publication
+from models import News, Post, ScienceThing, YoutubeVideo, NewsImg
+from models import Publication, NetworkInfo
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.admin.widgets import AdminDateWidget
 from datetime import date
@@ -32,4 +33,9 @@ class FormPublication(forms.ModelForm):
     class Meta:
         model = Publication
         fields = ('title', 'description', 'publication_date', 'pdf')
-        
+
+
+class FormNetwork(forms.ModelForm):
+    class Meta:
+        model = NetworkInfo
+        exclude = ('people',)
