@@ -8,6 +8,7 @@ from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
 from forms import FormNetwork
 import requests
+from requests.exceptions import Timeout
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from bs4 import BeautifulSoup
@@ -98,12 +99,15 @@ def people_view(request, people_id):
         validator = URLValidator(verify_exists=False)
         try:
             validator(network.lattes)
-            lattes_data = requests.get(network.lattes)
+            lattes_data = requests.get(network.lattes, timeout=3.000)
             soup = BeautifulSoup(lattes_data.text)
             paper_div = soup.findAll('div', {'class':"artigo-completo"})
             paper_div = [get_text_from_lattes(div) for div in paper_div]
         except ValidationError, e:
-            pass
+            print "invalid url"
+        except Timeout, e:
+            print "timeout"
+
     
     return render_to_response("gmaopeopleview.html", 
         {'people':people, 'user':request.user, 'posts':posts, 'publications':publications,
