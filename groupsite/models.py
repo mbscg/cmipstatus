@@ -45,3 +45,15 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class Publication(models.Model):
+    title = models.CharField(max_length=256)
+    description = models.TextField(default="")
+    when = models.DateTimeField(auto_now_add=True)
+    publication_date = models.DateField()
+    author = models.ForeignKey(People)
+    pdf = models.FileField(max_length=1024, upload_to='publications')
+
+    def __unicode__(self):
+        return ', '.join([self.title, self.author.name])

@@ -3,9 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from cmipstatus.models import People
 import os
-from models import News, NewsImg, ScienceThing, YoutubeVideo, Post
+from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication
 from cmipstatus.forms import FormEditProfile, FormPassword
-from forms import FormNews, FormPost, FormVideo, FormImage
+from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
 
 
 # PUBLIC VIEWS SECTION
@@ -48,6 +48,11 @@ def science_view(request, thing_id):
     video = get_object_or_404(YoutubeVideo, science_thing=science)
     return render_to_response("gmaoscienceview.html", 
         {'science':science, 'video':video, 'user':request.user})
+
+
+def publications(request):
+    return render_to_response("gmaopublications.html", 
+        {'publications':get_publications(), 'user':request.user})
 
 
 def posts(request):
@@ -236,6 +241,32 @@ def create_image(request):
                               context_instance=context)    
 
 
+@login_required
+def upload_publication(request):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+
+    if request.method == 'POST':
+        form = FormPublication(request.POST, request.FILES)
+        if form.is_valid():
+            pub = form.instance
+            pub.author = people
+            pub.save()
+            return render_to_response("gmaook.html", {'user':user})
+        else:
+            context = RequestContext(request)
+            return render_to_response("gmaouploadpublication.html",
+                                      {'form':form, 'user':user, 'erro':True},
+                                      context_instance=context)
+    else:
+        form = FormPublication()
+
+    context = RequestContext(request)
+    return render_to_response("gmaouploadpublication.html", {'form':form, 'user':user},
+                              context_instance=context)    
+
+
+
 # UTILITIES SECTION
 
 
@@ -257,6 +288,13 @@ def get_sciences(latest=False):
     if latest:
         sciences = sciences[:4]
     return sciences
+
+
+def get_publications(latest=False):
+    publications = Publication.objects.order_by('-publication_date')
+    if latest:
+        publications = publications[:2]
+    return publications
 
 
 def get_posts(latest=False):

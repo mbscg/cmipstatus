@@ -1,0 +1,39 @@
+{% extends 'gmaobase.html' %}
+
+{% block pagebanner %}
+    <h2>Publications</h2>
+{% endblock %}
+
+{% block body %}
+<div class="post-view">
+<div class="container">
+<div class="row"><br>
+
+    <div class="span12">
+    {% for pub in publications %}
+    <div class="well">
+            <h3><a href="{{ pub.pdf.url }}"><img src="/media/pdficon_large.png"> {{ pub.title }}</a></h3>
+            <span class="author"><a href="/gmao/people/{{ pub.author.id }}">{{ pub.author }}</a></span>
+            <span class="post-timestamp">{{ pub.publication_date }}</span><br>
+            <div class="accordion" id="accordion2">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Abstract</a>
+                    </div>
+                    <div id="collapseOne" class="accordion-body collapse in">
+                        <div class="accordion-inner">
+                            <span class="post-description">{{ pub.description|linebreaksbr }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    {% endfor %}
+    </div>
+    
+</div>
+</div>
+</div>
+{% endblock %}
+

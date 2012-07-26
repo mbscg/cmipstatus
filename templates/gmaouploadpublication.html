@@ -1,0 +1,23 @@
+{% extends "gmaobase.html" %}
+
+{% block pagebanner %}
+    <h2>Enviar Publicação</h2>
+{% endblock %}
+
+{% block body %}
+<div class="image-edit">
+    {% if erro %}
+        <div class="alert alert-error">
+            <a class="close" data-dismiss="alert">×</a>
+            <strong>Erro!</strong><br>Entradas inválidas
+        </div>
+    {% endif %}
+
+    <form class="well" method="post" action="" enctype="multipart/form-data" class="infotabs accfrm pub">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+{% endblock %}
+
