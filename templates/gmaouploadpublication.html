@@ -1,5 +1,7 @@
 {% extends "gmaobase.html" %}
 
+{{ form.media }}
+
 {% block pagebanner %}
     <h2>Enviar Publicação</h2>
 {% endblock %}
@@ -15,7 +17,14 @@
 
     <form class="well" method="post" action="" enctype="multipart/form-data" class="infotabs accfrm pub">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+            {% if field.name == 'publication_date'%}
+                <p>{{ field.name }}<br><input type="date" name="publication_date" id="id_publication_date" /></p>
+            {% else %}
+                <p>{{ field.name }}<br>{{ field }}</p>
+            {% endif %}
+        {% endfor %}
+        {# form.as_p #}
         <button type="submit">Enviar</button>
     </form>
 </div>

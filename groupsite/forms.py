@@ -1,6 +1,7 @@
 from django import forms
 from models import News, Post, ScienceThing, YoutubeVideo, NewsImg, Publication
 from django.forms.extras.widgets import SelectDateWidget
+from django.contrib.admin.widgets import AdminDateWidget
 from datetime import date
 
 
@@ -31,5 +32,4 @@ class FormPublication(forms.ModelForm):
     class Meta:
         model = Publication
         fields = ('title', 'description', 'publication_date', 'pdf')
-        YEAR_CHOICES = xrange(1960, date.today().year + 1)
-        widgets = {'publication_date':SelectDateWidget(years=YEAR_CHOICES)}
+        
