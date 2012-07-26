@@ -38,7 +38,7 @@
     </div>
 
     <div class="well">
-        <h3>Publicações</h3><br>
+        <h3>Publicações para Download</h3><br>
         <ul class="post-list">
             {% for pub in publications %}
             <li class="post-item"><a href="{{ pub.pdf.url }}"><img src="/media/pdficon_large.png"> {{ pub.title }}</a> <span class="post-timestamp">{{ pub.publication_date }}</span></li>
@@ -57,6 +57,23 @@
             </div>
             </li>
             {% endfor %}
+        </ul>
+        <h3>Lattes</h3>
+            <div class="accordion" id="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseLattes">Todas as Publicações</a>
+                    </div>
+                    <div id="collapseLattes" class="accordion-body collapse in">
+                        <div class="accordion-inner">
+                            {% for line in lattes %}
+                                <p>{{ line }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </li>
         </ul>
     </div>
 </div>

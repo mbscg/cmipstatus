@@ -57,3 +57,11 @@ class Publication(models.Model):
 
     def __unicode__(self):
         return ', '.join([self.title, self.author.name])
+
+
+class NetworkInfo(models.Model):
+    people = models.ForeignKey(People)
+    lattes = models.CharField(max_length=256)
+
+    def __unicode__(self):
+        return self.people.name

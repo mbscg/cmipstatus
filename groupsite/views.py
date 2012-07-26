@@ -3,9 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from cmipstatus.models import People
 import os
-from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication
+from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication, NetworkInfo
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
+import requests
+from bs4 import BeautifulSoup
 
 
 # PUBLIC VIEWS SECTION
@@ -86,10 +88,19 @@ def people_view(request, people_id):
     people = get_object_or_404(People, pk=people_id)
     posts = Post.objects.filter(author=people).order_by('-when')
     publications = Publication.objects.filter(author=people).order_by('-publication_date')
-    return render_to_response("gmaopeopleview.html", 
-        {'people':people, 'user':request.user, 'posts':posts, 'publications':publications}
-        )
+    network = NetworkInfo.objects.filter(people=people)
+    paper_div = []
+    if network:
+        network = network[0]
+        lattes_data = requests.get(network.lattes)
+        soup = BeautifulSoup(lattes_data.text)
+        paper_div = soup.findAll('div', {'class':"artigo-completo"})
+        paper_div = [get_text_from_lattes(div) for div in paper_div]
     
+    return render_to_response("gmaopeopleview.html", 
+        {'people':people, 'user':request.user, 'posts':posts, 'publications':publications,
+         'lattes':paper_div}
+        )
 
 # RESTRICTED VIEWS SECTION
 
@@ -305,3 +316,12 @@ def get_posts(latest=False):
     if latest:
         posts = posts[:2]
     return posts
+
+
+def get_text_from_lattes(div):
+    all_text = div.get_text()
+    splitted = all_text.split(' . ')
+    if len(splitted) > 1:
+        return splitted[1]
+    return all_text
+
