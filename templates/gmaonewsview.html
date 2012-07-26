@@ -1,5 +1,7 @@
 {% extends 'gmaobase.html' %}
 
+{% load thumbnail %}
+
 {% block pagebanner %}
 {% endblock %}
 
@@ -12,6 +14,17 @@
         <span class="author"><a href="/gmao/people/{{ news.author.id }}">{{ news.author }}</a></span>
         <span class="news-timestamp">{{ news.when }}</span><br>
         <span class="news-description">{{ news.content|linebreaksbr }}</span>
+    </div>
+</div>
+<div class="row"><br>
+    <div class="span12">
+        <div class="well">
+        {% for img in imgs %}
+            {% thumbnail img.img "x100" crop="center" as im %}
+                <a href="{{ img.img.url }}"><img src="{{ im.url }}"></a>
+            {% endthumbnail %}
+        {% endfor %}
+        </div>
     </div>
 </div>
 <div class="row"><br>

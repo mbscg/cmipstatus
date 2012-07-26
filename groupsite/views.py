@@ -33,8 +33,9 @@ def newspaper(request):
 
 def news_view(request, news_id):
     news = get_object_or_404(News, pk=news_id)
+    imgs = NewsImg.objects.filter(news=news)
     return render_to_response("gmaonewsview.html",
-        {'news':news, 'user':request.user}
+        {'news':news, 'imgs':imgs, 'user':request.user}
         )
 
 
