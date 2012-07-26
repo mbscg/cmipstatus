@@ -15,12 +15,12 @@
             <h3><a href="{{ pub.pdf.url }}"><img src="/media/pdficon_large.png"> {{ pub.title }}</a></h3>
             <span class="author"><a href="/gmao/people/{{ pub.author.id }}">{{ pub.author }}</a></span>
             <span class="post-timestamp">{{ pub.publication_date }}</span><br>
-            <div class="accordion" id="accordion2">
+            <div class="accordion" id="accordion">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Abstract</a>
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ pub.id }}">Abstract</a>
                     </div>
-                    <div id="collapseOne" class="accordion-body collapse in">
+                    <div id="collapse{{ pub.id }}" class="accordion-body collapse in">
                         <div class="accordion-inner">
                             <span class="post-description">{{ pub.description|linebreaksbr }}</span>
                         </div>

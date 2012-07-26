@@ -36,6 +36,29 @@
             {% endfor %}
         </ul>
     </div>
+
+    <div class="well">
+        <h3>Publicações</h3><br>
+        <ul class="post-list">
+            {% for pub in publications %}
+            <li class="post-item"><a href="{{ pub.pdf.url }}"><img src="/media/pdficon_large.png"> {{ pub.title }}</a> <span class="post-timestamp">{{ pub.publication_date }}</span></li>
+            <li>
+            <div class="accordion" id="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ pub.id }}">Abstract</a>
+                    </div>
+                    <div id="collapse{{ pub.id }}" class="accordion-body collapse in">
+                        <div class="accordion-inner">
+                            <span class="post-description">{{ pub.description|linebreaksbr }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
 </div>
