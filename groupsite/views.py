@@ -370,10 +370,11 @@ def get_text_from_lattes(network):
                 paper_list.append({'authors':authors, 'publication':publication})
     except ValidationError, e:
         print "invalid url"
+        return None
     except Timeout, e:
         print "timeout"
+        return None
     except Exception, e:
         print "unexpected exception", e
-    finally:
         return None
     return paper_list
