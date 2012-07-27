@@ -61,7 +61,12 @@ class Publication(models.Model):
 
 class NetworkInfo(models.Model):
     people = models.ForeignKey(People)
-    lattes = models.CharField(max_length=256)
+    lattes = models.CharField(max_length=256, blank=True)
+    twitter = models.CharField(max_length=256, blank=True)
+    linkedin = models.CharField(max_length=256, blank=True)
+    google_plus = models.CharField(max_length=256, blank=True)
+    facebook = models.CharField(max_length=256, blank=True)
+    site = models.CharField(max_length=256, blank=True)
 
     def __unicode__(self):
         return self.people.name
