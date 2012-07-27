@@ -7,4 +7,5 @@ South
 django-cronjobs
 sorl-thumbnail
 pyyaml
-
+beautifulsoup4
+requests
