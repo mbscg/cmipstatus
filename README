@@ -1,0 +1,10 @@
+Dependencies
+
+django
+libjpeg
+pillow
+South
+django-cronjobs
+sorl-thumbnail
+pyyaml
+
