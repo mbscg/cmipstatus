@@ -12,7 +12,7 @@ from requests.exceptions import Timeout
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from bs4 import BeautifulSoup
-
+import re
 
 # PUBLIC VIEWS SECTION
 
@@ -100,6 +100,7 @@ def people_view(request, people_id):
     else:
         lattes_info = []
         social = None
+
 
     return render_to_response("gmaopeopleview.html", 
         {'people':people, 'user':request.user, 'posts':posts, 'publications':publications,
@@ -350,21 +351,29 @@ def get_posts(latest=False):
 def get_text_from_lattes(network):
     paper_list = []
     validator = URLValidator(verify_exists=False)
+    year_ptn = re.compile("[0-9]{4}", re.MULTILINE)
     try:
         validator(network.lattes)
-        lattes_data = requests.get(network.lattes, timeout=3.000)
+        lattes_data = requests.get(network.lattes, timeout=5.000)
         soup = BeautifulSoup(lattes_data.text)
         paper_div = soup.findAll('div', {'class':"artigo-completo"})
         for div in paper_div:
             text = div.get_text()
             splitted = text.split(' . ')
             if len(splitted) > 1:
-                text = splitted[1]
-            paper_list.append(text)
+                authors = re.split(year_ptn, splitted[0])
+                if len(authors) > 1:
+                    authors = authors[-1]
+                else:
+                    raise Exception
+                publication = splitted[1]
+                paper_list.append({'authors':authors, 'publication':publication})
     except ValidationError, e:
         print "invalid url"
     except Timeout, e:
         print "timeout"
-    except:
-        pass
+    except Exception, e:
+        print "unexpected exception", e
+    finally:
+        return None
     return paper_list

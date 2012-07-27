@@ -74,8 +74,8 @@
                     </div>
                     <div id="collapseLattes" class="accordion-body collapse in">
                         <div class="accordion-inner">
-                            {% for line in lattes %}
-                                <p>{{ line }}</p>
+                            {% for publication in lattes %}
+                                <p><strong>{{ publication.authors }}</strong> {{ publication.publication }}</p>
                             {% endfor %}
                         </div>
                     </div>
