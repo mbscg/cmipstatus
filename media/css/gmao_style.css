@@ -119,3 +119,8 @@ div.hero-unit{
     padding-top:20px;
     padding-bottom:20px;
 }
+
+img.social-icon{
+    max-height:25px;
+    padding:2px;
+}

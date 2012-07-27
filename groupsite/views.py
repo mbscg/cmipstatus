@@ -93,25 +93,17 @@ def people_view(request, people_id):
     posts = Post.objects.filter(author=people).order_by('-when')
     publications = Publication.objects.filter(author=people).order_by('-publication_date')
     network = NetworkInfo.objects.filter(people=people)
-    paper_div = []
     if network:
         network = network[0]
-        validator = URLValidator(verify_exists=False)
-        try:
-            validator(network.lattes)
-            lattes_data = requests.get(network.lattes, timeout=3.000)
-            soup = BeautifulSoup(lattes_data.text)
-            paper_div = soup.findAll('div', {'class':"artigo-completo"})
-            paper_div = [get_text_from_lattes(div) for div in paper_div]
-        except ValidationError, e:
-            print "invalid url"
-        except Timeout, e:
-            print "timeout"
+        lattes_info = get_text_from_lattes(network)
+        social = network.social_icons()
+    else:
+        lattes_info = []
+        social = None
 
-    
     return render_to_response("gmaopeopleview.html", 
         {'people':people, 'user':request.user, 'posts':posts, 'publications':publications,
-         'lattes':paper_div}
+         'lattes':lattes_info, 'social':social}
         )
 
 # RESTRICTED VIEWS SECTION
@@ -355,10 +347,24 @@ def get_posts(latest=False):
     return posts
 
 
-def get_text_from_lattes(div):
-    all_text = div.get_text()
-    splitted = all_text.split(' . ')
-    if len(splitted) > 1:
-        return splitted[1]
-    return all_text
-
+def get_text_from_lattes(network):
+    paper_list = []
+    validator = URLValidator(verify_exists=False)
+    try:
+        validator(network.lattes)
+        lattes_data = requests.get(network.lattes, timeout=3.000)
+        soup = BeautifulSoup(lattes_data.text)
+        paper_div = soup.findAll('div', {'class':"artigo-completo"})
+        for div in paper_div:
+            text = div.get_text()
+            splitted = text.split(' . ')
+            if len(splitted) > 1:
+                text = splitted[1]
+            paper_list.append(text)
+    except ValidationError, e:
+        print "invalid url"
+    except Timeout, e:
+        print "timeout"
+    except:
+        pass
+    return paper_list
