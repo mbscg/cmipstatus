@@ -379,6 +379,27 @@ def deny_news(request, news_id):
     return render_to_response("gmaook.html", {'user':user})
 
 
+@login_required
+def auth_science(request, sci_id):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    editor = get_object_or_404(Editor, people=people)
+    sci = get_object_or_404(ScienceThing, pk=sci_id)
+    sci.approved = True
+    sci.save()
+    return render_to_response("gmaook.html", {'user':user})
+
+
+@login_required
+def deny_science(request, sci_id):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    editor = get_object_or_404(Editor, people=people)
+    sci = get_object_or_404(ScienceThing, pk=sci_id)
+    sci.delete()
+    return render_to_response("gmaook.html", {'user':user})
+
+
 # UTILITIES SECTION
 
 

@@ -39,6 +39,8 @@
                 <ul class="news-list">
                     {% for sci in sciences %}
                         <li class="sci-item">
+                        <a href="/gmao/restricted/authorize_science/{{ sci.id }}" class="btn">Publicar</a>
+                        <a href="/gmao/restricted/deny_science/{{ sci.id }}" class="btn">Apagar</a>
                         <a href="/gmao/news/{{ sci.id }}">{{ sci.short }}</a>
                         </li>
                     {% empty %}
