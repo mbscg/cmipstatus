@@ -1,109 +1,245 @@
 {% extends 'cmiphome.html' %}
 
 {% block body %}
+<div class="container">
+  <div class="row">
+    <div class="span10">
 
     <!-- RUNNING SECTION -->
-    <div class="list_running">
-    <p class="list_header">Running Experiments</p>
-            <ul class="exp_list" id="collapsible">
-                <li>Running OK
-                    <ul class="exp_list">
-        <input type=button value="Expand All" id="expandbtn" onclick="expandlists();">
-                        {% for exp in running %}
-                            <li><a class="exp_link"  href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a></li>
-                            <ul class="exp_list" id="collapsible">
-                                <li class="exp_sub_list_expander">+Details...
-                                    <ul class="exp_sub_list">
-                                        <li>CO2: {{ exp.1.co2 }}</li>
-                            {% for minfo in  exp.1.minfo %}
-                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }} title="{{ minfo.text_total }}%"></progress> ({{ minfo.finished_years }} of {{ minfo.total_years }}y)</li>
-                            {% endfor %}
-                                    </ul>
-                                </li>
-                            </ul>
-                        {% empty %}
-                            <li>None.</li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
+      <div class="accordion1" id="accordion10">
+        <div class="accordion-group">
+          <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion11" href="#collapseRunning">Running Experiments</a>
+          </div>
+          <div id="collapseRunning" class="accordion-body collapse in">
+            <div class="accordion-inner">
+                {# here come the exps #}
 
-            <ul class="exp_list" id="collapsible"> 
-                <li>Running with Errors
-                    <ul class="exp_list">
-                        {% for exp in running_errors %}
-                            <li><a class="exp_error_link" href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a></li>
-                            <ul class="exp_list" id="collapsible">
-                                <li class="exp_sub_list_expander">+Progress...
-                                    <ul class="exp_sub_list">
-                                        <li>CO2: {{ exp.1.co2 }}</li>
-                            {% for minfo in  exp.1.minfo %}
-                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }} title="{{ minfo.text_total }}%"></progress> ({{ minfo.finished_years }} of {{ minfo.total_years }}y)</li>
-                            {% endfor %}
-                                    </ul>
-                                </li>
-                            </ul>
-                        {% empty %}
-                            <li>None.</li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li class="err_exp_info">Total errors: {{ total_errors }}</li>
-            </ul>
 
-            <ul class="exp_list" id="collapsible">
-                <li>Running with Aborted
-                    <ul class="exp_list">
-                        {% for exp in running_aborted %}
-                            <li><a class="exp_aborted_link"  href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a></li>
-                            <ul class="exp_list" id="collapsible">
-                                <li class="exp_sub_list_expander">+Progress...
-                                    <ul class="exp_sub_list">
-                                        <li>CO2: {{ exp.1.co2 }}</li>
-                            {% for minfo in  exp.1.minfo %}
-                                <li>{{ minfo.member }} <progress class="exp_progress_small" value={{ minfo.prog }} title="{{ minfo.text_total }}%"></progress> ({{ minfo.finished_years }} of {{ minfo.total_years }}y)</li>
-                            {% endfor %}
-                                    </ul>
-                                </li>
-                            </ul>
-                        {% empty %}
-                            <li>None.</li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li class="abo_exp_info">Total aborted: {{ total_aborted }}</li>
-            </ul>
-    </div>
-    <!-- END OF RUNNING SECTION -->
+              <!-- RUNNING OK SECTION -->
+              <div class="accordion11" id="accordion101">
+                <div class="accordion-group">
+                  <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion101" 
+                      href="#collapseRunningOK">Running OK</a>
+                  </div>
+                  <div id="collapseRunningOK" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+
+                      {# and now one accordion per exp #}
+                      {% for exp in running %}<br>
+                        <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a> CO2: {{ exp.1.co2 }}
+                          <div class="accordionROK{{ exp.0.id }}" id="accordionROKI{{ exp.0.id }}">
+                            <div class="accordion-group">
+                              <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" 
+                                  data-parent"#accordionROKI{{ exp.0.id }}" 
+                                  href="#collapseRunningOK{{ exp.0.id }}">Details</a>
+                              </div>
+                              <div id="collapseRunningOK{{ exp.0.id }}" class="accordion-body collapse out">
+                                <div class="accordion-inner">
+                                  {% for minfo in exp.1.minfo %}
+                                    <div class="row"><br>
+                                      <div class="span1">
+                                        {{ minfo.member }}
+                                      </div>
+                                      <div class="span2">
+                                        <progress class="exp_progress_small" 
+                                          value={{ minfo.prog }} title="{{ minfo.text_total }}%">
+                                        </progress>
+                                      </div>
+                                      <div class="span4">
+                                        ({{ minfo.finished_years }} of {{ minfo.total_years }}y)
+                                      </div>
+                                    </div>
+                                  {% endfor %}                
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      {% empty %}
+                        <p>None</p>
+                      {% endfor %}
+
+                    </div>
+                  </div>
+                </div>
+              </div> <!-- END OF RUNNING OK SECTION -->
+
+              <!-- RUNNING + ERRORS SECTION -->
+              <div class="accordion12" id="accordion102">
+                <div class="accordion-group">
+                  <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion102" 
+                      href="#collapseRunningErrors">Running with Errors - Total errors: {{ total_errors }}</a>
+                  </div>
+                  <div id="collapseRunningErrors" class="accordion-body collapse out">
+                    <div class="accordion-inner">
+
+                      {# and now one accordion per exp #}
+                      {% for exp in running_errors %}
+                        <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                          <div class="accordionRE{{ exp.0.id }}" id="accordionREI{{ exp.0.id }}">
+                            <div class="accordion-group">
+                              <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" 
+                                  data-parent"#accordionREI{{ exp.0.id }}" 
+                                  href="#collapseRunningErr{{ exp.0.id }}">Details</a>
+                              </div>
+                              <div id="collapseRunningErr{{ exp.0.id }}" class="accordion-body collapse out">
+                                <div class="accordion-inner">
+                                  {% for minfo in exp.1.minfo %}
+                                    <div class="row"><br>
+                                      <div class="span1">
+                                        {{ minfo.member }}
+                                      </div>
+                                      <div class="span2">
+                                        <progress class="exp_progress_small" 
+                                          value={{ minfo.prog }} title="{{ minfo.text_total }}%">
+                                        </progress>
+                                      </div>
+                                      <div class="span4">
+                                        ({{ minfo.finished_years }} of {{ minfo.total_years }}y)
+                                      </div>
+                                    </div>
+                                  {% endfor %}                
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      {% empty %}
+                        <p>None</p>
+                      {% endfor %}
+
+                    </div>
+                  </div>
+                </div>
+              </div> <!-- END OF RUNNING + ERRORS SECTION -->
+
+
+
+              <!-- RUNNING + ABORTED SECTION -->
+              <div class="accordion13" id="accordion103">
+                <div class="accordion-group">
+                  <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion103" 
+                      href="#collapseRunningAbort">Running with Aborted - Total Aborted {{ total_aborted }} </a>
+                  </div>
+                  <div id="collapseRunningAbort" class="accordion-body collapse out">
+                    <div class="accordion-inner">
+
+                      {# and now one accordion per exp #}
+                      {% for exp in running_aborted %}
+                        <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                          <div class="accordionRA{{ exp.0.id }}" id="accordionRAI{{ exp.0.id }}">
+                            <div class="accordion-group">
+                              <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" 
+                                  data-parent"#accordionRAI{{ exp.0.id }}" 
+                                  href="#collapseRunningAbort{{ exp.0.id }}">Details</a>
+                              </div>
+                              <div id="collapseRunningAbort{{ exp.0.id }}" class="accordion-body collapse out">
+                                <div class="accordion-inner">
+                                  {% for minfo in exp.1.minfo %}
+                                    <div class="row"><br>
+                                      <div class="span1">
+                                        {{ minfo.member }}
+                                      </div>
+                                      <div class="span2">
+                                        <progress class="exp_progress_small" 
+                                          value={{ minfo.prog }} title="{{ minfo.text_total }}%">
+                                        </progress>
+                                      </div>
+                                      <div class="span4">
+                                        ({{ minfo.finished_years }} of {{ minfo.total_years }}y)
+                                      </div>
+                                    </div>
+                                  {% endfor %}                
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      {% empty %}
+                        <p>None</p>
+                      {% endfor %}
+
+                    </div>
+                  </div>
+                </div>
+              </div> <!-- END OF RUNNING + ABORTED SECTION -->
+
+            </div>
+          </div>
+        </div>
+      </div> <!-- END OF RUNNING SECTION -->
+
 
     <!-- FINISHED SECTION -->
-    <div class="list_finished">
-    <p class="list_header">Finished Experiments</p>
+      <div class="accordion2" id="accordion20">
+        <div class="accordion-group">
+          <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion20" 
+                href="#collapseFinished">Finished Experiments</a>
+          </div>
+          <div id="collapseFinished" class="accordion-body collapse in">
+            <div class="accordion-inner">
+                {# here come the exps #}
 
-            <ul class="exp_list" id="collapsible">
-                <li>Finished OK
-                    <ul class="exp_list">
-                        {% for exp in finished %}
-                            <li><a class="exp_finished_link" href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a> <span class="other_small_info">CO2: {{ exp.1.co2 }}</span></li>
-                        {% empty %}
-                            <li>None.</li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
+                <!-- FINISHED OK SECTION -->
+                <div class="accordion21" id="accordion201">
+                  <div class="accordion-group">
+                    <div class="accordion-heading">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion201" 
+                      href="#collapseFinishedOK">Finished OK</a>
+                    </div>
+                    <div id="collapseFinishedOK" class="accordion-body collapse in">
+                      <div class="accordion-inner">
+                        <ul class="exp-list">
+                          {% for exp in finished %}
+                            <li>
+                              <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a> CO2: {{ exp.1.co2 }}
+                            </li>
+                          {% empty %}
+                            <li>None</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <ul class="exp_list" id="collapsible">
-                <li>Finished with Aborted
-                    <ul class="exp_list">
-                        {% for expa in finished_aborted %}
-                            <li><a class="exp_aborted_link" href="/cmip/expview/{{ expa.1.title }}">{{ expa.1.title }}</a> <span class="other_small_info">CO2: {{ expa.1.co2 }}</span></li>
-                        {% empty %}
-                            <li>None.</li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
+                <!-- FINISHED ABORT SECTION -->
+                <div class="accordion22" id="accordion202">
+                  <div class="accordion-group">
+                    <div class="accordion-heading">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion202" 
+                      href="#collapseFinishedAbort">Finished with Aborted</a>
+                    </div>
+                    <div id="collapseFinishedAbort" class="accordion-body collapse in">
+                      <div class="accordion-inner">
+                        <ul class="exp-list">
+                          {% for expa in finished_aborted %}
+                            <li>
+                           <a href="/cmip/expview/{{ expa.0.name }}">{{ expa.0.name }}</a> CO2: {{ expa.1.co2 }}
+                            </li>
+                          {% empty %}
+                            <li>None</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div> <!-- END OF FINISHED ABORTED SECTION -->
+
+            </div>
+          </div>
+        </div>
+      </div> <!-- END OF FINISHED SECTION -->
+
     </div>
-    <!-- END OF FINISHED SECTION -->
+  </div>
+</div>
+
+
 {% endblock %}
 
