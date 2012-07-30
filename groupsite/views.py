@@ -475,7 +475,7 @@ def get_text_from_lattes(lattes_url):
 
 
 def parse_lattes_text(text):
-    if text = '':
+    if text == '':
         return [{'authors':'Não foi possível ler do Lattes', 'publication':''}]
 
     soup = BeautifulSoup(text)
