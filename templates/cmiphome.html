@@ -3,11 +3,65 @@
 
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="/media/css/cmip_style.css" />
+        <link rel="stylesheet" type="text/css" href="/media/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="/media/css/gmao_style.css" />
         <link rel="stylesheet" type="text/css" href="/media/css/lightbox.css" />
         {% block cabecalho %}
              <title>CMIP Experiments Status</title>
         {% endblock %}
+    </head>
+
+    <body>
+            <div class="navbar navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <ul class="nav">
+                            <li class="active"><a class="brand" href="/cmip/">CMIPStatus</a></li>
+                            <li><a href="/cmip/">Home</a></li>
+                            <li><a href="/cmip/list/">Experiments</a></li>
+                            <li><a href="/cmip/news/">News</a></li>
+                            <li><a href="/cmip/outputs/">Outputs</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        <div id="wrap">
+            <div id="main" class="container clear-top">
+                <div class="banner">
+                    <div class="container">
+                        <div class="row"><br>
+                            <div class="span12">
+                                {% block pagebanner %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% block body %}
+                    <div class="hero-unit">
+                        <h2>Welcome to INPE-OA CMIP Experiments monitoring!</h2>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="container">
+                <div class="row"><br>
+                    <div class="span12">
+                        Grupo de Modelagem Oceano-Atmosfera - INPE - Brasil
+                        {% if user.is_authenticated %}
+                            <a href="/cmip/logout/">Logout</a>
+                        {% else %}
+                            <a href="/cmip/login/">Login</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script type="text/javascript" src="/media/js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="/media/js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript" src="/media/js/jquery.collapse.js"></script>
@@ -44,32 +98,6 @@
                 document.getElementById('expandbtn').value = "Expand All"
             }
         </script>
-    </head>
 
-    <body>
-        {% block links %}
-            <ul class="nav_bar">
-                <li class="nav_bar"><a class="header_link" href="/gmao/">GMAO</a></li>
-                <li class="nav_bar"><a class="header_link" href="/cmip/">Home</a></li>
-                <li class="nav_bar"><a class="header_link" href="/cmip/list">Experiments</a></li>
-                <li class="nav_bar"><a class="header_link" href="/cmip/news">News</a></li>
-                <li class="nav_bar"><a class="header_link" href="/cmip/outputs">Outputs</a></li>
-            </ul>
-        {% endblock %}
-
-        {% block body %}
-                <p>Welcome to INPE-OA CMIP Experiments monitoring!</p>
-        {% endblock %}
-
-        {% block footer %}
-            <div class="footer">
-                Grupo de Modelagem Oceano-Atmosfera - INPE - Brasil
-                {% if user.is_authenticated %}
-                    <a class="logout_link" href="/cmip/logout/">Logout</a>
-                {% else %}
-                    <a class="logout_link" href="/cmip/login/">Login</a>
-                {% endif %}
-            </div>
-        {% endblock %}
     </body>
 </html>
