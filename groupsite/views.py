@@ -5,7 +5,7 @@ from django.http import Http404
 from cmipstatus.models import People
 import os
 from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication
-from models import NetworkInfo, LattesCache
+from models import NetworkInfo, LattesCache, Editor
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
 from forms import FormNetwork
@@ -93,7 +93,7 @@ def people(request):
 
 def people_view(request, people_id):
     people = get_object_or_404(People, pk=people_id)
-    posts = Post.objects.filter(author=people).order_by('-when')
+    posts = Post.objects.filter(author=people).order_by('-when').filter(approved=True)
     publications = Publication.objects.filter(author=people).order_by('-publication_date')
     network = NetworkInfo.objects.filter(people=people)
     if network:
@@ -314,25 +314,46 @@ def upload_publication(request):
                               context_instance=context)    
 
 
+@login_required
+def editor_view(request):
+    user = request.user
+    people = People.objects.get(username=user)
+    try:
+        editor = get_object_or_404(Editor, people=people)
+    except Http404:
+        # logged but not editor, sees his queue
+        news = News.objects.order_by('-when').filter(approved=False).filter(author=people)
+        posts = Post.objects.order_by('-when').filter(approved=False).filter(author=people)
+        sciences = ScienceThing.objects.filter(approved=False)
+        return render_to_response("gmaopendingposts.html", 
+            {'news':news, 'posts':posts, 'sciences':sciences, 'user':user})
+    
+    # get pending news to approve
+    news = News.objects.order_by('-when').filter(approved=False)
+    posts = Post.objects.order_by('-when').filter(approved=False)
+    sciences = ScienceThing.objects.filter(approved=False)
+    return render_to_response("gmaoeditor.html", 
+        {'news':news, 'posts':posts, 'sciences':sciences, 'user':user})
+
 
 # UTILITIES SECTION
 
 
 def get_imgs_news():
-    all_imgs = NewsImg.objects.order_by('-id')[:4]
-    imgs = [{'img':img.img, 'caption':img.news.title, 'news':img.news.id} for img in all_imgs]
+    all_imgs = NewsImg.objects.order_by('-id')
+    imgs = [{'img':img.img, 'caption':img.news.title, 'news':img.news.id} for img in all_imgs if img.news.approved]
     return imgs
 
 
 def get_news(latest=False):
-    many_news = News.objects.order_by('-when')[:50]
+    many_news = News.objects.order_by('-when').filter(approved=True)[:50]
     if latest:
         many_news = many_news[:4]
     return many_news
 
 
 def get_sciences(latest=False):
-    sciences = ScienceThing.objects.order_by('-id')
+    sciences = ScienceThing.objects.order_by('-id').filter(approved=True)
     if latest:
         sciences = sciences[:4]
     return sciences
@@ -346,7 +367,7 @@ def get_publications(latest=False):
 
 
 def get_posts(latest=False):
-    posts = Post.objects.order_by('-when')
+    posts = Post.objects.order_by('-when').filter(approved=True)
     if latest:
         posts = posts[:2]
     return posts

@@ -7,6 +7,7 @@ class News(models.Model):
     long_content = models.TextField(default=" ")
     when = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(People)
+    approved = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title
@@ -23,6 +24,7 @@ class NewsImg(models.Model):
 class ScienceThing(models.Model):
     short = models.CharField(max_length=256)
     description = models.CharField(max_length=2048)
+    approved = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.short
@@ -42,6 +44,7 @@ class Post(models.Model):
     content = models.TextField(default=" ")
     when = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(People)
+    approved = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title
@@ -111,4 +114,11 @@ class LattesCache(models.Model):
     last_update = models.DateField(auto_now_add=True, auto_now=True)
 
     def __unicode__(self):
-        return "cache" + self.people.name
+        return "cache " + self.people.name
+
+
+class Editor(models.Model):
+    people = models.ForeignKey(People)
+
+    def __unicode__(self):
+        return "Editor " + self.people.name

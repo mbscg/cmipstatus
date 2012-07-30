@@ -1,0 +1,52 @@
+{% extends 'gmaobase.html' %}
+
+{% block pagebanner %}
+<h2>Aguardando Aprovação</h2>
+{% endblock %}
+
+{% block body %}
+<div class="news">
+    <div class="container">
+        <div class="row"><br>
+            <div class="span12">
+                <div class="alert alert-warning">
+                    <strong>Atenção</strong><br>Estes são os itens que você criou e aguardam aprovação de um editor.
+                </div>
+                <h3>Notícias</h3>
+                <ul class="news-list">
+                    {% for n in news %}
+                        <li class="sci-item">
+                        <a href="/gmao/news/{{ n.id }}">{{ n.title }}</a>
+                        por <a href="/gmao/people/{{ n.author.id }}">{{ n.author.name }}</a>
+                        </li>
+                    {% empty %}
+                        <li class="sci-item">Nenhum item</li>
+                    {% endfor %}
+                </ul>
+                <h3>Posts</h3>
+                <ul class="news-list">
+                    {% for post in posts %}
+                        <li class="sci-item">
+                        <a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a>
+                        por <a href="/gmao/people/{{ post.author.id }}">{{ post.author.name }}</a>
+                        </li>
+                    {% empty %}
+                        <li class="sci-item">Nenhum item</li>
+                    {% endfor %}
+                </ul>
+                <h3>Vídeos</h3>
+                <ul class="news-list">
+                    {% for sci in sciences %}
+                        <li class="sci-item">
+                        <a href="/gmao/news/{{ sci.id }}">{{ sci.short }}</a>
+                        </li>
+                    {% empty %}
+                        <li class="sci-item">Nenhum item</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
