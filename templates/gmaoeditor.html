@@ -24,6 +24,8 @@
                 <ul class="news-list">
                     {% for post in posts %}
                         <li class="sci-item">
+                        <a href="/gmao/restricted/authorize_post/{{ post.id }}" class="btn">Publicar</a>
+                        <a href="/gmao/restricted/deny_post/{{ post.id }}" class="btn">Apagar</a>
                         <a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a>
                         por <a href="/gmao/people/{{ post.author.id }}">{{ post.author.name }}</a>
                         </li>

@@ -336,6 +336,30 @@ def editor_view(request):
         {'news':news, 'posts':posts, 'sciences':sciences, 'user':user})
 
 
+
+@login_required
+def auth_post(request, post_id):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    editor = get_object_or_404(Editor, people=people)
+    post = get_object_or_404(Post, pk=post_id)
+    post.approved = True
+    post.save()
+    return render_to_response("gmaook.html", {'user':user})
+
+
+@login_required
+def deny_post(request, post_id):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    editor = get_object_or_404(Editor, people=people)
+    post = get_object_or_404(Post, pk=post_id)
+    post.delete()
+    return render_to_response("gmaook.html", {'user':user})
+
+
+
+
 # UTILITIES SECTION
 
 
