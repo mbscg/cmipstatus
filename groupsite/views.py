@@ -358,6 +358,25 @@ def deny_post(request, post_id):
     return render_to_response("gmaook.html", {'user':user})
 
 
+@login_required
+def auth_news(request, news_id):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    editor = get_object_or_404(Editor, people=people)
+    news = get_object_or_404(News, pk=news_id)
+    news.approved = True
+    news.save()
+    return render_to_response("gmaook.html", {'user':user})
+
+
+@login_required
+def deny_news(request, news_id):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    editor = get_object_or_404(Editor, people=people)
+    news = get_object_or_404(News, pk=news_id)
+    news.delete()
+    return render_to_response("gmaook.html", {'user':user})
 
 
 # UTILITIES SECTION

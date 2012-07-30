@@ -13,6 +13,8 @@
                 <ul class="news-list">
                     {% for n in news %}
                         <li class="sci-item">
+                        <a href="/gmao/restricted/authorize_news/{{ n.id }}" class="btn">Publicar</a>
+                        <a href="/gmao/restricted/deny_news/{{ n.id }}" class="btn">Apagar</a>
                         <a href="/gmao/news/{{ n.id }}">{{ n.title }}</a>
                         por <a href="/gmao/people/{{ n.author.id }}">{{ n.author.name }}</a>
                         </li>
