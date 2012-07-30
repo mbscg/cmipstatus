@@ -99,6 +99,10 @@ span.timestamp{
     padding-bottom:10px;
 }
 
+ul.exp-list{
+    list-style-type:none;
+}
+
 ul.news-list{
     list-style-type:none;
 }

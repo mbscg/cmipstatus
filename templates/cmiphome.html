@@ -17,10 +17,15 @@
                     <div class="container">
                         <ul class="nav">
                             <li class="active"><a class="brand" href="/cmip/">CMIPStatus</a></li>
-                            <li><a href="/cmip/">Home</a></li>
                             <li><a href="/cmip/list/">Experiments</a></li>
                             <li><a href="/cmip/news/">News</a></li>
                             <li><a href="/cmip/outputs/">Outputs</a></li>
+                            <li><a href="/gmao/">GMAO</a></li>
+                            {% if user.is_authenticated %}
+                                <li><a href="/cmip/logout/">Logout</a></li>
+                            {% else %}
+                                <li><a href="/cmip/login/">Login</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
@@ -52,11 +57,6 @@
                 <div class="row"><br>
                     <div class="span12">
                         Grupo de Modelagem Oceano-Atmosfera - INPE - Brasil
-                        {% if user.is_authenticated %}
-                            <a href="/cmip/logout/">Logout</a>
-                        {% else %}
-                            <a href="/cmip/login/">Login</a>
-                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -67,37 +67,8 @@
         <script type="text/javascript" src="/media/js/jquery.collapse.js"></script>
         <script type="text/javascript" src="/media/js/jquery.easing.js"></script>
         <script type="text/javascript" src="/media/js/lightbox.js"></script>
-        <script>
-            $(document).ready(function(){
-                // Activate accordion.
-                $("#accordion").accordion({
-                    active: false,
-                    collapsible: true
-                });
-            });
-        </script>
-        <script>
-            $(function(){
-                $('#collapsible').jqcollapse({
-                   slide: true,
-                   speed: 1000,
-                   easing: 'easeOutCubic'
-                });
-                $(".exp_list").show();
-            });
-        </script>
-        <script>
-            function expandlists(){
-                $(".exp_sub_list").show();
-                document.getElementById('expandbtn').onclick = hidelists
-                document.getElementById('expandbtn').value = "Collapse All"
-            }
-            function hidelists(){
-                $(".exp_sub_list").hide();
-                document.getElementById('expandbtn').onclick = expandlists
-                document.getElementById('expandbtn').value = "Expand All"
-            }
-        </script>
+
+        <script type="text/javascript" src="/media/js/bootstrap-collapse.js"></script>
 
     </body>
 </html>

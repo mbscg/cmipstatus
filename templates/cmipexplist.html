@@ -5,26 +5,11 @@
   <div class="row">
     <div class="span10">
 
-    <!-- RUNNING SECTION -->
-      <div class="accordion1" id="accordion10">
-        <div class="accordion-group">
-          <div class="accordion-heading">
               <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion11" href="#collapseRunning">Running Experiments</a>
-          </div>
-          <div id="collapseRunning" class="accordion-body collapse in">
-            <div class="accordion-inner">
-                {# here come the exps #}
 
 
-              <!-- RUNNING OK SECTION -->
-              <div class="accordion11" id="accordion101">
-                <div class="accordion-group">
-                  <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion101" 
                       href="#collapseRunningOK">Running OK</a>
-                  </div>
-                  <div id="collapseRunningOK" class="accordion-body collapse in">
-                    <div class="accordion-inner">
 
                       {# and now one accordion per exp #}
                       {% for exp in running %}<br>
@@ -61,20 +46,8 @@
                         <p>None</p>
                       {% endfor %}
 
-                    </div>
-                  </div>
-                </div>
-              </div> <!-- END OF RUNNING OK SECTION -->
-
-              <!-- RUNNING + ERRORS SECTION -->
-              <div class="accordion12" id="accordion102">
-                <div class="accordion-group">
-                  <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion102" 
                       href="#collapseRunningErrors">Running with Errors - Total errors: {{ total_errors }}</a>
-                  </div>
-                  <div id="collapseRunningErrors" class="accordion-body collapse out">
-                    <div class="accordion-inner">
 
                       {# and now one accordion per exp #}
                       {% for exp in running_errors %}
@@ -110,12 +83,6 @@
                       {% empty %}
                         <p>None</p>
                       {% endfor %}
-
-                    </div>
-                  </div>
-                </div>
-              </div> <!-- END OF RUNNING + ERRORS SECTION -->
-
 
 
               <!-- RUNNING + ABORTED SECTION -->
@@ -168,22 +135,10 @@
                 </div>
               </div> <!-- END OF RUNNING + ABORTED SECTION -->
 
-            </div>
-          </div>
-        </div>
-      </div> <!-- END OF RUNNING SECTION -->
 
 
-    <!-- FINISHED SECTION -->
-      <div class="accordion2" id="accordion20">
-        <div class="accordion-group">
-          <div class="accordion-heading">
               <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion20" 
                 href="#collapseFinished">Finished Experiments</a>
-          </div>
-          <div id="collapseFinished" class="accordion-body collapse in">
-            <div class="accordion-inner">
-                {# here come the exps #}
 
                 <!-- FINISHED OK SECTION -->
                 <div class="accordion21" id="accordion201">
@@ -230,11 +185,6 @@
                     </div>
                   </div>
                 </div> <!-- END OF FINISHED ABORTED SECTION -->
-
-            </div>
-          </div>
-        </div>
-      </div> <!-- END OF FINISHED SECTION -->
 
     </div>
   </div>
