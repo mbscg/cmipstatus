@@ -453,7 +453,8 @@ def get_text_from_lattes_cache(network):
         if text: # no timeout...
             cache = LattesCache(people=network.people, text=text)
             cache.save()
-        return cache.text
+            return cache.text
+        return ''
 
 
 def get_text_from_lattes(lattes_url):
@@ -474,6 +475,9 @@ def get_text_from_lattes(lattes_url):
 
 
 def parse_lattes_text(text):
+    if text = '':
+        return [{'authors':'Não foi possível ler do Lattes', 'publication':''}]
+
     soup = BeautifulSoup(text)
     paper_div = soup.findAll('div', {'class':"artigo-completo"})
     paper_list = []
