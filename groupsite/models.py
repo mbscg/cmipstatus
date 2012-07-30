@@ -103,3 +103,12 @@ class NetworkInfo(models.Model):
         if self.site:
             social.append({'link':self.site, 'icon':self.WEBSITE_ICON})
         return social
+
+
+class LattesCache(models.Model):
+    text = models.TextField(default='')
+    people = models.ForeignKey(People)
+    last_update = models.DateField(auto_now_add=True, auto_now=True)
+
+    def __unicode__(self):
+        return "cache" + self.people.name

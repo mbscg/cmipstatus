@@ -1,9 +1,11 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
+from django.http import Http404
 from cmipstatus.models import People
 import os
-from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication, NetworkInfo
+from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication
+from models import NetworkInfo, LattesCache
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
 from forms import FormNetwork
@@ -13,6 +15,7 @@ from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from bs4 import BeautifulSoup
 import re
+import datetime
 
 # PUBLIC VIEWS SECTION
 
@@ -95,16 +98,17 @@ def people_view(request, people_id):
     network = NetworkInfo.objects.filter(people=people)
     if network:
         network = network[0]
-        lattes_info = get_text_from_lattes(network)
+        lattes_info = get_text_from_lattes_cache(network)
+        lattes_pubs = parse_lattes_text(lattes_info)
         social = network.social_icons()
     else:
-        lattes_info = []
+        lattes_pubs = []
         social = None
 
 
     return render_to_response("gmaopeopleview.html", 
         {'people':people, 'user':request.user, 'posts':posts, 'publications':publications,
-         'lattes':lattes_info, 'social':social}
+         'lattes':lattes_pubs, 'social':social}
         )
 
 # RESTRICTED VIEWS SECTION
@@ -348,33 +352,56 @@ def get_posts(latest=False):
     return posts
 
 
-def get_text_from_lattes(network):
-    paper_list = []
-    validator = URLValidator(verify_exists=False)
-    year_ptn = re.compile("[0-9]{4}", re.MULTILINE)
+def get_text_from_lattes_cache(network):
+    # read cache
     try:
-        validator(network.lattes)
-        lattes_data = requests.get(network.lattes, timeout=5.000)
-        soup = BeautifulSoup(lattes_data.text)
-        paper_div = soup.findAll('div', {'class':"artigo-completo"})
-        for div in paper_div:
-            text = div.get_text()
-            splitted = text.split(' . ')
-            if len(splitted) > 1:
-                authors = re.split(year_ptn, splitted[0])
-                if len(authors) > 1:
-                    authors = authors[-1]
-                else:
-                    raise Exception
-                publication = splitted[1]
-                paper_list.append({'authors':authors, 'publication':publication})
+        cache = get_object_or_404(LattesCache, people=network.people)
+        cache_age = datetime.date.today() - cache.last_update
+        if cache_age.days > 5:
+            text = get_text_from_lattes(network.lattes)
+            cache.text = text
+            cache.save()
+        return cache.text
+    except Http404, e:
+        print Http404, e
+        text = get_text_from_lattes(network.lattes)
+        if text: # no timeout...
+            cache = LattesCache(people=network.people, text=text)
+            cache.save()
+        return cache.text
+
+
+def get_text_from_lattes(lattes_url):
+    validator = URLValidator(verify_exists=False)
+    try:
+        validator(lattes_url)
+        lattes_data = requests.get(lattes_url, timeout=5.000)
     except ValidationError, e:
-        print "invalid url"
+        print "invalid url", e
         return None
     except Timeout, e:
-        print "timeout"
+        print "timeout", e
         return None
     except Exception, e:
         print "unexpected exception", e
         return None
+    return lattes_data.text
+
+
+def parse_lattes_text(text):
+    soup = BeautifulSoup(text)
+    paper_div = soup.findAll('div', {'class':"artigo-completo"})
+    paper_list = []
+    year_ptn = re.compile("[0-9]{4}", re.MULTILINE)
+    for paper in paper_div:
+        paper_line = paper.get_text()
+        splitted = paper_line.split(' . ')
+        if len(splitted) > 1:
+            authors = re.split(year_ptn, splitted[0])
+            if len(authors) > 1:
+                authors = authors[-1]
+            else:
+                raise Exception
+            publication = splitted[1]
+            paper_list.append({'authors':authors, 'publication':publication})
     return paper_list
