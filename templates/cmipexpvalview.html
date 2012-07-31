@@ -1,35 +1,44 @@
 {% extends 'cmiphome.html' %}
 
 {% block body %}
-    <div class="exp_view">
-        <p class="exp_view_section">Validation Images for {{ expname }}</p>
-    </div>
-    <div class="graphics_info">
-        Graphics info:<br>
-        Start Date: {{ log.start_date }}<br>
-        End Date: {{ log.end_date }}<br>
-        Last Generated: {{ log.last_generated }}
-    </div>
-    <div class="accordion_container" id="accordion">
-        {% for pair in imgs %}
-            <h3 class="accordion_header"><a class="accordion_link" href="#">Graphics for {{ pair.0 }}</a></h3>
-            <div>
-                {% for img in pair.1 %} 
-                    <a href="{{ img }}" rel="lightbox[{{ pair.0 }}]"><img src="{{ img }}" width=300/></a>
-                {% endfor %}
+<div class="container">
+    <div class="row"><br>
+        <div class="span10">
+            <div class="well">
+                <h2>Validation Images for {{ expname }}</h2>
             </div>
-        {% endfor %}
-{% if has_figs %}
-        {% for variable in ensemble_figs %}
-            <h3 class="accordion_header"><a class="accordion_link" href="#">{{ variable.0 }}</a></h3>
-            <div>
-                {% for img in variable.1 %}
-                    <a href="{{ img }}" rel="lightbox[{{ variable }}]"><img src={{ img }} width=300/></a>
-                {% endfor %}
+            <div class="well">
+                <h3>Graphics Info:</h3>
+                <strong>Start Date</strong> {{ log.start_date }}<br>
+                <strong>End Date</strong> {{ log.end_date }}<br>
+                <strong>Last Generated</strong> {{ log.last_generated }}
             </div>
-        {% endfor %}
+            {% if has_figs %} {# leo's figs #}
+                {% for var in ensemble_figs %}
+                    <div class="well">
+                        <a href="#cat{{ var.0 }}" data-toggle="collapse">{{ var.0 }}</a>
+                        <div class="collapse out" id="cat{{ var.0 }}"><br>
+                            {% for img in var.1 %}
+                                <img src={{ img }} width=300/>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% for cat in imgs %}
+                    <div class="well">
+                        <a data-toggle="collapse" href="#cat{{ cat.0 }}">{{ cat.0 }}</a>
+                        <div class="collapse out" id="cat{{ cat.0 }}">
+                            {% for img in cat.1 %} 
+                                <img src="{{ img }}" width=300/>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
-{% endif %}
+</div>
 
 {% endblock %}
 
