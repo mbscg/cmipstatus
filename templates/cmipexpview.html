@@ -35,7 +35,9 @@
                 <a href="/cmip/validation/{{ member_info.member }}">{{ member_info.member }}</a>
                         </div><!-- fim span sinal+nome -->
                         <div class="span3"><!-- span progress -->
-                <progress value={{ member_info.prog }} title="{{ member_info.text_total }}%"></progress>
+                            <div class="progress progress-striped active" title="{{ member_info.text_total }}%">
+                              <div class="bar" style="width: {{ member_info.text_total }}%"></div>
+                            </div>
                         </div><!-- fim span progress -->
                         <div class="span3"><!-- span descricao -->
 
