@@ -19,16 +19,16 @@
                     <div class="well">
                     <span class="small-info">CO2: {{ exp.1.co2 }}</span>
                   {% for minfo in exp.1.minfo %}
-                    <div class="row"><br>
+                    <div class="row">
                       <div class="span1">
                         {{ minfo.member }}
                       </div>
-                      <div class="span2">
-                        <progress class="exp_progress_small" 
-                                  value={{ minfo.prog }} title="{{ minfo.text_total }}%">
-                        </progress>
-                      </div>
                       <div class="span4">
+                        <div class="progress progress-striped active" title="{{ minfo.text_total }}%">
+                          <div class="bar" style="width: {{ minfo.text_total }}%"></div>
+                        </div>
+                      </div>
+                      <div class="span2">
                         ({{ minfo.finished_years }} of {{ minfo.total_years }}y)
                       </div>
                     </div>
@@ -57,12 +57,12 @@
                       <div class="span1">
                         {{ minfo.member }}
                       </div>
-                      <div class="span2">
-                        <progress class="exp_progress_small" 
-                                  value={{ minfo.prog }} title="{{ minfo.text_total }}%">
-                        </progress>
-                      </div>
                       <div class="span4">
+                            <div class="progress progress-striped active" title="{{ minfo.text_total }}%">
+                              <div class="bar" style="width: {{ minfo.text_total }}%"></div>
+                            </div>
+                      </div>
+                      <div class="span2">
                         ({{ minfo.finished_years }} of {{ minfo.total_years }}y)
                       </div>
                     </div>
@@ -92,9 +92,9 @@
                         {{ minfo.member }}
                       </div>
                       <div class="span2">
-                        <progress class="exp_progress_small" 
-                                  value={{ minfo.prog }} title="{{ minfo.text_total }}%">
-                        </progress>
+                            <div class="progress progress-striped active" title="{{ minfo.text_total }}%">
+                              <div class="bar" style="width: {{ minfo.text_total }}%"></div>
+                            </div>
                       </div>
                       <div class="span4">
                         ({{ minfo.finished_years }} of {{ minfo.total_years }}y)
