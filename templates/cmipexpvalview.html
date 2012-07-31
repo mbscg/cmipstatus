@@ -1,9 +1,11 @@
 {% extends 'cmiphome.html' %}
 
+{% load thumbnail %}
+
 {% block body %}
 <div class="container">
     <div class="row"><br>
-        <div class="span10">
+        <div class="span11">
             <div class="well">
                 <h2>Validation Images for {{ expname }}</h2>
             </div>
@@ -13,29 +15,22 @@
                 <strong>End Date</strong> {{ log.end_date }}<br>
                 <strong>Last Generated</strong> {{ log.last_generated }}
             </div>
-            {% if has_figs %} {# leo's figs #}
-                {% for var in ensemble_figs %}
-                    <div class="well">
-                        <a href="#cat{{ var.0 }}" data-toggle="collapse">{{ var.0 }}</a>
-                        <div class="collapse out" id="cat{{ var.0 }}"><br>
-                            {% for img in var.1 %}
-                                <img src={{ img }} width=300/>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
                 {% for cat in imgs %}
                     <div class="well">
                         <a data-toggle="collapse" href="#cat{{ cat.0 }}">{{ cat.0 }}</a>
                         <div class="collapse out" id="cat{{ cat.0 }}">
+                            <ul class="thumbnails">
                             {% for img in cat.1 %} 
-                                <img src="{{ img }}" width=300/>
+                                <li class="span1">
+                                    <div class="thumbnail">
+                                        <a href="{{ img }}"><img src="{{ img }}" title="{{ img }}"></a>
+                                    </div>
+                                </li>
                             {% endfor %}
+                            </ul>
                         </div>
                     </div>
                 {% endfor %}
-            {% endif %}
         </div>
     </div>
 </div>

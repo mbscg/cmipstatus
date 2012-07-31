@@ -189,12 +189,11 @@ def expvalview(request, expname):
             for fig in figs:
                 if scalar in fig:
                     scalar_figs.append(fig)
-        ensemble_figs.append(['other scalar stats', scalar_figs])
-        
+        ensemble_figs.append(['other', scalar_figs])
+        imgs = ensemble_figs    
         
     return render_to_response("cmipexpvalview.html", 
                              {'imgs':imgs, 'expname':expname, 'log':yaml_log,
-                              'ensemble_figs': ensemble_figs, 'has_figs':has_new_figs,
                               'user':user})
 
 
