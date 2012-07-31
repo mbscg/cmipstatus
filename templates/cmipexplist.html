@@ -10,8 +10,8 @@
             <h3>Running OK</h3>
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target=".expcollapse">Hide/Show All</button>
-          <div class="collapse in" id="running">
-            {% for exp in running %}<br>
+          <div class="collapse in" id="running"><br>
+            {% for exp in running %}
                 <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
                         data-target="#exp{{ exp.0.id }}">Details</button>
@@ -45,8 +45,8 @@
             <h3>Running with Errors</h3><h4>Total errors: {{ total_errors }}</h4>
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target=".expcollapse-errors">Hide/Show All</button>
-          <div class="collapse in" id="running-errors">
-            {% for exp in running_errors %}<br>
+          <div class="collapse in" id="running-errors"><br>
+            {% for exp in running_errors %}
                 <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
                         data-target="#exp{{ exp.0.id }}-errors">Details</button>
@@ -79,8 +79,8 @@
             <h3>Running with Aborted</h3><h4>Total Aborted {{ total_aborted }} </h4>
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target=".expcollapse-aborted">Hide/Show All</button>
-          <div class="collapse in" id="running-aborted">
-            {% for exp in running_aborted %}<br>
+          <div class="collapse in" id="running-aborted"><br>
+            {% for exp in running_aborted %}
                 <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
                         data-target="#exp{{ exp.0.id }}-aborted">Details</button>
@@ -117,7 +117,7 @@
             <h3>Finished OK</h3>
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target="#finished">Hide/Show All</button>
-              <div class="collapse in" id="finished">
+              <div class="collapse in" id="finished"><br>
                           {% for exp in finished %}
                             <li>
                               <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
@@ -133,7 +133,7 @@
             <h3>Finished with Aborted</h3>
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target="#aborted">Hide/Show All</button>
-              <div class="collapse in" id="aborted">
+              <div class="collapse in" id="aborted"><br>
                           {% for expa in finished_aborted %}
                             <li>
                               <a href="/cmip/expview/{{ expa.0.name }}">{{ expa.0.name }}</a>
