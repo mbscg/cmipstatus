@@ -118,6 +118,7 @@
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target="#finished">Hide/Show All</button>
               <div class="collapse in" id="finished"><br>
+                <ul class="unstyled">
                           {% for exp in finished %}
                             <li>
                               <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
@@ -126,6 +127,7 @@
                           {% empty %}
                             <li>None</li>
                           {% endfor %}
+                </ul>
               </div>
           </div>
 
@@ -134,6 +136,7 @@
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target="#aborted">Hide/Show All</button>
               <div class="collapse in" id="aborted"><br>
+                <ul class="unstyled">
                           {% for expa in finished_aborted %}
                             <li>
                               <a href="/cmip/expview/{{ expa.0.name }}">{{ expa.0.name }}</a>
@@ -142,6 +145,7 @@
                           {% empty %}
                             <li>None</li>
                           {% endfor %}
+                </ul>
               </div>
           </div>
 
