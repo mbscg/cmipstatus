@@ -1,19 +1,27 @@
-{% extends "cmiphome.html" %}
+{% extends 'cmiphome.html' %}
 
 {% block body %}
-<p class="list_header">Showing all log entries</p>
-<p class="prof_about">You can subscribe to the <a class="rss_link" href="/cmip/news/feed/"><img src="/media/feed-icon-28x28.png"/>RSS Feed</a></p>
-<ul class="log_list">
-{% for log in logs %}
-    <li class="log_item">
-        <ul class="log_item_list">
-            <li class="log_item_message">{{ log.message }}</li>
-            <li class="log_item_timestamp">{{ log.when }}</li>
-        </ul>
-    </li>
-{% empty %}
-    <li class="log_item">No logs</li>
-{% endfor %}
-</ul>
+<div class="container">
+    <div class="row"><br>
+        <div class="span10">
+
+            <div class="well">
+                <h2>Events</h2>
+                <h3>You can subscribe to the <a class="rss_link" href="/cmip/news/feed/"><img src="/media/feed-icon-28x28.png"/>RSS Feed</a></h3>
+            </div>
+
+            <div class="well">
+                <ul class="unstyled">
+                    {% for log in logs %}
+                        <li>{{ log.message }}<span class="small-info">{{ log.when }}</li>
+                    {% empty %}
+                        <li>No logs</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
 {% endblock %}
 
