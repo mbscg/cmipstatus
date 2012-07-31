@@ -1,97 +1,100 @@
 {% extends 'cmiphome.html' %}
 
 {% block body %}
-<div class="exp_view">
-    <p class="exp_view_section">Experiment: {{ title }}</p>
-    <p>Click exp/member name to see its figures</p>
+<div class="container">
+    <div class="row"><br>
+        <div class="span10">
+            <div class="well">
+                <h2>Experiment: {{ title }}</h2>
+                <p>Click exp/member name to see its figures</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <ul class='exp_list'>
-        {% for member_info in minfo %}
-
-        <li {%if member_info.error %} class="err_exp_info" {% endif %}>
-            <table class="exp_line"><tr class="exp_line">
-            <!-- signal -->
-            <td width=120>
-            <span class="signal">
-            {% if member_info.post %}
-                <img src="/media/azul.png" width=10 title="Post-Processing"/> <!-- post -->
-            {% elif  member_info.running %}
-                <img src="/media/verde.png" width=10 title="Running"/> <!-- running -->
-            {% elif member_info.aborted %}
+<div class="container">
+    <div class="row"><br> <!-- start exps row -->
+        <div class="span10"> <!-- span exps -->
+            <div class="well"> <!-- well exps -->
+                {% for member_info in minfo %}
+                    <div class="row"><br><!-- row interno -->
+                        <div class="span2"><!-- span sinal+nome -->
+                            {% if member_info.post %}
+                <img src="/media/azul.png" width=10 title="Post-Processing"/>
+                            {% elif  member_info.running %}
+                <img src="/media/verde.png" width=10 title="Running"/>
+                            {% elif member_info.aborted %}
                 <img src="/media/vermelho.png" width=10 title="Error"/>
-            {% elif member_info.complete %}
+                            {% elif member_info.complete %}
                 <img src="/media/final.png" width=10 title="Finished"/>
-            {% elif member_info.error %}
+                            {% elif member_info.error %}
                 <img src="/media/vermelho.png" width=10 title="Error"/>
-            {% else %}
-                <img src="/media/amarelo.png" width=10 title="Waiting/Copying"/> <!-- waiting -->
-            {% endif %}
+                            {% else %}
+                <img src="/media/amarelo.png" width=10 title="Waiting/Copying"/>
+                            {% endif %}
+                <a href="/cmip/validation/{{ member_info.member }}">{{ member_info.member }}</a>
+                        </div><!-- fim span sinal+nome -->
+                        <div class="span3"><!-- span progress -->
+                <progress value={{ member_info.prog }} title="{{ member_info.text_total }}%"></progress>
+                        </div><!-- fim span progress -->
+                        <div class="span3"><!-- span descricao -->
 
-            <!-- name and link -->
-            <a class="val_link" href="/cmip/validation/{{ member_info.member }}">{{ member_info.member }}</a>
-            </span>
-            </td>
+                            <span 
+                title="{% if member_info.running %}[{{ member_info.text_run }}% on run {{ member_info.current }}{% else %}[Completed {{ member_info.last }} runs{% endif %} of {{ member_info.total }}]">
 
-            <td width=200>
-            <!-- progressbar -->
-            <progress class="exp_progress" value={{ member_info.prog }} title="{{ member_info.text_total }}%"></progress>
-            </td>
-
-            <td>
-            <!-- run info -->
-            <span class="exp_progress_details" 
-                  title="{% if member_info.running %}[{{ member_info.text_run }}% on run {{ member_info.current }}
-                         {% else %}[Completed {{ member_info.last }} runs{% endif %} of {{ member_info.total }}]">
-                {% if not member_info.complete %}
-                    {{ member_info.text_total }}% ({{ member_info.finished_years }} 
-                    years of {{ member_info.total_years }})
-                {% else %}
-                    {% if member_info.aborted %}
-                        Aborted in
-                    {% else %}
-                        Completed 
-                    {% endif %}
-                    {{ member_info.finished_years }} years.
-                    {% if member_info.error %}
-                        Error ocurred in last run.
-                    {% endif %}
-                {% endif %}
-                {% if member_info.total_errors %}
-                    Total errors: {{ member_info.total_errors }}
-                {% endif %}
-            </span>
-            </td>
-            </tr></table>
-        </li>
-        
-
-        {% empty %}No jobs submitted
-        {% endfor %}
-    </ul>
-    <p>Total errors in this list: {{ page_errors }}</p>
-</div>
-
-{% if logged %}
-<div class="discussion">
-    <ul class="discussion_list" id="collapsible">
-        <li><a class="accordion_link" href="#">Discussion ({{ comments.count  }})</a>
-            <ul class="comment_list">
-                {% for comment in comments %}
-                    <li class="comment">{{ comment.text }}</li>
-                    <li class="comment_author">{{ comment.author }}</li>
+                                {% if not member_info.complete %}
+                                    {{ member_info.text_total }}% ({{ member_info.finished_years }} 
+                                    years of {{ member_info.total_years }})
+                                {% else %}
+                                    {% if member_info.aborted %}
+                                        Aborted in
+                                    {% else %}
+                                        Completed 
+                                    {% endif %}
+                                    {{ member_info.finished_years }} years.
+                                    {% if member_info.error %}
+                                        Error ocurred in last run.
+                                    {% endif %}
+                                {% endif %}
+                                {% if member_info.total_errors %}
+                                    Total errors: {{ member_info.total_errors }}
+                                {% endif %}
+                            </span>
+                        </div><!-- fim span descricao -->
+                    </div><!-- fim row interno -->
                 {% empty %}
-                    <li>No comments in this experiment.</li>
+                    <p>No jobs submitted</p>
                 {% endfor %}
-                <li>
-                   <form style='display:inline' class='default' method="post" id="form" action="" enctype="multipart/form-data">
-                       {% csrf_token %}
-                       <p>{{ form.as_p }}<button class='default_btn' type="submit">Submit Comment</button></p>
-                    </form>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
-{% endif %}
+                <br><p>Total errors in this list: {{ page_errors }}</p>
+            </div><!-- fim well -->
+        </div><!-- fim span exps -->
+    </div><!-- fim row exps -->
+</div><!-- fim container exps -->
+
+
+    {% if logged %}
+        <div class="container">
+            <div class="row"><br>
+                <div class="span10">
+                    <div class="well">
+                        <h3>Discussion ({{ comments.count }})</h3>
+                        {% for comment in comments %}
+                            <br>
+                            <p class="post-body">{{ comment.text }}</p>
+                            <p><span class="small-info">{{ comment.author }}</p></span>
+                        {% empty %}
+                            <p>No comments in this experiment</p>
+                        {% endfor %}
+                        <form class="well" method="post" id="form" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button class='btn' type="submit">Submit Comment</button>
+                        </form>
+                    </div><!-- fim well -->
+                </div><!-- fim span -->
+            </div><!-- fim row -->
+        </div><!-- fim container -->
+    {% endif %}
+
 {% endblock %}
 
