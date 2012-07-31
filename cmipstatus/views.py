@@ -82,6 +82,7 @@ def expview(request, expname):
             new_comment = Comment(author=user, exp=exp, text=text)
             new_comment.save()
             form = FormComment()
+            info['form'] = form
     else:
         form = FormComment()
         info['form'] = form
