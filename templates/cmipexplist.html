@@ -5,15 +5,13 @@
   <div class="row">
     <div class="span10">
 
-              <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion11" href="#collapseRunning">Running Experiments</a>
-
-
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent"#accordion101" 
-                      href="#collapseRunningOK">Running OK</a>
+              <h2>Running Experiments</h2>
+                    <h3>Running OK</h3>
 
                       {# and now one accordion per exp #}
                       {% for exp in running %}<br>
-                        <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a> CO2: {{ exp.1.co2 }}
+                        <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                        <span class="small-info">CO2: {{ exp.1.co2 }}</span>
                           <div class="accordionROK{{ exp.0.id }}" id="accordionROKI{{ exp.0.id }}">
                             <div class="accordion-group">
                               <div class="accordion-heading">

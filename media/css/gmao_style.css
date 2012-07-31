@@ -99,6 +99,11 @@ span.timestamp{
     padding-bottom:10px;
 }
 
+span.small-info{
+    font-size:0.8em;
+    padding-left:5px;
+}
+
 ul.exp-list{
     list-style-type:none;
 }
