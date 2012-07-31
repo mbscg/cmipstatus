@@ -27,7 +27,9 @@
                                 {{ entry.decade }}
                             </div>
                             <div class="span3">
-                                    <progress value={{ entry.progress }}></progress>
+                               <div class="progress progress-striped active" title="{{ entry.text_progress }}">
+                                  <div class="bar" style="width: {{ entry.text_progress }}"></div>
+                               </div>
                             </div>
                             <div class="span4">
                                 {% if entry.error %}
