@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^cmip/expview/(.*)/$', 'cmipstatus.views.expview'),
     url(r'^cmip/validation/(.*)/$', 'cmipstatus.views.expvalview'),
     url(r'^cmip/outputs/$', 'cmipstatus.views.outputsview'),
-    url(r'^cmip/login/$', 'django.contrib.auth.views.login', {'template_name' : 'cmiplogin.html'}),
+    url(r'^cmip/login/$', 'django.contrib.auth.views.login', {'template_name' : 'gmaologin.html'}),
     url(r'^cmip/logout/$', 'django.contrib.auth.views.logout_then_login', {'login_url' : '/cmip/login/'}),
     
     url(r'^gmao/$', 'groupsite.views.home'),
