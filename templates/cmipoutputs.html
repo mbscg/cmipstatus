@@ -1,36 +1,56 @@
 {% extends "cmiphome.html" %}
 
 {% block body %}
-<p class="list_header">Conversion Progress</p>
-<p>(Beto mudou a pasta das saídas (novo nome do modelo). Esta é a situação na pasta nova.)</p>
-<ul class="exp_list">
-{% for entry in info %}
-    <li>
-        {% if entry.error %}
-            <img src="/media/vermelho.png" width=10 title="Error"/>
-            {{ entry.decade }}
-            <progress title="Error" value=0></progress>
-            (No information)
-        {% elif entry.count_error %}
-            <img src="/media/amarelo.png" width=10 title="Warning"/>
-            {{ entry.decade }}
-            <progress title="Warning" value={{ entry.progress }}></progress>
-            (Current > Expected. Check conversion/copy)
-        {% else %}
-            {% if entry.finished %}
-                <img src="/media/final.png" width=10 title="Finished"/>
+<div class="container">
+    <div class="row"><br>
+        <div class="span10">
+
+            <div class="well">
+                <h2>Conversion Progress</h2>
+                <p>(Beto mudou a pasta das saídas (novo nome do modelo). Esta é a situação na pasta nova.)</p>
+            </div>
+
+            {% if info %}
+                <div class="well">
+                    {% for entry in info %}
+                        <div class="row"><br>
+                            <div class="span2">
+                                {% if entry.error %}
+                                    <img src="/media/vermelho.png" width=10 title="Error"/>
+                                {% elif entry.count_error %}
+                                    <img src="/media/amarelo.png" width=10 title="Warning"/>
+                                {% elif entry.finished %}
+                                    <img src="/media/final.png" width=10 title="Finished"/>
+                                {% else %}
+                                    <img src="/media/verde.png" width=10 title="Running"/>
+                                {% endif %}
+                                {{ entry.decade }}
+                            </div>
+                            <div class="span3">
+                                    <progress value={{ entry.progress }}></progress>
+                            </div>
+                            <div class="span4">
+                                {% if entry.error %}
+                                    (No information)
+                                {% elif entry.count_error %}
+                                    (Current > Expected. Check conversion/copy)
+                                {% else %}
+                                    {{ entry.text_progress }}
+                                    ({{ entry.current }} months of {{ entry.expected }})
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             {% else %}
-                <img src="/media/verde.png" width=10 title="Running"/>
+                <div class="alert alert-warning">
+                    <p>Nothing going on!</p>
+                </div>   
             {% endif %}
-            {{ entry.decade }}
-            <progress title={{ entry.text_progress }} value={{ entry.progress }}></progress>
-            {{ entry.text_progress }}
-            ({{ entry.current }} months of {{ entry.expected }})
-        {% endif %}
-    </li>
-{% empty %}
-    <li>oops</li>
-{% endfor %}
-</ul>
+
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
