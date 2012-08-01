@@ -9,7 +9,7 @@
     <form class="well" method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save Changes</button>
+        <button type="submit" class="btn"><i class="icon-ok"></i> Save Changes</button>
     </form>
 </div>
 {% endblock %}
