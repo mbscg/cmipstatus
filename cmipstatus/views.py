@@ -125,7 +125,7 @@ def expview_util(expname, tupa_data, forcing=False):
 
 
 @login_required
-def newsview(request):
+def newslist(request):
     logs = ReportChangeLog.objects.order_by('-when')
     user = request.user
     return render_to_response('cmipnews.html', {'logs':logs, 'user':user})

@@ -40,7 +40,7 @@ def newspaper(request):
         )
 
 
-def news_view(request, news_id):
+def newsview(request, news_id):
     news = get_object_or_404(News, pk=news_id)
     imgs = NewsImg.objects.filter(news=news)
     return render_to_response("gmaonewsview.html",
@@ -53,7 +53,7 @@ def science(request):
         {'sciences':get_sciences(), 'user':request.user})
 
 
-def science_view(request, thing_id):
+def scienceview(request, thing_id):
     science = get_object_or_404(ScienceThing, pk=thing_id)
     video = get_object_or_404(YoutubeVideo, science_thing=science)
     return render_to_response("gmaoscienceview.html", 
@@ -78,7 +78,7 @@ def blog(request):
         )
 
 
-def post_view(request, post_id):
+def postview(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render_to_response("gmaopostview.html",
         {'post':post, 'user':request.user}
@@ -91,7 +91,7 @@ def people(request):
     return render_to_response("gmaopeople.html", {'people':all_people, 'user':request.user})
 
 
-def people_view(request, people_id):
+def peopleview(request, people_id):
     people = get_object_or_404(People, pk=people_id)
     posts = Post.objects.filter(author=people).order_by('-when').filter(approved=True)
     publications = Publication.objects.filter(author=people).order_by('-publication_date')
@@ -115,7 +115,7 @@ def people_view(request, people_id):
 
 
 @login_required
-def edit_profile(request):
+def editprofile(request):
     user = request.user
     people = get_object_or_404(People, username=user)
 
@@ -132,7 +132,7 @@ def edit_profile(request):
 
 
 @login_required
-def edit_network(request):
+def editnetwork(request):
     user = request.user
     people = get_object_or_404(People, username=user)
     network = NetworkInfo.objects.filter(people=people)
@@ -157,7 +157,7 @@ def edit_network(request):
 
 
 @login_required
-def edit_configs(request):
+def editconfigs(request):
     user = request.user
     people = get_object_or_404(People, username=user)
 
@@ -185,7 +185,7 @@ def edit_configs(request):
 
 
 @login_required
-def create_news(request):
+def createnews(request):
     user = request.user
     people = get_object_or_404(People, username=user)
 
@@ -211,7 +211,7 @@ def create_news(request):
 
 
 @login_required
-def create_post(request):
+def createpost(request):
     user = request.user
     people = get_object_or_404(People, username=user)
 
@@ -237,7 +237,7 @@ def create_post(request):
 
 
 @login_required
-def create_video(request):
+def createvideo(request):
     user = request.user
     people = get_object_or_404(People, username=user)
 
@@ -267,7 +267,7 @@ def create_video(request):
 
 
 @login_required
-def create_image(request):
+def createimage(request):
     user = request.user
 
     if request.method == 'POST':
@@ -290,7 +290,7 @@ def create_image(request):
 
 
 @login_required
-def upload_publication(request):
+def uploadpublication(request):
     user = request.user
     people = get_object_or_404(People, username=user)
 
@@ -315,7 +315,7 @@ def upload_publication(request):
 
 
 @login_required
-def editor_view(request):
+def editorview(request):
     user = request.user
     people = People.objects.get(username=user)
     try:
@@ -338,7 +338,7 @@ def editor_view(request):
 
 
 @login_required
-def auth_post(request, post_id):
+def authpost(request, post_id):
     user = request.user
     people = get_object_or_404(People, username=user)
     editor = get_object_or_404(Editor, people=people)
@@ -349,7 +349,7 @@ def auth_post(request, post_id):
 
 
 @login_required
-def deny_post(request, post_id):
+def denypost(request, post_id):
     user = request.user
     people = get_object_or_404(People, username=user)
     editor = get_object_or_404(Editor, people=people)
@@ -359,7 +359,7 @@ def deny_post(request, post_id):
 
 
 @login_required
-def auth_news(request, news_id):
+def authnews(request, news_id):
     user = request.user
     people = get_object_or_404(People, username=user)
     editor = get_object_or_404(Editor, people=people)
@@ -370,7 +370,7 @@ def auth_news(request, news_id):
 
 
 @login_required
-def deny_news(request, news_id):
+def denynews(request, news_id):
     user = request.user
     people = get_object_or_404(People, username=user)
     editor = get_object_or_404(Editor, people=people)
@@ -380,7 +380,7 @@ def deny_news(request, news_id):
 
 
 @login_required
-def auth_science(request, sci_id):
+def authscience(request, sci_id):
     user = request.user
     people = get_object_or_404(People, username=user)
     editor = get_object_or_404(Editor, people=people)
@@ -391,7 +391,7 @@ def auth_science(request, sci_id):
 
 
 @login_required
-def deny_science(request, sci_id):
+def denyscience(request, sci_id):
     user = request.user
     people = get_object_or_404(People, username=user)
     editor = get_object_or_404(Editor, people=people)
