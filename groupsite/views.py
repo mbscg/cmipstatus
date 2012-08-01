@@ -111,6 +111,11 @@ def peopleview(request, people_id):
          'lattes':lattes_pubs, 'social':social}
         )
 
+
+def moo(request):
+    return render_to_response("gmaomoo.html", {'user':request.user})
+
+
 # RESTRICTED VIEWS SECTION
 
 
