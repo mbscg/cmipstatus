@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from models import Experiment, Member, People, Comment, ReportChangeLog, get_tupa_data
 from models import ConvReport
 from forms import FormComment
@@ -104,7 +104,7 @@ def expview_util(expname, tupa_data, forcing=False):
 
     if members:
         exp = members
-    
+
     if expname in settings.server_configs['CO2_info']['fixed']:
         info['co2'] = 'Fixed'
     elif expname in settings.server_configs['CO2_info']['increment']:
@@ -135,66 +135,11 @@ def newslist(request):
 @login_required
 def expvalview(request, expname, member):
     user = request.user
-    if member:
-        is_member = True
-        member = orig_member
-        screen_name = expname + member
-    else:
-        is_member = False
-        member = '_1'
-        screen_name = expname
-
-    FIGS_URL = settings.server_configs['imgs_info']['local_figs'].format(expname+member)
-    FIGS_LOG = settings.server_configs['imgs_info']['local_logs'].format(expname+member)
-    FIGS_LOG = os.path.join(settings.server_configs['site_root'], FIGS_LOG)
-    if os.path.exists(FIGS_LOG):
-        yaml_log = yaml.load(open(FIGS_LOG, 'r'))
-    else:
-        yaml_log = {'start_date':'unknown', 'end_date':'unknown'}
-
-    imgs = []
-    regions = settings.server_configs['imgs_info']['regions']
-    types = settings.server_configs['imgs_info']['infotype']
-    for typ in types:
-        type_imgs = []
-        for region in regions:
-            gif = settings.server_configs['imgs_info']['figs_file']
-            gif = gif.format(region, typ, expname, yaml_log['start_date'],
-                             yaml_log['end_date'])
-            type_imgs.append(os.path.join(FIGS_URL, gif))
-        imgs.append([typ, type_imgs])
-
-
-    media_figs_dir = settings.server_configs['imgs_info']['local_new_figs'].format(expname)
-    new_figs_dir = os.path.join(settings.server_configs['site_root'], media_figs_dir)
-    if is_member:
-        candidate = glob.glob(os.path.join(new_figs_dir, '*'+member))
-        if candidate:
-            new_figs_dir = candidate[0]
-            media_figs_dir = os.path.join(media_figs_dir, os.path.split(new_figs_dir)[1]) 
-    has_new_figs = os.path.exists(new_figs_dir) and [f for f in os.listdir(new_figs_dir) if '.jpg' in f]
-    ensemble_figs = []
-    
-    if has_new_figs:
-        figs = os.listdir(new_figs_dir)
-        figs = [os.path.join('/', media_figs_dir, f) for f in figs if '.jpg' in f]
-        figs.sort()
-        for variable in settings.server_configs['imgs_info']['ensembled']['variables']:
-            var_figs = []
-            for fig in figs:
-                if '_'+variable+'_' in fig or '_'+variable+'.' in fig:
-                    var_figs.append(fig)
-            ensemble_figs.append([variable, var_figs])
-        scalar_figs = []
-        for scalar in settings.server_configs['imgs_info']['ensembled']['scalars']:
-            for fig in figs:
-                if scalar in fig:
-                    scalar_figs.append(fig)
-        ensemble_figs.append(['other', scalar_figs])
-        imgs = ensemble_figs    
+    exp = get_object_or_404(Experiment, name=expname)
+    imgs, screen_name, log = exp.get_validation_data(member=member)
         
     return render_to_response("cmipexpvalview.html", 
-                             {'imgs':imgs, 'expname':screen_name, 'log':yaml_log,
+                             {'imgs':imgs, 'expname':screen_name, 'log':log,
                               'user':user})
 
 
