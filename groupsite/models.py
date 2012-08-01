@@ -1,10 +1,12 @@
+# -*- encoding: utf-8 -*-
+
 from django.db import models
 from cmipstatus.models import People
 
 class News(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.CharField(max_length=4096)
-    long_content = models.TextField(default=" ")
+    title = models.CharField(max_length=200, verbose_name="Título")
+    content = models.CharField(max_length=4096, verbose_name="Descrição")
+    long_content = models.TextField(default=" ", verbose_name="Conteúdo")
     when = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(People)
     approved = models.BooleanField(default=False)
@@ -14,8 +16,8 @@ class News(models.Model):
 
 
 class NewsImg(models.Model):
-    news = models.ForeignKey('News')
-    img = models.ImageField(max_length=1024, upload_to='media')
+    news = models.ForeignKey('News', verbose_name="Notícia")
+    img = models.ImageField(max_length=1024, upload_to='media', verbose_name="Imagem")
 
     def __unicode__(self):
         return self.news.title
