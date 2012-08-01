@@ -133,3 +133,13 @@ img.social-icon{
     height:25px;
     padding:2px;
 }
+
+
+[class^="icon-"],
+[class*=" icon-"] {
+    background-image: url("/media/img/glyphicons-halflings.png");
+}
+
+.icon-white {
+  background-image: url("/media/img/glyphicons-halflings-white.png");
+}
