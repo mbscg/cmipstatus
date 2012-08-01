@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 from django import forms
 from models import News, Post, ScienceThing, YoutubeVideo, NewsImg
 from models import Publication, NetworkInfo
@@ -19,9 +21,9 @@ class FormPost(forms.ModelForm):
 
 
 class FormVideo(forms.Form):
-    youtube_link = forms.CharField(max_length=1024)
-    short = forms.CharField(max_length=256)
-    description = forms.CharField(max_length=2048)
+    youtube_link = forms.CharField(max_length=1024, label="Link Youtube")
+    short = forms.CharField(max_length=256, label="Título")
+    description = forms.CharField(max_length=2048, label="Descrição")
 
 
 class FormImage(forms.ModelForm):

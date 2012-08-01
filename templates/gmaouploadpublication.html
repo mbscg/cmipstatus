@@ -19,9 +19,9 @@
         {% csrf_token %}
         {% for field in form %}
             {% if field.name == 'publication_date'%}
-                <p>{{ field.name }}<br><input type="date" name="publication_date" id="id_publication_date" /></p>
+                <p>{{ field.label }}<br><input type="date" name="publication_date" id="id_publication_date" /></p>
             {% else %}
-                <p>{{ field.name }}<br>{{ field }}</p>
+                <p>{{ field.label }}<br>{{ field }}</p>
             {% endif %}
         {% endfor %}
         {# form.as_p #}
