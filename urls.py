@@ -2,6 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from cmipstatus.models import FeedFetcher
+from cmipstatus.urls import urlpatterns as cmip_patterns
 
 admin.autodiscover()
 
@@ -11,15 +12,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^cmip/$', 'cmipstatus.views.home'),
-    url(r'^cmip/list/$', 'cmipstatus.views.explist'),
-    url(r'^cmip/news/$', 'cmipstatus.views.newsview'),
-    url(r'^cmip/news/feed/$', FeedFetcher()),
-    url(r'^cmip/expview/(\w{3}\d{3})/$', 'cmipstatus.views.expview'),
-    url(r'^cmip/validation/(\w{3}\d{3})(_\d+)?/$', 'cmipstatus.views.expvalview'),
-    url(r'^cmip/outputs/$', 'cmipstatus.views.outputsview'),
-    url(r'^cmip/login/$', 'django.contrib.auth.views.login', {'template_name' : 'gmaologin.html'}),
-    url(r'^cmip/logout/$', 'django.contrib.auth.views.logout_then_login', {'login_url' : '/cmip/login/'}),
+    url(r'^cmip/', include(cmip_patterns)),
     
     url(r'^gmao/$', 'groupsite.views.home'),
     url(r'^gmao/people/$', 'groupsite.views.people'),
