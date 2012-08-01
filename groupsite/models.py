@@ -24,8 +24,8 @@ class NewsImg(models.Model):
 
 
 class ScienceThing(models.Model):
-    short = models.CharField(max_length=256)
-    description = models.CharField(max_length=2048)
+    short = models.CharField(max_length=256, verbose_name="Título")
+    description = models.CharField(max_length=2048, verbose_name="Descrição")
     approved = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -34,16 +34,16 @@ class ScienceThing(models.Model):
 
 class YoutubeVideo(models.Model):
     science_thing = models.ForeignKey('ScienceThing')
-    video_link = models.CharField(max_length=1024)
+    video_link = models.CharField(max_length=1024, verbose_name="Link do Vídeo (embed)")
 
     def __unicode__(self):
         return self.science_thing.short
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=512)
-    description = models.TextField(default=" ")
-    content = models.TextField(default=" ")
+    title = models.CharField(max_length=512, verbose_name="Título")
+    description = models.TextField(default=" ", verbose_name="Descrição")
+    content = models.TextField(default=" ", verbose_name="Conteúdo")
     when = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(People)
     approved = models.BooleanField(default=False)
@@ -53,12 +53,12 @@ class Post(models.Model):
 
 
 class Publication(models.Model):
-    title = models.CharField(max_length=256)
-    description = models.TextField(default="")
+    title = models.CharField(max_length=256, verbose_name="Título")
+    description = models.TextField(default="", verbose_name="Descrição")
     when = models.DateTimeField(auto_now_add=True)
-    publication_date = models.DateField()
+    publication_date = models.DateField(verbose_name="Data de Publicação")
     author = models.ForeignKey(People)
-    pdf = models.FileField(max_length=1024, upload_to='publications')
+    pdf = models.FileField(max_length=1024, upload_to='publications', verbose_name="Arquivo")
 
     def __unicode__(self):
         return ', '.join([self.title, self.author.name])
