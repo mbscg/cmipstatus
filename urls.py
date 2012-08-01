@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 from cmipstatus.models import FeedFetcher
 from cmipstatus.urls import urlpatterns as cmip_patterns
+from groupsite.urls import urlpatterns as gmao_patterns
 
 admin.autodiscover()
 
@@ -13,36 +14,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^cmip/', include(cmip_patterns)),
-    
-    url(r'^gmao/$', 'groupsite.views.home'),
-    url(r'^gmao/people/$', 'groupsite.views.people'),
-    url(r'^gmao/people/(\d+)/$', 'groupsite.views.people_view'),
-    url(r'^gmao/newspaper/$', 'groupsite.views.newspaper'),
-    url(r'^gmao/news/$', 'groupsite.views.news'),
-    url(r'^gmao/news/(\d+)/$', 'groupsite.views.news_view'),
-    url(r'^gmao/science/$', 'groupsite.views.science'),
-    url(r'^gmao/science/(\d+)/$', 'groupsite.views.science_view'),
-    url(r'^gmao/publications/$', 'groupsite.views.publications'),
-    url(r'^gmao/blog/$', 'groupsite.views.blog'),
-    url(r'^gmao/posts/$', 'groupsite.views.posts'),
-    url(r'^gmao/posts/(\d+)/$', 'groupsite.views.post_view'),
-    url(r'^gmao/restricted/edit/$', 'groupsite.views.edit_profile'),
-    url(r'^gmao/restricted/networking/$', 'groupsite.views.edit_network'),
-    url(r'^gmao/restricted/configs/$', 'groupsite.views.edit_configs'),
-    url(r'^gmao/restricted/create_news/$', 'groupsite.views.create_news'),
-    url(r'^gmao/restricted/create_post/$', 'groupsite.views.create_post'),
-    url(r'^gmao/restricted/create_video/$', 'groupsite.views.create_video'),
-    url(r'^gmao/restricted/create_image/$', 'groupsite.views.create_image'),
-    url(r'^gmao/restricted/editor/$', 'groupsite.views.editor_view'),
-    url(r'^gmao/restricted/authorize_post/(\d+)/$', 'groupsite.views.auth_post'),
-    url(r'^gmao/restricted/deny_post/(\d+)/$', 'groupsite.views.deny_post'),
-    url(r'^gmao/restricted/authorize_news/(.*)/$', 'groupsite.views.auth_news'),
-    url(r'^gmao/restricted/deny_news/(\d+)/$', 'groupsite.views.deny_news'),
-    url(r'^gmao/restricted/authorize_science/(\d+)/$', 'groupsite.views.auth_science'),
-    url(r'^gmao/restricted/deny_science/(\d+)/$', 'groupsite.views.deny_science'),
-    url(r'^gmao/restricted/upload_publication/$', 'groupsite.views.upload_publication'),
-    url(r'^gmao/login/$', 'django.contrib.auth.views.login', {'template_name' : 'gmaologin.html'}),
-    url(r'^gmao/logout/$', 'django.contrib.auth.views.logout_then_login', {'login_url' : '/gmao/login/'}),
+    url(r'^gmao/', include(gmao_patterns)),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
