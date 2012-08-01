@@ -133,18 +133,19 @@ def newsview(request):
 
 
 @login_required
-def expvalview(request, expname):
+def expvalview(request, expname, member):
     user = request.user
-    is_member = False
-    if '_' not in expname:
-        pure_expname = expname 
-        expname += '_1'
-    else:
-        pure_expname = expname.split('_')[0]
-        member = expname.split('_')[1]
+    if member:
         is_member = True
-    FIGS_URL = settings.server_configs['imgs_info']['local_figs'].format(expname)
-    FIGS_LOG = settings.server_configs['imgs_info']['local_logs'].format(expname)
+        member = orig_member
+        screen_name = expname + member
+    else:
+        is_member = False
+        member = '_1'
+        screen_name = expname
+
+    FIGS_URL = settings.server_configs['imgs_info']['local_figs'].format(expname+member)
+    FIGS_LOG = settings.server_configs['imgs_info']['local_logs'].format(expname+member)
     FIGS_LOG = os.path.join(settings.server_configs['site_root'], FIGS_LOG)
     if os.path.exists(FIGS_LOG):
         yaml_log = yaml.load(open(FIGS_LOG, 'r'))
@@ -158,13 +159,13 @@ def expvalview(request, expname):
         type_imgs = []
         for region in regions:
             gif = settings.server_configs['imgs_info']['figs_file']
-            gif = gif.format(region, typ, pure_expname, yaml_log['start_date'],
+            gif = gif.format(region, typ, expname, yaml_log['start_date'],
                              yaml_log['end_date'])
             type_imgs.append(os.path.join(FIGS_URL, gif))
         imgs.append([typ, type_imgs])
 
 
-    media_figs_dir = settings.server_configs['imgs_info']['local_new_figs'].format(pure_expname)
+    media_figs_dir = settings.server_configs['imgs_info']['local_new_figs'].format(expname)
     new_figs_dir = os.path.join(settings.server_configs['site_root'], media_figs_dir)
     if is_member:
         candidate = glob.glob(os.path.join(new_figs_dir, '*'+member))
@@ -193,7 +194,7 @@ def expvalview(request, expname):
         imgs = ensemble_figs    
         
     return render_to_response("cmipexpvalview.html", 
-                             {'imgs':imgs, 'expname':expname, 'log':yaml_log,
+                             {'imgs':imgs, 'expname':screen_name, 'log':yaml_log,
                               'user':user})
 
 
