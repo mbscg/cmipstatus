@@ -16,17 +16,29 @@
         <span class="news-description">{{ news.content|linebreaksbr }}</span>
     </div>
 </div>
+{% if imgs or attach %}
 <div class="row"><br>
     <div class="span12">
         <div class="well">
-        {% for img in imgs %}
-            {% thumbnail img.img "x100" crop="center" as im %}
-                <a href="{{ img.img.url }}"><img src="{{ im.url }}"></a>
-            {% endthumbnail %}
-        {% endfor %}
+        {% if imgs %}
+            <h3>Imagens</h3>
+            {% for img in imgs %}
+                {% thumbnail img.img "x100" crop="center" as im %}
+                    <a href="{{ img.img.url }}"><img src="{{ im.url }}"></a>
+                {% endthumbnail %}
+            {% endfor %}
+            <br><br>
+        {% endif %}
+        {% if attach %}
+            <h3>Arquivos Anexos</h3>
+            {% for att in attach %}
+                <p><a href="{{ att.attachment.url }}">{{ att }}</a></p>
+            {% endfor %}
+        {% endif %}
         </div>
     </div>
 </div>
+{% endif %}
 <div class="row"><br>
     <div class="span12">
         <p class="news-body">{{ news.long_content|linebreaksbr }}</p>

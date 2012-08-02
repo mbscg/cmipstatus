@@ -2,7 +2,7 @@
 
 from django import forms
 from models import News, Post, ScienceThing, YoutubeVideo, NewsImg
-from models import Publication, NetworkInfo
+from models import Publication, NetworkInfo, NewsAttachment
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.admin.widgets import AdminDateWidget
 from datetime import date
@@ -29,6 +29,11 @@ class FormVideo(forms.Form):
 class FormImage(forms.ModelForm):
     class Meta:
         model = NewsImg
+
+
+class FormAttachment(forms.ModelForm):
+    class Meta:
+        model = NewsAttachment
 
 
 class FormPublication(forms.ModelForm):

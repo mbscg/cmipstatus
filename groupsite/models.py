@@ -25,10 +25,10 @@ class NewsImg(models.Model):
 
 class NewsAttachment(models.Model):
     news = models.ForeignKey('News', verbose_name="Notícia")
-    attachment = models.ImageField(max_length=1024, upload_to='media', verbose_name="Arquivo")
+    attachment = models.FileField(max_length=1024, upload_to='attachments', verbose_name="Arquivo")
 
     def __unicode__(self):
-        return self.news.title
+        return self.attachment.__unicode__()
 
 
 class ScienceThing(models.Model):

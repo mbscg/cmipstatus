@@ -5,10 +5,10 @@ from django.http import Http404
 from cmipstatus.models import People
 import os
 from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication
-from models import NetworkInfo, LattesCache, Editor
+from models import NetworkInfo, LattesCache, Editor, NewsAttachment
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
-from forms import FormNetwork
+from forms import FormNetwork, FormAttachment
 import requests
 from requests.exceptions import Timeout
 from django.core.validators import URLValidator
@@ -43,8 +43,9 @@ def newspaper(request):
 def newsview(request, news_id):
     news = get_object_or_404(News, pk=news_id)
     imgs = NewsImg.objects.filter(news=news)
+    attachments = NewsAttachment.objects.filter(news=news)
     return render_to_response("gmaonewsview.html",
-        {'news':news, 'imgs':imgs, 'user':request.user}
+        {'news':news, 'imgs':imgs, 'attach':attachments, 'user':request.user}
         )
 
 
@@ -291,6 +292,29 @@ def createimage(request):
 
     context = RequestContext(request)
     return render_to_response("gmaocreateimage.html", {'form':form, 'user':user},
+                              context_instance=context)    
+
+
+@login_required
+def createattachment(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = FormAttachment(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render_to_response("gmaook.html", {'user':user})
+        else:
+            context = RequestContext(request)
+            return render_to_response("gmaocreateattachment.html",
+                                      {'form':form, 'user':user, 'erro':True},
+                                      context_instance=context)
+
+    else:
+        form = FormAttachment()
+
+    context = RequestContext(request)
+    return render_to_response("gmaocreateattachment.html", {'form':form, 'user':user},
                               context_instance=context)    
 
 
