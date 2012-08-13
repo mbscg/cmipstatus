@@ -61,6 +61,11 @@ def scienceview(request, thing_id):
         {'science':science, 'video':video, 'user':request.user})
 
 
+def besmview(request):
+    return render_to_response("gmaoproject.html",
+        {'user':request.user})
+
+
 def publications(request):
     return render_to_response("gmaopublications.html", 
         {'publications':get_publications(), 'user':request.user})

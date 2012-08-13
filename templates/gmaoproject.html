@@ -1,0 +1,91 @@
+{% extends "gmaobase.html" %}
+
+{% block pagebanner %}
+<div class="hero-unit">
+<h1>GMAO</h1>
+<p>Grupo de Modelagem Acoplada Oceano-Atmosfera</p>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+
+    <div class="row"><br>
+        <div class="span8">
+            <div id="rotativenews" class="carousel slide">
+                <div class="carousel-inner">
+                    <div class="active item car-img">
+                        <a href="/gmao/news/{{ imgs.0.news }}"><img height=250 src="/media/{{ imgs.0.img }}"/></a>
+                        <div class="carousel-caption">
+                            <h4>{{ imgs.0.caption }}</h4>
+                        </div>
+                    </div>
+                    {% for img in imgs|slice:"1:" %}
+                        <div class="item car-img">
+                            <a href="/gmao/news/{{ img.news }}"><img height=250 class="car-img" src="/media/{{ img.img }}"/></a>
+                            <div class="carousel-caption">
+                                <h4>{{ img.caption }}</h4>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- carousel nav -->
+                <a class="carousel-control left" href="#rotativenews" data-slide="prev">&lsaquo;</a>
+                <a class="carousel-control right" href="#rotativenews" data-slide="next">&rsaquo;</a>
+            </div>
+        </div>
+        <div class="span4">
+            {# place for science #}
+            <h4>Destaques</h4><br>
+            {% for sci in sciences %}
+                <p><strong><a href="/gmao/science/{{ sci.id }}">{{ sci.short }}</a></strong></p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row"><br>
+        <div class="span8">
+            <h4>Notícias Recentes</h4>
+        </div>
+        <div class="span4">
+            <h4>Posts</h4>
+        </div>
+    </div>
+
+    <div class="row"><br>
+        <div class="span4"><br>
+            {# place for news #}
+            {% for n in news|slice:":2" %}
+                <p>
+                    <strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong><br>
+                    {{ n.content }}<br>
+                    <span class="timestamp">{{ n.when }}</span>
+                </p>
+            {% endfor %}
+        </div>
+        <div class="span4"><br>
+            {# place for news #}
+            {% for n in news|slice:"2:" %}
+                <p>
+                    <strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong><br>
+                    {{ n.content }}<br>
+                    <span class="timestamp">{{ n.when }}</span>
+                </p>
+            {% endfor %}
+        </div>
+        <div class="span4"><br>
+            {# place for posts #}
+            {% for post in posts %}
+                <p>
+                    <strong><a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a></strong><br>
+                    {{ post.description }}<br>
+                    <span class="timestamp">{{ post.when }}</span>
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

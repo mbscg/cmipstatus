@@ -10,6 +10,7 @@ class News(models.Model):
     when = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(People)
     approved = models.BooleanField(default=False)
+    besm = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title
@@ -35,6 +36,7 @@ class ScienceThing(models.Model):
     short = models.CharField(max_length=256, verbose_name="Título")
     description = models.CharField(max_length=2048, verbose_name="Descrição")
     approved = models.BooleanField(default=False)
+    besm = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.short
@@ -55,6 +57,7 @@ class Post(models.Model):
     when = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(People)
     approved = models.BooleanField(default=False)
+    besm = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title
@@ -67,6 +70,7 @@ class Publication(models.Model):
     publication_date = models.DateField(verbose_name="Data de Publicação")
     author = models.ForeignKey(People)
     pdf = models.FileField(max_length=1024, upload_to='publications', verbose_name="Arquivo")
+    besm = models.BooleanField(default=False)
 
     def __unicode__(self):
         return ', '.join([self.title, self.author.name])
