@@ -62,8 +62,11 @@ def scienceview(request, thing_id):
 
 
 def besmview(request):
-    return render_to_response("gmaoproject.html",
-        {'user':request.user})
+    return render_to_response("gmaoproject.html", 
+        {'imgs':get_imgs_news(besm=True), 'news':get_news(latest=True, besm=True),
+         'sciences':get_sciences(latest=True, besm=True), 'posts':get_posts(latest=True, besm=True),
+         'user':request.user}
+        )
 
 
 def publications(request):
@@ -441,35 +444,48 @@ def denyscience(request, sci_id):
 # UTILITIES SECTION
 
 
-def get_imgs_news():
+def get_imgs_news(besm=False):
     all_imgs = NewsImg.objects.order_by('-id')
-    imgs = [{'img':img.img, 'caption':img.news.title, 'news':img.news.id} for img in all_imgs if img.news.approved]
+    if besm:
+        imgs = [{'img':img.img, 'caption':img.news.title, 'news':img.news.id} for img in all_imgs if img.news.approved and img.news.besm]
+    else:
+        imgs = [{'img':img.img, 'caption':img.news.title, 'news':img.news.id} for img in all_imgs if img.news.approved]
     return imgs
 
 
-def get_news(latest=False):
-    many_news = News.objects.order_by('-when').filter(approved=True)[:50]
+def get_news(latest=False, besm=False):
+    many_news = News.objects.order_by('-when').filter(approved=True)
+    if besm:
+        many_news = many_news.filter(besm=True)
     if latest:
         many_news = many_news[:4]
+    else:
+        many_news = many_news[:50]
     return many_news
 
 
-def get_sciences(latest=False):
+def get_sciences(latest=False, besm=False):
     sciences = ScienceThing.objects.order_by('-id').filter(approved=True)
+    if besm:
+        sciences = sciences.filter(besm=True)
     if latest:
         sciences = sciences[:4]
     return sciences
 
 
-def get_publications(latest=False):
+def get_publications(latest=False, besm=False):
     publications = Publication.objects.order_by('-publication_date')
+    if besm:
+        publications = publications.filter(besm=True)
     if latest:
         publications = publications[:2]
     return publications
 
 
-def get_posts(latest=False):
+def get_posts(latest=False, besm=False):
     posts = Post.objects.order_by('-when').filter(approved=True)
+    if besm:
+        posts = posts.filter(besm=True)
     if latest:
         posts = posts[:2]
     return posts
