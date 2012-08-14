@@ -3,6 +3,7 @@
 from django import forms
 from models import News, Post, ScienceThing, YoutubeVideo, NewsImg
 from models import Publication, NetworkInfo, NewsAttachment
+from models import PostImg, PostAttachment
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.admin.widgets import AdminDateWidget
 from datetime import date
@@ -34,6 +35,16 @@ class FormImage(forms.ModelForm):
 class FormAttachment(forms.ModelForm):
     class Meta:
         model = NewsAttachment
+
+
+class FormPostImage(forms.ModelForm):
+    class Meta:
+        model = PostImg
+
+
+class FormPostAttachment(forms.ModelForm):
+    class Meta:
+        model = PostAttachment
 
 
 class FormPublication(forms.ModelForm):
