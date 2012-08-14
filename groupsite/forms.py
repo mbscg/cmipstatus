@@ -11,13 +11,13 @@ from datetime import date
 class FormNews(forms.ModelForm):
     class Meta:
         model = News
-        fields = ('title', 'content', 'long_content')
+        fields = ('title', 'content', 'long_content', 'besm')
 
 
 class FormPost(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'description', 'content')
+        fields = ('title', 'description', 'content', 'besm')
 
 
 class FormVideo(forms.Form):
@@ -39,7 +39,7 @@ class FormAttachment(forms.ModelForm):
 class FormPublication(forms.ModelForm):
     class Meta:
         model = Publication
-        fields = ('title', 'description', 'publication_date', 'pdf')
+        fields = ('title', 'description', 'publication_date', 'pdf', 'besm')
 
 
 class FormNetwork(forms.ModelForm):
