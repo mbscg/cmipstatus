@@ -9,7 +9,7 @@ from models import NetworkInfo, LattesCache, Editor, NewsAttachment, PostImg
 from models import PostAttachment
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
-from forms import FormNetwork, FormAttachment
+from forms import FormNetwork, FormAttachment, FormPostImage, FormPostAttachment
 import requests
 from requests.exceptions import Timeout
 from django.core.validators import URLValidator
@@ -327,6 +327,52 @@ def createattachment(request):
 
     else:
         form = FormAttachment()
+
+    context = RequestContext(request)
+    return render_to_response("gmaocreateattachment.html", {'form':form, 'user':user},
+                              context_instance=context)    
+
+
+@login_required
+def createpostimage(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = FormPostImage(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render_to_response("gmaook.html", {'user':user})
+        else:
+            context = RequestContext(request)
+            return render_to_response("gmaocreateimage.html",
+                                      {'form':form, 'user':user, 'erro':True},
+                                      context_instance=context)
+
+    else:
+        form = FormPostImage()
+
+    context = RequestContext(request)
+    return render_to_response("gmaocreateimage.html", {'form':form, 'user':user},
+                              context_instance=context)    
+
+
+@login_required
+def createpostattachment(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = FormPostAttachment(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render_to_response("gmaook.html", {'user':user})
+        else:
+            context = RequestContext(request)
+            return render_to_response("gmaocreateattachment.html",
+                                      {'form':form, 'user':user, 'erro':True},
+                                      context_instance=context)
+
+    else:
+        form = FormPostAttachment()
 
     context = RequestContext(request)
     return render_to_response("gmaocreateattachment.html", {'form':form, 'user':user},
