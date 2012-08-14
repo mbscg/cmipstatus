@@ -5,7 +5,8 @@ from django.http import Http404
 from cmipstatus.models import People
 import os
 from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication
-from models import NetworkInfo, LattesCache, Editor, NewsAttachment
+from models import NetworkInfo, LattesCache, Editor, NewsAttachment, PostImg
+from models import PostAttachment
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
 from forms import FormNetwork, FormAttachment
@@ -89,8 +90,10 @@ def blog(request):
 
 def postview(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
+    imgs = PostImg.objects.filter(post=post)
+    attachments = PostAttachment.objects.filter(post=post)
     return render_to_response("gmaopostview.html",
-        {'post':post, 'user':request.user}
+        {'post':post, 'imgs':imgs, 'attach':attachments, 'user':request.user}
         )
 
 

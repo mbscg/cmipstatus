@@ -73,7 +73,7 @@ class PostImg(models.Model):
 
 class PostAttachment(models.Model):
     post = models.ForeignKey('Post', verbose_name="Post")
-    attachment = models.ImageField(max_length=1024, upload_to='attachments', verbose_name="Arquivo")
+    attachment = models.FileField(max_length=1024, upload_to='attachments', verbose_name="Arquivo")
 
     def __unicode__(self):
         return self.attachment.__unicode__()

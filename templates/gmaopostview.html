@@ -1,5 +1,7 @@
 {% extends 'gmaobase.html' %}
 
+{% load thumbnail %}
+
 {% block pagebanner %}
 {% endblock %}
 
@@ -14,6 +16,29 @@
             <span class="post-description">{{ post.description|linebreaksbr }}</span>
     </div>
 </div>
+{% if imgs or attach %}
+<div class="row"><br>
+    <div class="span12">
+        <div class="well">
+        {% if imgs %}
+            <h3>Imagens</h3>
+            {% for img in imgs %}
+                {% thumbnail img.img "x100" crop="center" as im %}
+                    <a href="{{ img.img.url }}"><img src="{{ im.url }}"></a>
+                {% endthumbnail %}
+            {% endfor %}
+            <br><br>
+        {% endif %}
+        {% if attach %}
+            <h3>Arquivos Anexos</h3>
+            {% for att in attach %}
+                <p><a href="{{ att.attachment.url }}">{{ att }}</a></p>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
 <div class="row"><br>
     <div class="span12">
             <p class="post-body">{{ post.content|linebreaksbr }}</p>
