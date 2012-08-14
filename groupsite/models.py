@@ -63,6 +63,22 @@ class Post(models.Model):
         return self.title
 
 
+class PostImg(models.Model):
+    post = models.ForeignKey('Post', verbose_name="Post")
+    img = models.ImageField(max_length=1024, upload_to='media', verbose_name="Imagem")
+
+    def __unicode__(self):
+        return self.post.title
+
+
+class PostAttachment(models.Model):
+    post = models.ForeignKey('Post', verbose_name="Post")
+    attachment = models.ImageField(max_length=1024, upload_to='attachments', verbose_name="Arquivo")
+
+    def __unicode__(self):
+        return self.attachment.__unicode__()
+    
+
 class Publication(models.Model):
     title = models.CharField(max_length=256, verbose_name="Título")
     description = models.TextField(default="", verbose_name="Descrição")
