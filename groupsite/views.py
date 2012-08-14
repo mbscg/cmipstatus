@@ -90,8 +90,8 @@ def blog(request):
 
 def postview(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    imgs = PostImg.objects.filter(post=post)
-    attachments = PostAttachment.objects.filter(post=post)
+    imgs = PostImg.objects.filter(post=post).order_by('pk')
+    attachments = PostAttachment.objects.filter(post=post).order_by('pk')
     return render_to_response("gmaopostview.html",
         {'post':post, 'imgs':imgs, 'attach':attachments, 'user':request.user}
         )
