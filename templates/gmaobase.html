@@ -29,13 +29,23 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="menu1">Restricted<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         {% if user.is_authenticated %}
-                        <li><a href="/gmao/restricted/create_news/">Escrever Notícia</a></li>
+                        <li>
+                            <a href="#">Notícias <i class="icon-forward"></i></a>
+                            <ul class="dropdown-menu sub-menu">
+                                <li><a href="/gmao/restricted/create_news/">Escrever</a></li>
+                                <li><a href="/gmao/restricted/create_image/">Anexar Imagem</a></li>
+                                <li><a href="/gmao/restricted/create_attachment/">Anexar Arquivo</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Posts <i class="icon-forward"></i></a>
+                            <ul class="dropdown-menu sub-menu">
+                                <li><a href="/gmao/restricted/create_post/">Escrever</a></li>
+                                <li><a href="/gmao/restricted/create_postimage/">Anexar Imagem</a></li>
+                                <li><a href="/gmao/restricted/create_postattachment/">Anexar Arquivo</a></li>
+                            </ul>
+                        </li>
                         <li><a href="/gmao/restricted/create_video/">Enviar Video</a></li>
-                        <li><a href="/gmao/restricted/create_image/">Anexar Imagem a Notícia</a></li>
-                        <li><a href="/gmao/restricted/create_attachment/">Anexar Arquivo a Notícia</a></li>
-                        <li><a href="/gmao/restricted/create_post/">Escrever Post</a></li>
-                        <li><a href="/gmao/restricted/create_postimage/">Anexar Imagem a Post</a></li>
-                        <li><a href="/gmao/restricted/create_postattachment/">Anexar Arquivo a Post</a></li>
                         <li><a href="/gmao/restricted/upload_publication/">Enviar Publicação</a></li>
                         <li class="divider"></li>
                         <li><a href="/gmao/restricted/editor/">Editoria</a></li>
