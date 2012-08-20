@@ -25,7 +25,7 @@
         <div class="span12">
             {% if post.using_markdown %}
                 {% load markup %}
-                <p class="post-body">{{ post.content|urlize|markdown }}</p>
+                <div class="post-body">{{ post.content|markdown }}</div>
             {% else %}
                 <p class="post-body">{{ post.content|linebreaksbr|urlize }}</p>
             {% endif %}
