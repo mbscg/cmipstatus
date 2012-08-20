@@ -12,42 +12,65 @@
 {% block body %}
 <div class="news-view">
 <div class="container">
-<div class="row"><br>
-    <div class="span12">
-        <h2>{{ news.title }}</h2>
-        <span class="author"><a href="/gmao/people/{{ news.author.id }}">{{ news.author }}</a></span>
-        <span class="news-timestamp">{{ news.when }}</span><br>
-        <span class="news-description">{{ news.content|linebreaksbr }}</span>
-    </div>
-</div>
-{% if imgs or attach %}
-<div class="row"><br>
-    <div class="span12">
-        <div class="well">
-        {% if imgs %}
-            <h3>Imagens</h3>
-            {% for img in imgs %}
-                {% thumbnail img.img "x100" crop="center" as im %}
-                    <a href="{{ img.img.url }}"><img src="{{ im.url }}"></a>
-                {% endthumbnail %}
-            {% endfor %}
-            <br><br>
-        {% endif %}
-        {% if attach %}
-            <h3>Arquivos Anexos</h3>
-            {% for att in attach %}
-                <p><a href="{{ att.attachment.url }}">{{ att }}</a></p>
-            {% endfor %}
-        {% endif %}
+    <div class="row"><br>
+        <div class="span12">
+            <h2>{{ news.title }}</h2>
+            <span class="author"><a href="/gmao/people/{{ news.author.id }}">{{ news.author }}</a></span>
+            <span class="news-timestamp">{{ news.when }}</span><br>
+            <span class="news-description">{{ news.content|linebreaksbr }}</span>
         </div>
     </div>
-</div>
-{% endif %}
-<div class="row"><br>
-    <div class="span12">
-        <p class="news-body">{{ news.long_content|linebreaksbr }}</p>
+
+    <div class="row"><br>
+        <div class="span12">
+            <p class="news-body">{{ news.long_content|linebreaksbr }}</p>
+            <p>Por: <span class="author"><a href="/gmao/people/{{ news.author.id }}">{{ news.author }}</a></span></p>
+        </div>
     </div>
-</div>
+
+    {% if imgs %}
+        <div class="row"><br>
+            <div class="span12">
+                <div class="well">
+                    <h3>Imagens</h3>
+                    {% for img in imgs %}
+                        <div class="row"><br>
+                            <div class="span2">
+                                {% thumbnail img.img "x100" crop="center" as im %}
+                                    <a href="{{ img.img.url }}"><img src="{{ im.url }}" title="{{ img.description }}"></a>
+                                {% endthumbnail %}
+                            </div>
+                            <div class="span9">
+                                {{ img.description }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if attach %}
+        <div class="row"><br>
+            <div class="span12">
+                <div class="well">
+                    <h3>Arquivos Anexos</h3>
+                    {% for att in attach %}
+                       <p><i class="icon-download-alt"></i>
+                            <a href="{{ att.attachment.url }}">
+                            {% if att.description %}    
+                                {{ att.description }}
+                            {% else %}
+                                {{ att }}
+                            {% endif %}
+                            </a></p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
 </div>
 </div>
 {% endblock %}

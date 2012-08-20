@@ -28,9 +28,8 @@
         </div>
     </div>
 
-    {% if imgs or attach %}
-        <div class="row"><br>
-            {% if imgs %}
+        {% if imgs %}
+            <div class="row"><br>
                 <div class="span12">
                   <div class="well">
                     <h3>Imagens</h3>
@@ -48,8 +47,10 @@
                     {% endfor %}
                   </div>
                 </div>
-            {% endif %}
-            {% if attach %}
+            </div>
+        {% endif %}
+        {% if attach %}
+            <div class="row"><br>
                 <div class="span12">
                   <div class="well">
                     <h3>Arquivos Anexos</h3>
@@ -65,10 +66,8 @@
                     {% endfor %}
                   </div>
                 </div>
-            {% endif %}
-        </div>
-    {% endif %}
-
+            </div>
+        {% endif %}
 
 </div>
 </div>
