@@ -36,11 +36,13 @@
                     <h3>Imagens</h3>
                     {% for img in imgs %}
                         <div class="row"><br>
-                            <div class="span11">
+                            <div class="span2">
                                 {% thumbnail img.img "x100" crop="center" as im %}
                                     <a href="{{ img.img.url }}"><img src="{{ im.url }}" title="{{ img.description }}"></a>
                                 {% endthumbnail %}
-                                <br>{{ img.description }}
+                            </div>
+                            <div class="span9">
+                                {{ img.description }}
                             </div>
                         </div>
                     {% endfor %}
