@@ -54,7 +54,14 @@
                   <div class="well">
                     <h3>Arquivos Anexos</h3>
                     {% for att in attach %}
-                        <p><a href="{{ att.attachment.url }}">{{ att }}</a></p>
+                        <p><i class="icon-download-alt"></i>
+                            <a href="{{ att.attachment.url }}">
+                        {% if att.description %}
+                            {{ att.description }}
+                        {% else %}
+                            {{ att }}
+                        {% endif %}
+                            </a></p>
                     {% endfor %}
                   </div>
                 </div>
