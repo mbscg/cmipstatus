@@ -18,8 +18,10 @@
             <h3><a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a></h3>
             <span class="author">Por: <a href="/gmao/people/{{ post.author.id }}">{{ post.author }}</a></span>
             <span class="post-timestamp">{{ post.when }}</span><br>
-            <span class="post-description">{{ post.description|linebreaksbr }}</span><br><br>
-            <p class="post-body">{{ post.content|linebreaksbr }}</p>
+            <span class="post-description">
+                {{ post.description|linebreaksbr }}<br><br>
+                <a href="/gmao/posts/{{ post.id }}">Ir para o post...</a>
+            </span>
     </div>
     {% endfor %}
     </div>
