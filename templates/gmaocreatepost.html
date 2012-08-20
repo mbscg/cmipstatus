@@ -17,6 +17,7 @@
 
     <form class="well" method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
         {% csrf_token %}
+        <div class="alert">Você pode usar Markdown para estilizar o texto. Veja <a href="http://en.wikipedia.org/wiki/Markdown">como funciona</a>.</div>
         {{ form.as_p }}
         <button class="btn" type="submit"><i class="icon-ok"></i> Salvar</button>
     </form>

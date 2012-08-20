@@ -82,10 +82,12 @@ span.post-description{
 }
 
 p.news-body{
+    text-align: justify;
     font-size:1.2em;
 }
 
 .post-body {
+    text-align: justify;
     font-size:1.2em;
 }
 
