@@ -56,6 +56,7 @@ class Post(models.Model):
     title = models.CharField(max_length=512, verbose_name="Título")
     description = models.TextField(default=" ", verbose_name="Descrição")
     content = models.TextField(default=" ", verbose_name="Conteúdo")
+    using_markdown = models.BooleanField(default=False, verbose_name="Usando Markdown?")
     when = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(People)
     approved = models.BooleanField(default=False)

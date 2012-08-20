@@ -18,7 +18,7 @@ class FormNews(forms.ModelForm):
 class FormPost(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'description', 'content', 'besm')
+        fields = ('title', 'description', 'content', 'using_markdown', 'besm')
 
 
 class FormVideo(forms.Form):

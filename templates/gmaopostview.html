@@ -23,7 +23,12 @@
 
     <div class="row"><br>
         <div class="span12">
-            <p class="post-body">{{ post.content|linebreaksbr|urlize }}</p>
+            {% if post.using_markdown %}
+                {% load markup %}
+                <p class="post-body">{{ post.content|urlize|markdown }}</p>
+            {% else %}
+                <p class="post-body">{{ post.content|linebreaksbr|urlize }}</p>
+            {% endif %}
             <p>Por: <span class="author"><a href="/gmao/people/{{ post.author.id }}">{{ post.author }}</a></span></p>
         </div>
     </div>
