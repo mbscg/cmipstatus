@@ -23,7 +23,7 @@
 
     <div class="row"><br>
         <div class="span12">
-            <p class="news-body">{{ news.long_content|linebreaksbr }}</p>
+            <p class="news-body">{{ news.long_content|linebreaksbr|urlize }}</p>
             <p>Por: <span class="author"><a href="/gmao/people/{{ news.author.id }}">{{ news.author }}</a></span></p>
         </div>
     </div>
