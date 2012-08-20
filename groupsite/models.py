@@ -19,6 +19,7 @@ class News(models.Model):
 class NewsImg(models.Model):
     news = models.ForeignKey('News', verbose_name="Notícia")
     img = models.ImageField(max_length=1024, upload_to='media', verbose_name="Imagem")
+    description = models.CharField(max_length=256, default='')
 
     def __unicode__(self):
         return self.news.title
@@ -27,6 +28,7 @@ class NewsImg(models.Model):
 class NewsAttachment(models.Model):
     news = models.ForeignKey('News', verbose_name="Notícia")
     attachment = models.FileField(max_length=1024, upload_to='attachments', verbose_name="Arquivo")
+    description = models.CharField(max_length=256, default='')
 
     def __unicode__(self):
         return self.attachment.__unicode__()
@@ -66,6 +68,7 @@ class Post(models.Model):
 class PostImg(models.Model):
     post = models.ForeignKey('Post', verbose_name="Post")
     img = models.ImageField(max_length=1024, upload_to='media', verbose_name="Imagem")
+    description = models.CharField(max_length=256, default='')
 
     def __unicode__(self):
         return self.post.title
@@ -74,6 +77,7 @@ class PostImg(models.Model):
 class PostAttachment(models.Model):
     post = models.ForeignKey('Post', verbose_name="Post")
     attachment = models.FileField(max_length=1024, upload_to='attachments', verbose_name="Arquivo")
+    description = models.CharField(max_length=256, default='')
 
     def __unicode__(self):
         return self.attachment.__unicode__()
