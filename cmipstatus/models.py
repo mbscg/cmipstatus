@@ -40,7 +40,11 @@ class Experiment(models.Model):
     def get_status(self, tupa_data, forcing=False):
         done, total, errors, last_ok = check_restart_list(self.name, '')
         current = check_status(self.name, '', tupa_data)
-        report = ExpReport.objects.get(exp=self)
+        try:
+            report = ExpReport.objects.get(exp=self)
+        except:
+            report = ExpReport(status='UNK', exp=self)
+            report.save()
 
         finished_prog = float(done) / float(total)
         finished_years = float(done)/12
