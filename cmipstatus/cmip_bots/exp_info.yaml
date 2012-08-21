@@ -13,6 +13,17 @@ exps:
         - cmp017
         - cmp020
         - cmp021
+        - cmp023
+        - cmp024
+        - cmp025
+        - cmp026
+        - cmp027
+        - cmp028
+        - cmp029
+        - cmp030
+        - cmp031
+        - cmp032
+        - cmp033
 
     with-members:
         - cmp008
