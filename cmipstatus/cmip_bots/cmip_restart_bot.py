@@ -27,22 +27,43 @@ def get_conversion_status():
     #root = '/stornext/online13/ocean/simulations/cmip5/CMIP5/output/INPE/INPE-OA2-3/'
     root = '/stornext/online13/ocean/simulations/CMIP/CMIP5/output/INPE/BESM-OA2-3/'
     frequency = 'mon'
-    component = 'atmos'
-    variable = 'tas'
-    condition = 'r1i1p1'
+    condition = 'r{0}i1p1'
+    variables = [('atmos', 'tas', 40), ('ocean', 'tos', 42), ('land', 'mrsos', 2)]
 
     text_lines = []
+
+    total_weights = 40 + 42 + 2
     for decade in decades:
-        directory = os.path.join(root, decade, frequency, component, variable, condition)
-        try:
-            ls = os.listdir(directory)
-        except:
+        decade_total = 0
+        variables_read = 0
+        for variable in variables:
+            var_total = 0
+            conditions_read = 0
+            for cond in range(1,11):
+                c = condition.format(str(cond))
+                directory = os.path.join(root, decade, frequency, variable[0], variable[1], c)
+                try:
+                    ls = os.listdir(directory)
+                    var_total += len(ls)
+                    conditions_read += 1
+                except:
+                    pass
+                print "cond, var, decade, len(ls)", cond, variable, decade, len(ls)
+            if conditions_read > 0:
+                var_average = float(var_total) / conditions_read
+            else:
+                var_average = 0
+            decade_total += var_average * variable[2]/total_weights
+            variables_read += 1
+        if variables_read == 0:
             text_lines.append(' '.join([decade, 'NOT FOUND', '\n']))
             continue
+
         expected = 120.0
         if decade in decades30:
             expected = 360.0
-        current = float(len(ls))
+        current = float(decade_total)
+        print "decade total, expected", decade_total, expected
         progress = current/expected
         text_lines.append(' '.join([decade, str(current), str(expected), 
                           str(progress), '\n']))
