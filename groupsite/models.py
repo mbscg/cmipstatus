@@ -14,7 +14,7 @@ class News(models.Model):
     besm = models.BooleanField(default=False)
 
     def get_absolute_url(self):
-        return "http://antares.ccst.inpe.br/cmip/news/{0}".format(self.id)
+        return "http://antares.ccst.inpe.br/gmao/news/{0}".format(self.id)
 
     def __unicode__(self):
         return self.title
