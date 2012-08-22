@@ -2,6 +2,7 @@
 
 from django.db import models
 from cmipstatus.models import People
+from django.contrib.syndication.views import Feed
 
 class News(models.Model):
     title = models.CharField(max_length=200, verbose_name="Título")
@@ -11,6 +12,9 @@ class News(models.Model):
     author = models.ForeignKey(People)
     approved = models.BooleanField(default=False)
     besm = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return "http://antares.ccst.inpe.br/cmip/news/{0}".format(self.id)
 
     def __unicode__(self):
         return self.title
@@ -61,6 +65,10 @@ class Post(models.Model):
     author = models.ForeignKey(People)
     approved = models.BooleanField(default=False)
     besm = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return "http://antares.ccst.inpe.br/gmao/posts/{0}".format(self.id)
+
 
     def __unicode__(self):
         return self.title
@@ -157,3 +165,33 @@ class Editor(models.Model):
 
     def __unicode__(self):
         return "Editor " + self.people.name
+
+
+class PostsFeed(Feed):
+    title = "GMAO Blog Feed"
+    link = "http://antares.ccst.inpe.br/gmao/blog/"
+    description = "Latest posts from GMAO team"
+
+    def items(self):
+        return Post.objects.order_by('-when')[:10]
+
+    def item_title(self, item):
+        return item.title
+
+    def item_description(self, item):
+        return item.description
+
+
+class NewsFeed(Feed):
+    title = "GMAO News Feed"
+    link = "http://antares.ccst.inpe.br/gmao/news/"
+    description = "Latest news from GMAO"
+
+    def items(self):
+        return News.objects.order_by('-when')[:10]
+
+    def item_title(self, item):
+        return item.title
+
+    def item_description(self, item):
+        return item.content

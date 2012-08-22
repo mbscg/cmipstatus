@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
+from models import PostsFeed, NewsFeed
 
 urlpatterns = patterns('',
     url(r'^$', 'groupsite.views.home'),
@@ -7,12 +8,14 @@ urlpatterns = patterns('',
     url(r'^newspaper/$', 'groupsite.views.newspaper'),
     url(r'^news/$', 'groupsite.views.news'),
     url(r'^news/(\d+)/$', 'groupsite.views.newsview'),
+    url(r'^news/feed/$', NewsFeed()),
     url(r'^science/$', 'groupsite.views.science'),
     url(r'^science/(\d+)/$', 'groupsite.views.scienceview'),
     url(r'^besm/$', 'groupsite.views.besmview'),
     url(r'^publications/$', 'groupsite.views.publications'),
     url(r'^blog/$', 'groupsite.views.blog'),
     url(r'^posts/$', 'groupsite.views.posts'),
+    url(r'^posts/feed/$', PostsFeed()),
     url(r'^posts/(\d+)/$', 'groupsite.views.postview'),
     url(r'^restricted/edit/$', 'groupsite.views.editprofile'),
     url(r'^restricted/networking/$', 'groupsite.views.editnetwork'),
