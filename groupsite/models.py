@@ -168,6 +168,7 @@ class Editor(models.Model):
 
 
 class PostsFeed(Feed):
+    import markdown
     title = "GMAO Blog Feed"
     link = "http://antares.ccst.inpe.br/gmao/blog/"
     description = "Latest posts from GMAO team"
@@ -179,7 +180,7 @@ class PostsFeed(Feed):
         return item.title
 
     def item_description(self, item):
-        return item.description
+        return markdown.markdown(item.content)
 
 
 class NewsFeed(Feed):
@@ -194,4 +195,4 @@ class NewsFeed(Feed):
         return item.title
 
     def item_description(self, item):
-        return item.content
+        return item.long_content
