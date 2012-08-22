@@ -4,12 +4,15 @@
 
 {% block pagebanner %}
     <h2>Notícias</h2>
+    <h5><a href="/gmao/newspaper/feed/"><img src="/media/feed-icon-28x28.png"/> RSS Feed</a></h5>
 {% endblock %}
 
 {% block body %}
 <div class="post-view">
 <div class="container">
+
 <div class="row"><br>
+
 
     <div class="span12">
     {% for n in news %}
@@ -22,12 +25,14 @@
     </div>
     {% endfor %}
     </div>
+</div>
 
+<div class="row"><br>
     <div class="span12">
         <p><a href="/gmao/news/">Lista de todas as notícias</a></p>
     </div>
-    
 </div>
+
 </div>
 </div>
 {% endblock %}
