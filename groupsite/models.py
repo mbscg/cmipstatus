@@ -180,7 +180,9 @@ class PostsFeed(Feed):
         return item.title
 
     def item_description(self, item):
-        return markdown.markdown(item.content)
+        return "[CDATA[ " +\
+            markdown.markdown(item.content) +\
+            "]]"
 
 
 class NewsFeed(Feed):
@@ -195,4 +197,6 @@ class NewsFeed(Feed):
         return item.title
 
     def item_description(self, item):
-        return item.long_content
+        return "[CDATA[ " +\
+            item.long_content +\
+            "]]"
