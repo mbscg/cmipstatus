@@ -172,7 +172,7 @@ class PostsFeed(Feed):
     title = "GMAO Blog Feed"
     link = "http://antares.ccst.inpe.br/gmao/blog/"
     description = "Latest posts from GMAO team"
-    description_template = "gmaofeedtemplate.html"
+    description_template = "gmaofeedpost.html"
 
     def items(self):
         return Post.objects.order_by('-when')[:10]
@@ -185,12 +185,10 @@ class NewsFeed(Feed):
     title = "GMAO News Feed"
     link = "http://antares.ccst.inpe.br/gmao/news/"
     description = "Latest news from GMAO"
+    description_template = "gmaofeednews.html"
 
     def items(self):
         return News.objects.order_by('-when')[:10]
 
     def item_title(self, item):
         return item.title
-
-    def item_description(self, item):
-        return item.long_content
