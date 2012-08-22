@@ -4,6 +4,7 @@ from django.db import models
 from cmipstatus.models import People
 from django.contrib.syndication.views import Feed
 
+
 class News(models.Model):
     title = models.CharField(max_length=200, verbose_name="Título")
     content = models.CharField(max_length=4096, verbose_name="Descrição")
@@ -168,7 +169,6 @@ class Editor(models.Model):
 
 
 class PostsFeed(Feed):
-    import markdown
     title = "GMAO Blog Feed"
     link = "http://antares.ccst.inpe.br/gmao/blog/"
     description = "Latest posts from GMAO team"
@@ -180,7 +180,8 @@ class PostsFeed(Feed):
         return item.title
 
     def item_description(self, item):
-        return "[CDATA[ " +\
+        import markdown
+        return item.description + " [CDATA[ " +\
             markdown.markdown(item.content) +\
             "]]"
 
