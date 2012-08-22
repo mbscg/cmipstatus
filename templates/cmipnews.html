@@ -13,7 +13,7 @@
             <div class="well">
                 <ul class="unstyled">
                     {% for log in logs %}
-                        <li>{{ log.message }}<span class="small-info">{{ log.when }}</li>
+                        <li>{{ log.message }}<span class="small-info">{{ log.when }}</span></li>
                     {% empty %}
                         <li>No logs</li>
                     {% endfor %}
