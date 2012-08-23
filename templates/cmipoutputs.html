@@ -14,29 +14,29 @@
                 <div class="well">
                 <p><button class="btn btn-small" data-toggle="collapse" data-target=".collapse">Hide/Show All</button></p>
                     {% for decade, decade_info in info.info.items %}
-                        <div class="row"><br><!-- row for decade -->
+                        <div class="row"><!-- row for decade -->
                             <div class="span9">
+                                <div class="well">
 
-                                <div class="row"><!-- row for button/bar -->
-                                    <div class="span2">
-                                        <button class="btn btn-small" data-toggle="collapse" data-target="#{{ decade }}">{{ decade }}</button>
-                                    </div>
-                                    <div class="span7">
-                                        {% for key, value in info.acum.items %}
-                                            {% if key == decade %}
-                                                {% if value.1 == 1 %}
-                                                    <div class="progress progress-success" title="Complete">
-                                                {% else %}
-                                                    <div class="progress progress-striped active" title="{{ value.0 }}">
+                                    <div class="row"><!-- row for button/bar -->
+                                        <div class="span2">
+                                            <button class="btn btn-small" data-toggle="collapse" data-target="#{{ decade }}">{{ decade }}</button>
+                                        </div>
+                                        <div class="span6">
+                                            {% for key, value in info.acum.items %}
+                                                {% if key == decade %}
+                                                    {% if value.1 == 1 %}
+                                                        <div class="progress progress-success" title="Complete">
+                                                    {% else %}
+                                                        <div class="progress progress-striped active" title="{{ value.0 }}">
+                                                    {% endif %}
+                                                           <div class="bar" style="width: {{ value.0 }}"></div>
+                                                        </div>
                                                 {% endif %}
-                                                       <div class="bar" style="width: {{ value.0 }}"></div>
-                                                    </div>
-                                            {% endif %}
-                                        {% endfor %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="collapse" id="{{ decade }}"><br>
-                                    <div class="well">
+                                    <div class="collapse" id="{{ decade }}"><br>
                                         <!-- "header" row -->
                                         <div class="row"><br>
                                             <div class="span2">
@@ -118,6 +118,7 @@
                                             </div>
                                         {% endfor %}
                                     </div>
+
                                 </div>
                             </div>
                         </div>
