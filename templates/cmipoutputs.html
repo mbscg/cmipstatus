@@ -10,13 +10,31 @@
                 <p>(Beto mudou a pasta das saídas (novo nome do modelo). Esta é a situação na pasta nova.)</p>
             </div>
 
-            {% if info %}
+            {% if info.info %}
                 <div class="well">
                 <p><button class="btn btn-small" data-toggle="collapse" data-target=".collapse">Hide/Show All</button></p>
-                    {% for decade, decade_info in info.items %}
+                    {% for decade, decade_info in info.info.items %}
                         <div class="row"><br><!-- row for decade -->
                             <div class="span9">
-                                <button class="btn btn-small" data-toggle="collapse" data-target="#{{ decade }}">{{ decade }}</button>
+
+                                <div class="row"><!-- row for button/bar -->
+                                    <div class="span2">
+                                        <button class="btn btn-small" data-toggle="collapse" data-target="#{{ decade }}">{{ decade }}</button>
+                                    </div>
+                                    <div class="span7">
+                                        {% for key, value in info.acum.items %}
+                                            {% if key == decade %}
+                                                {% if value.1 == 1 %}
+                                                    <div class="progress progress-success" title="Complete">
+                                                {% else %}
+                                                    <div class="progress progress-striped active" title="{{ value.0 }}">
+                                                {% endif %}
+                                                       <div class="bar" style="width: {{ value.0 }}"></div>
+                                                    </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
                                 <div class="collapse" id="{{ decade }}"><br>
                                     <div class="well">
                                         <!-- "header" row -->

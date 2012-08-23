@@ -248,7 +248,9 @@ def outputsview(request):
 def outputs_util(forcing=False):
     conversion_log = open(settings.server_configs['conversion_log']).readlines()
     info = {}
+    acum = {}
     conversion_log.sort()
+    weights = {'ocean': 0.5, 'atmos': 0.47, 'land': 0.03}
 
     for line in conversion_log:
         decade, cond, comp, current, expected, progress  = line.split()
@@ -256,7 +258,17 @@ def outputs_util(forcing=False):
             info[decade] = {}
         if info.has_key(decade) and not info[decade].has_key(cond):
             info[decade][cond] = {}
+        if not acum.has_key(decade):
+            acum[decade] = [0, 0]
         info[decade][cond][comp] = ['%3.2f' % (100 * float(progress)) + '%', float(progress)]
+        acum[decade][0] += weights[comp] * float(progress)
+        acum[decade][1] += weights[comp]
+
+    #averaging
+    for decade, value in acum.items():
+        count = value[0] / value[1]
+        progress = '%3.2f' % (100 * float(count)) + '%'
+        acum[decade] = [progress, count]
 
     #feeds for this will be rewritten later (maybe never)
        
@@ -270,4 +282,4 @@ def outputs_util(forcing=False):
                 new_log = ReportChangeLog(message=message)
                 new_log.save()
     """
-    return info
+    return {'info':info, 'acum': acum}
