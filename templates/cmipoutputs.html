@@ -12,38 +12,98 @@
 
             {% if info %}
                 <div class="well">
-                    {% for entry in info %}
-                        <div class="row"><br>
-                            <div class="span2">
-                                {% if entry.error %}
-                                    <img src="/media/vermelho.png" width=10 title="Error"/>
-                                {% elif entry.count_error %}
-                                    <img src="/media/amarelo.png" width=10 title="Warning"/>
-                                {% elif entry.finished %}
-                                    <img src="/media/final.png" width=10 title="Finished"/>
-                                {% else %}
-                                    <img src="/media/verde.png" width=10 title="Running"/>
-                                {% endif %}
-                                {{ entry.decade }}
-                            </div>
-                            <div class="span3">
-                               <div class="progress progress-striped active" title="{{ entry.text_progress }}">
-                                  <div class="bar" style="width: {{ entry.text_progress }}"></div>
-                               </div>
-                            </div>
-                            <div class="span4">
-                                {% if entry.error %}
-                                    (No information)
-                                {% elif entry.count_error %}
-                                    (Current > Expected. Check conversion/copy)
-                                {% else %}
-                                    {{ entry.text_progress }}
-                                    ({{ entry.current }} months of {{ entry.expected }})
-                                {% endif %}
+                <p><button class="btn btn-small" data-toggle="collapse" data-target=".collapse">Hide/Show All</button></p>
+                    {% for decade, decade_info in info.items %}
+                        <div class="row"><br><!-- row for decade -->
+                            <div class="span9">
+                                <button class="btn btn-small" data-toggle="collapse" data-target="#{{ decade }}">{{ decade }}</button>
+                                <div class="collapse" id="{{ decade }}"><br>
+                                    <div class="well">
+                                        <!-- "header" row -->
+                                        <div class="row"><br>
+                                            <div class="span2">
+                                                Realization
+                                            </div>
+                                            <div class="span2">
+                                                Ocean
+                                            </div>
+                                            <div class="span2">
+                                                Atmos
+                                            </div>
+                                            <div class="span2">
+                                                Land
+                                            </div>
+                                        </div>
+                                        <!-- and one row for condition -->
+                                        {% for condition, condition_info in decade_info.items %}
+                                            <div class="row"><br>
+                                                <div class="span2">
+                                                    {{ condition }}
+                                                </div>
+                                                <!-- and one span for component, not looping because we cannot be sure of order -->
+                                                
+                                                <!--Ocean-->
+                                                <div class="span2">
+                                                    {% if condition_info.ocean %}
+                                                        {% if condition_info.ocean.1 == 1 %}
+                                                            <div class="progress progress-success" title="Complete">
+                                                                <div class="bar" style="width: 100%"></div>
+                                                            </div>
+                                                        {% else %}
+                                                           <div class="progress progress-striped active" title="{{ condition_info.ocean.0 }}">
+                                                                <div class="bar" style="width: {{ condition_info.ocean.0 }}"></div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <div class="progress progress-striped active" title="No info">
+                                                            <div class="bar" style="width: 0%;"></div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <!--Atmos-->
+                                                <div class="span2">
+                                                    {% if condition_info.atmos %}
+                                                        {% if condition_info.atmos.1 == 1 %}
+                                                            <div class="progress progress-success" title="Complete">
+                                                                <div class="bar" style="width: 100%"></div>
+                                                            </div>
+                                                        {% else %}
+                                                           <div class="progress progress-striped active" title="{{ condition_info.atmos.0 }}">
+                                                                <div class="bar" style="width: {{ condition_info.atmos.0 }}"></div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <div class="progress progress-striped active" title="No info">
+                                                            <div class="bar" style="width: 0%;"></div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <!--Land-->
+                                                <div class="span2">
+                                                    {% if condition_info.land %}
+                                                        {% if condition_info.land.1 == 1 %}
+                                                            <div class="progress progress-success" title="Complete">
+                                                                <div class="bar" style="width: 100%"></div>
+                                                            </div>
+                                                        {% else %}
+                                                           <div class="progress progress-striped active" title="{{ condition_info.land.0 }}">
+                                                                <div class="bar" style="width: {{ condition_info.land.0 }}"></div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <div class="progress progress-striped active" title="No info">
+                                                            <div class="bar" style="width: 0%;"></div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
-                </div>
             {% else %}
                 <div class="alert alert-warning">
                     <p>Nothing going on!</p>
@@ -54,5 +114,7 @@
         </div>
     </div>
 </div>
+
+
 {% endblock %}
 

@@ -247,34 +247,20 @@ def outputsview(request):
 
 def outputs_util(forcing=False):
     conversion_log = open(settings.server_configs['conversion_log']).readlines()
-    info = []
+    info = {}
     conversion_log.sort()
 
     for line in conversion_log:
-        split_line = line.split()
-        decade = split_line[0]
-        try:
-            report = ConvReport.objects.get(member=decade)
-        except:
-            report = ConvReport(member=decade, status='UNK')
-        status = 'UNK'
-        if len(split_line) < 4: # ERROR LINE
-            info.append({'decade':decade, 'error':True})
-            status = 'ERR'
-        else:
-            current = float(split_line[1])
-            expected = float(split_line[2])
-            count_error = (current > expected)
-            progress = float(current) / float(expected)
-            text_progress = '%3.2f' % (100 * progress) + '%'
-            info.append({'decade':decade, 'current':int(current), 'expected':int(expected),
-                        'progress':progress, 'text_progress':text_progress,
-                        'finished':(current == expected), 'error':False,
-                        'count_error':count_error})
-            if current == expected:
-                status = 'END'
-            else:
-                status = 'RUN'
+        decade, cond, comp, current, expected, progress  = line.split()
+        if not info.has_key(decade):
+            info[decade] = {}
+        if info.has_key(decade) and not info[decade].has_key(cond):
+            info[decade][cond] = {}
+        info[decade][cond][comp] = ['%3.2f' % (100 * float(progress)) + '%', float(progress)]
+
+    #feeds for this will be rewritten later (maybe never)
+       
+    """
         if forcing:
             if report and not report.status == status:
                 old_status = report.status
@@ -283,4 +269,5 @@ def outputs_util(forcing=False):
                 message = 'Decade {0} changed from {1} to {2}'.format(decade, old_status, status)
                 new_log = ReportChangeLog(message=message)
                 new_log.save()
+    """
     return info
