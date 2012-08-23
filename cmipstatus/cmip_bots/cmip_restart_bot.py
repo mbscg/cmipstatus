@@ -27,19 +27,17 @@ def get_conversion_status():
     root = '/stornext/online13/ocean/simulations/CMIP/CMIP5/output/INPE/BESM-OA2-3/'
     frequency = 'mon'
     condition = 'r{0}i1p{1}'
-    fmt_condition = 'r{0} i1 p{1}'
     variables = [('atmos', 'tas', 40), ('ocean', 'tos', 42), ('land', 'mrsos', 2)]
 
     text_lines = []
 
     for decade in decades:
         decade_expected = 120.
-        if decade_expected in decades30:
+        if decade in decades30:
             decade_expected = 360.
         for r in range(1,11): #r1 a r10
             for p in range(1,3): #p1 e p2
                 cond = condition.format(r, p)
-                fmt_cond = fmt_condition.format(r, p)
                 cond_total = 0.
                 cond_weights = 0.
                 for var in variables:
@@ -51,7 +49,7 @@ def get_conversion_status():
                     else:
                         var_total = len(ls)
                         progress = str(var_total / decade_expected)
-                        line = ' '.join([decade, fmt_cond, str(var_total), str(decade_expected), progress, '\n'])
+                        line = ' '.join([decade, cond, var[0], str(var_total), str(decade_expected), progress, '\n'])
                         text_lines.append(line)
 
 
