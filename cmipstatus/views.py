@@ -242,11 +242,16 @@ def expfinished_util(tupa_data):
 def outputsview(request):
     info = outputs_util()
     user = request.user
-    return render_to_response("cmipoutputs.html", {'info':info, 'user':user})
+    return render_to_response("cmipoutputs.html", 
+        {'info':info, 'user':user, 'comps': ["ocean", "atmos", "land"]})
 
 
 def outputs_util(forcing=False):
+
+    # [ {decade:decade, cond1:{ocean:1, atmos:2, land:3}, cond2:{...}}, ... ]
+
     conversion_log = open(settings.server_configs['conversion_log']).readlines()
+    new_info = []
     info = {}
     acum = {}
     conversion_log.sort()
@@ -263,12 +268,18 @@ def outputs_util(forcing=False):
         info[decade][cond][comp] = ['%3.2f' % (100 * float(progress)) + '%', float(progress)]
         acum[decade][0] += weights[comp] * float(progress)
         acum[decade][1] += weights[comp]
+        new_info.append({'decade': decade, 'cond':cond, 'comp':comp, 'progress':['%3.2f' % (100 * float(progress)) + '%', float(progress)] })
 
     #averaging
     for decade, value in acum.items():
         count = value[0] / value[1]
         progress = '%3.2f' % (100 * float(count)) + '%'
         acum[decade] = [progress, count]
+
+    list_info = []
+    for key, value in info.items():
+        list_info.append({'decade':key, 'decade_info':value})
+    
 
     #feeds for this will be rewritten later (maybe never)
        
@@ -282,4 +293,4 @@ def outputs_util(forcing=False):
                 new_log = ReportChangeLog(message=message)
                 new_log.save()
     """
-    return {'info':info, 'acum': acum}
+    return {'info':new_info, 'acum': acum}

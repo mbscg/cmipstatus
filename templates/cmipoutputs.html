@@ -10,21 +10,24 @@
                 <p>(Beto mudou a pasta das saídas (novo nome do modelo). Esta é a situação na pasta nova.)</p>
             </div>
 
+
             {% if info.info %}
+            {% regroup info.info by decade as regr_info %}
+
                 <div class="well">
                 <p><button class="btn btn-small" data-toggle="collapse" data-target=".collapse">Hide/Show All</button></p>
-                    {% for decade, decade_info in info.info.items %}
+                    {% for i in regr_info %}
                         <div class="row"><!-- row for decade -->
                             <div class="span9">
                                 <div class="well">
 
                                     <div class="row"><!-- row for button/bar -->
                                         <div class="span2">
-                                            <button class="btn btn-small" data-toggle="collapse" data-target="#{{ decade }}">{{ decade }}</button>
+                                            <button class="btn btn-small" data-toggle="collapse" data-target="#{{ i.grouper }}">{{ i.grouper }}</button>
                                         </div>
                                         <div class="span6">
                                             {% for key, value in info.acum.items %}
-                                                {% if key == decade %}
+                                                {% if key == i.grouper %}
                                                     {% if value.1 == 1 %}
                                                         <div class="progress progress-success" title="Complete">
                                                     {% else %}
@@ -36,7 +39,7 @@
                                             {% endfor %}
                                         </div>
                                     </div>
-                                    <div class="collapse" id="{{ decade }}"><br>
+                                    <div class="collapse" id="{{ i.grouper }}"><br>
                                         <!-- "header" row -->
                                         <div class="row"><br>
                                             <div class="span2">
@@ -53,68 +56,31 @@
                                             </div>
                                         </div>
                                         <!-- and one row for condition -->
-                                        {% for condition, condition_info in decade_info.items %}
+                                        {% regroup i.list by cond as ord_cond %}
+                                        {% for cond in ord_cond %}
                                             <div class="row"><br>
                                                 <div class="span2">
-                                                    {{ condition }}
+                                                    {{ cond.grouper }}
                                                 </div>
                                                 <!-- and one span for component, not looping because we cannot be sure of order -->
-                                                
-                                                <!--Ocean-->
-                                                <div class="span2">
-                                                    {% if condition_info.ocean %}
-                                                        {% if condition_info.ocean.1 == 1 %}
-                                                            <div class="progress progress-success" title="Complete">
-                                                                <div class="bar" style="width: 100%"></div>
-                                                            </div>
-                                                        {% else %}
-                                                           <div class="progress progress-striped active" title="{{ condition_info.ocean.0 }}">
-                                                                <div class="bar" style="width: {{ condition_info.ocean.0 }}"></div>
-                                                            </div>
-                                                        {% endif %}
-                                                    {% else %}
-                                                        <div class="progress progress-striped active" title="No info">
-                                                            <div class="bar" style="width: 0%;"></div>
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-                                                <!--Atmos-->
-                                                <div class="span2">
-                                                    {% if condition_info.atmos %}
-                                                        {% if condition_info.atmos.1 == 1 %}
-                                                            <div class="progress progress-success" title="Complete">
-                                                                <div class="bar" style="width: 100%"></div>
-                                                            </div>
-                                                        {% else %}
-                                                           <div class="progress progress-striped active" title="{{ condition_info.atmos.0 }}">
-                                                                <div class="bar" style="width: {{ condition_info.atmos.0 }}"></div>
-                                                            </div>
-                                                        {% endif %}
-                                                    {% else %}
-                                                        <div class="progress progress-striped active" title="No info">
-                                                            <div class="bar" style="width: 0%;"></div>
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-                                                <!--Land-->
-                                                <div class="span2">
-                                                    {% if condition_info.land %}
-                                                        {% if condition_info.land.1 == 1 %}
-                                                            <div class="progress progress-success" title="Complete">
-                                                                <div class="bar" style="width: 100%"></div>
-                                                            </div>
-                                                        {% else %}
-                                                           <div class="progress progress-striped active" title="{{ condition_info.land.0 }}">
-                                                                <div class="bar" style="width: {{ condition_info.land.0 }}"></div>
-                                                            </div>
-                                                        {% endif %}
-                                                    {% else %}
-                                                        <div class="progress progress-striped active" title="No info">
-                                                            <div class="bar" style="width: 0%;"></div>
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-
+                                                {% for c in comps %}
+                                                    <div class="span2">
+                                                            {% for comp in cond.list %}
+                                                                {% if comp.comp == c %}
+                                                                    {% if comp.progress.1 == 1 %}
+                                                                        <div class="progress progress-success" title="Complete">
+                                                                            <div class="bar" style="width: 100%"></div>
+                                                                        </div>
+                                                                    {% else %}
+                                                                       <div class="progress progress-striped active" title="{{ comp.progress.0 }}">
+                                                                            <div class="bar" style="width: {{ comp.progress.0 }}"></div>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            &nbsp;
+                                                    </div>
+                                                {% endfor %}
                                             </div>
                                         {% endfor %}
                                     </div>
@@ -126,7 +92,7 @@
             {% else %}
                 <div class="alert alert-warning">
                     <p>Nothing going on!</p>
-                </div>   
+                </div>
             {% endif %}
 
             </div>
