@@ -17,14 +17,20 @@
                 <li class="active"><a class="brand" href="#">GMAO</a></li>
                 <li><a href="/gmao/"><i class="icon-home icon-white"></i> Home</a></li>
                 <li><a href="/gmao/newspaper/">Notícias</a></li>
-                <li><a href="/gmao/science/">Ciência</a></li>
+                <li class="dropdown" id="menu-sci">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="menu-sci">Ciência<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/gmao/videos/">Vídeos</a></li>
+                        <li><a href="/gmao/graphics/">Gráficos</a></li>
+                    </ul>
+                </li>
                 <li><a href="/gmao/besm/">Modelo Brasileiro</a></li>
                 <li><a href="/gmao/publications/">Publicações</a></li>
                 <li><a href="/gmao/blog/">Blog</a></li>
                 <li><a href="/gmao/people/">Equipe</a></li>
                 <li><a href="/cmip/">CMIPStatus</a></li>
-                <li class="dropdown" id="menu1">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="menu1">Restricted<b class="caret"></b></a>
+                <li class="dropdown" id="menu-restr">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="menu-restr">Restricted<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         {% if user.is_authenticated %}
                         <li>

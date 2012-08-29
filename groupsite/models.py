@@ -57,6 +57,14 @@ class YoutubeVideo(models.Model):
         return self.science_thing.short
 
 
+class Graphic(models.Model):
+    science_thing = models.ForeignKey('ScienceThing')
+    data_file = models.FileField(max_length=102, upload_to='graphics_descriptions', verbose_name="Arquivo de Definição")
+
+    def __unicode__(self):
+        return self.science_thing.short
+
+
 class Post(models.Model):
     title = models.CharField(max_length=512, verbose_name="Título")
     description = models.TextField(default=" ", verbose_name="Descrição")

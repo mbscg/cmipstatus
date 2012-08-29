@@ -3,7 +3,7 @@
 {% block cabecalho %}Ciência{% endblock %}
 
 {% block pagebanner %}
-<h2>Ciência</h2>
+<h2>{{ science_type }}</h2>
 {% endblock %}
 
 {% block body %}
@@ -13,7 +13,7 @@
     <div class="span12">
     <ul class="news-list">
         {% for sci in sciences %}
-            <li class="sci-item"><a href="/gmao/science/{{ sci.id }}">{{ sci.short }}</a></li>
+            <li class="sci-item"><a href="/gmao/{{ sci_link }}/{{ sci.id }}">{{ sci.short }}</a></li>
         {% endfor %}
     </ul>
     </div>

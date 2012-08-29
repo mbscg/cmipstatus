@@ -9,14 +9,29 @@
 {% block body %}
 <div class="news-view">
 <div class="container">
+
+{% if video %}
 <div class="row"><br>
     <div class="span12">
         <p><iframe width="510" height="383" src="{{ video.video_link }}" frameborder="0" allowfullscreen></iframe></p>
     </div>
+</div>
+{% endif %}
+{% if graphic %}
+<div class="row"><br>
+    <div class="span12">
+        <p>botar o gráfico aqui</p>
+        <p>{{ graphic.data_file }}</p>
+    </div>
+</div>
+{% endif %}
+
+<div class="row"><br>
     <div class="span12">
         <p class="sci-body">{{ science.description|linebreaksbr|urlize }}</p>
     </div>
 </div>
+
 </div>
 </div>
 {% endblock %}

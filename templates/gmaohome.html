@@ -38,8 +38,8 @@
         <div class="span4">
             {# place for science #}
             <h4>Destaques</h4><br>
-            {% for sci in sciences %}
-                <p><strong><a href="/gmao/science/{{ sci.id }}">{{ sci.short }}</a></strong></p>
+            {% for video in videos %}
+                <p><strong><a href="/gmao/videos/{{ video.id }}">{{ video.short }}</a></strong></p>
             {% endfor %}
         </div>
     </div>

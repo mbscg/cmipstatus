@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
@@ -6,7 +8,7 @@ from cmipstatus.models import People
 import os
 from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication
 from models import NetworkInfo, LattesCache, Editor, NewsAttachment, PostImg
-from models import PostAttachment
+from models import PostAttachment, Graphic
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
 from forms import FormNetwork, FormAttachment, FormPostImage, FormPostAttachment
@@ -24,7 +26,7 @@ import datetime
 def home(request):
     return render_to_response("gmaohome.html", 
         {'imgs':get_imgs_news(), 'news':get_news(latest=True),
-         'sciences':get_sciences(latest=True), 'posts':get_posts(latest=True),
+         'videos':get_videos(latest=True), 'posts':get_posts(latest=True),
          'user':request.user}
         )
 
@@ -50,12 +52,13 @@ def newsview(request, news_id):
         )
 
 
-def science(request):
+def videos(request):
     return render_to_response("gmaoscience.html", 
-        {'sciences':get_sciences(), 'user':request.user})
+        {'science_type':'Vídeos', 'sci_link':'videos',
+         'sciences':get_videos(), 'user':request.user})
 
 
-def scienceview(request, thing_id):
+def videoview(request, thing_id):
     science = get_object_or_404(ScienceThing, pk=thing_id)
     video = get_object_or_404(YoutubeVideo, science_thing=science)
     return render_to_response("gmaoscienceview.html", 
@@ -65,7 +68,7 @@ def scienceview(request, thing_id):
 def besmview(request):
     return render_to_response("gmaoproject.html", 
         {'imgs':get_imgs_news(besm=True), 'news':get_news(latest=True, besm=True),
-         'sciences':get_sciences(latest=True, besm=True), 'posts':get_posts(latest=True, besm=True),
+         'videos':get_videos(latest=True, besm=True), 'posts':get_posts(latest=True, besm=True),
          'user':request.user}
         )
 
@@ -122,6 +125,19 @@ def peopleview(request, people_id):
         {'people':people, 'user':request.user, 'posts':posts, 'publications':publications,
          'lattes':lattes_pubs, 'social':social}
         )
+
+
+def graphics(request):
+    return render_to_response("gmaoscience.html", 
+        {'science_type':'Gráficos', 'sci_link':'graphics',
+         'sciences':get_graphics(), 'user':request.user})
+
+
+def graphicview(request, thing_id):
+    science = get_object_or_404(ScienceThing, pk=thing_id)
+    graphic = get_object_or_404(Graphic, science_thing=science)
+    return render_to_response("gmaoscienceview.html", 
+        {'science':science, 'graphic':graphic, 'user':request.user})
 
 
 def moo(request):
@@ -513,12 +529,27 @@ def get_news(latest=False, besm=False):
     return many_news
 
 
-def get_sciences(latest=False, besm=False):
-    sciences = ScienceThing.objects.order_by('-id').filter(approved=True)
+def get_videos(latest=False, besm=False):
+    videos = YoutubeVideo.objects.all().order_by('-id')
     if besm:
-        sciences = sciences.filter(besm=True)
+        sciences = [v.science_thing for v in videos if v.science_thing.approved and v.science_thing.besm]
+    else:
+        sciences = [v.science_thing for v in videos if v.science_thing.approved]
     if latest:
         sciences = sciences[:4]
+    return sciences
+
+
+def get_graphics(latest=False, besm=False):
+    graphics = Graphic.objects.all().order_by('-id')
+    print graphics
+    if besm:
+        sciences = [g.science_thing for g in graphics if g.science_thing.approved and g.science_thing.besm]
+    else:
+        sciences = [g.science_thing for g in graphics if g.science_thing.approved]
+    if latest:
+        sciences = sciences[:4]
+    print sciences
     return sciences
 
 
