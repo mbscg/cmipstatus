@@ -25,9 +25,9 @@
                                         <div class="span2">
                                             <button class="btn btn-small" data-toggle="collapse" data-target="#{{ i.grouper }}">{{ i.grouper }}</button>
                                         </div>
-                                        <div class="span6">
-                                            {% for key, value in info.acum.items %}
-                                                {% if key == i.grouper %}
+                                        {% for key, value in info.acum.items %}
+                                            {% if key == i.grouper %}
+                                                <div class="span5">
                                                     {% if value.1 == 1 %}
                                                         <div class="progress progress-success" title="Complete">
                                                     {% else %}
@@ -35,9 +35,12 @@
                                                     {% endif %}
                                                            <div class="bar" style="width: {{ value.0 }}"></div>
                                                         </div>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
+                                                </div>
+                                                <div class="span1">
+                                                    {{ value.0 }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
                                     </div>
                                     <div class="collapse" id="{{ i.grouper }}"><br>
                                         <!-- "header" row -->
