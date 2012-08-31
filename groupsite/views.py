@@ -12,6 +12,7 @@ from models import PostAttachment, Graphic
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
 from forms import FormNetwork, FormAttachment, FormPostImage, FormPostAttachment
+from forms import FormGraphic
 import requests
 from requests.exceptions import Timeout
 from django.core.validators import URLValidator
@@ -421,6 +422,35 @@ def uploadpublication(request):
 
 
 @login_required
+def uploadgraphic(request):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+
+    if request.method == 'POST':
+        form = FormGraphic(request.POST, request.FILES)
+        if form.is_valid():
+            short = form.cleaned_data['short']
+            description = form.cleaned_data['description']
+            data_file = form.cleaned_data['data_file']
+            science = ScienceThing(short=short, description=description, approved=True)
+            science.save()
+            graphic = Graphic(science_thing=science, data_file=data_file)
+            graphic.save()
+            return render_to_response("gmaook.html", {'user':user})
+        else:
+            context = RequestContext(request)
+            return render_to_response("gmaouploadgraphic.html",
+                                      {'form':form, 'user':user, 'erro':True},
+                                      context_instance=context)
+    else:
+        form = FormGraphic()
+
+    context = RequestContext(request)
+    return render_to_response("gmaouploadgraphic.html", {'form':form, 'user':user},
+                              context_instance=context)    
+
+
+@login_required
 def editorview(request):
     user = request.user
     people = People.objects.get(username=user)
@@ -542,14 +572,12 @@ def get_videos(latest=False, besm=False):
 
 def get_graphics(latest=False, besm=False):
     graphics = Graphic.objects.all().order_by('-id')
-    print graphics
     if besm:
         sciences = [g.science_thing for g in graphics if g.science_thing.approved and g.science_thing.besm]
     else:
         sciences = [g.science_thing for g in graphics if g.science_thing.approved]
     if latest:
         sciences = sciences[:4]
-    print sciences
     return sciences
 
 

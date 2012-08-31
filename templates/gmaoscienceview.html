@@ -20,8 +20,7 @@
 {% if graphic %}
 <div class="row"><br>
     <div class="span12">
-        <p>botar o gráfico aqui</p>
-        <p>{{ graphic.data_file }}</p>
+        <div id="chart_div" style="width: 900px; height: 500px;"></div>
     </div>
 </div>
 {% endif %}
@@ -36,3 +35,31 @@
 </div>
 {% endblock %}
 
+{% if graphic %}
+    {% block javascripts %}
+          {% for info in graphic.get_graphic_data %}
+                <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                <script type="text/javascript">
+                  google.load("visualization", "1", {packages:["corechart"]});
+                  google.setOnLoadCallback(drawChart);
+                  function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                          [{% for i in info.labels %}"{{ i }}"{% if not forloop.last %},{% endif%}{% endfor %}],
+                          {% for l in info.data %}[{{ l }}]{% if not forloop.last %},{% endif %}
+                          {% endfor %}
+                    ]);
+    
+                    var options = {
+                      curveType: 'function',
+                      title: '{{ science.short }}',
+                      hAxis: {'title': '{{ info.axis.0 }}', titleTextStyle: {color: '#000000'}},
+                      vAxis: {'title': '{{ info.axis.1 }}', titleTextStyle: {color: '#000000'}},
+                    };
+
+                    var chart = new google.visualization.{{ info.type }}(document.getElementById('chart_div'));
+                    chart.draw(data, options);
+                  }
+                </script>
+        {% endfor %}
+    {% endblock %}
+{% endif %}

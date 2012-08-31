@@ -64,6 +64,21 @@ class Graphic(models.Model):
     def __unicode__(self):
         return self.science_thing.short
 
+    def get_graphic_data(self):
+        TYPE_LINE = 0
+        AXIS_NAMES_LINE = 1
+        LABELS_LINE = 2
+        DATA_START_LINE = 3
+        f = open(self.data_file.path, 'r')
+        text = f.readlines()
+        f.close()
+        graphic_type = text[TYPE_LINE][:-1]
+        graphic_axis_names = text[AXIS_NAMES_LINE][:-1].split(',')
+        graphic_labels = text[LABELS_LINE][:-1].split(',')
+        graphic_data = [t[:-1] for t in text[DATA_START_LINE:]]
+        return [{'type': graphic_type, 'axis':graphic_axis_names, 
+            'labels':graphic_labels, 'data':graphic_data}]
+
 
 class Post(models.Model):
     title = models.CharField(max_length=512, verbose_name="Título")

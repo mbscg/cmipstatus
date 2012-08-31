@@ -53,6 +53,12 @@ class FormPublication(forms.ModelForm):
         fields = ('title', 'description', 'publication_date', 'pdf', 'besm')
 
 
+class FormGraphic(forms.Form):
+    data_file = forms.FileField(max_length=1024, label="Arquivo de Definição")
+    short = forms.CharField(max_length=256, label="Título")
+    description = forms.CharField(max_length=2048, label="Descrição")
+
+
 class FormNetwork(forms.ModelForm):
     class Meta:
         model = NetworkInfo
