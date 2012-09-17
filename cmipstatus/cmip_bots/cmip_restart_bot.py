@@ -48,7 +48,7 @@ def get_conversion_status():
                         continue
                     else:
                         var_total = len(ls)
-                        progress = str(var_total / decade_expected)
+                        progress = str(min(var_total / decade_expected, 1))
                         line = ' '.join([decade, cond, var[0], str(var_total), str(decade_expected), progress, '\n'])
                         text_lines.append(line)
 
