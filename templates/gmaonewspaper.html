@@ -4,7 +4,7 @@
 
 {% block pagebanner %}
     <h2>Notícias</h2>
-    <h5><a href="/gmao/newspaper/feed/"><img src="/media/feed-icon-28x28.png"/> RSS Feed</a></h5>
+    <h5><a href="/newspaper/feed/"><img src="/media/feed-icon-28x28.png"/> RSS Feed</a></h5>
 {% endblock %}
 
 {% block body %}
@@ -17,8 +17,8 @@
     <div class="span12">
     {% for n in news %}
     <div class="well">
-            <h3><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></h3>
-            <span class="author"><a href="/gmao/people/{{ n.author.id }}">{{ n.author }}</a>
+            <h3><a href="/news/{{ n.id }}">{{ n.title }}</a></h3>
+            <span class="author"><a href="/people/{{ n.author.id }}">{{ n.author }}</a>
             <span class="post-timestamp">{{ n.when }}</span></br>
             <span class="post-description">{{ n.content|linebreaksbr }}</span><br><br>
             <!--<p class="post-body">{{ n.long_content|linebreaksbr }}</p>-->
@@ -29,7 +29,7 @@
 
 <div class="row"><br>
     <div class="span12">
-        <p><a href="/gmao/news/">Lista de todas as notícias</a></p>
+        <p><a href="/news/">Lista de todas as notícias</a></p>
     </div>
 </div>
 

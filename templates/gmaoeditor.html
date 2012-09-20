@@ -15,12 +15,12 @@
                 <ul class="news-list">
                     {% for n in news %}
                         <li class="sci-item">
-                        <a href="/gmao/restricted/authorize_news/{{ n.id }}" 
+                        <a href="/restricted/authorize_news/{{ n.id }}" 
                            class="btn btn-small"><i class="icon-ok"></i> Publicar</a>
-                        <a href="/gmao/restricted/deny_news/{{ n.id }}" 
+                        <a href="/restricted/deny_news/{{ n.id }}" 
                            class="btn btn-small"><i class="icon-trash"></i> Apagar</a>
-                        <a href="/gmao/news/{{ n.id }}">{{ n.title }}</a>
-                        por <a href="/gmao/people/{{ n.author.id }}">{{ n.author.name }}</a>
+                        <a href="/news/{{ n.id }}">{{ n.title }}</a>
+                        por <a href="/people/{{ n.author.id }}">{{ n.author.name }}</a>
                         </li>
                     {% empty %}
                         <li class="sci-item">Nenhum item</li>
@@ -30,12 +30,12 @@
                 <ul class="news-list">
                     {% for post in posts %}
                         <li class="sci-item">
-                        <a href="/gmao/restricted/authorize_post/{{ post.id }}"
+                        <a href="/restricted/authorize_post/{{ post.id }}"
                            class="btn btn-small"><i class="icon-ok"></i> Publicar</a>
-                        <a href="/gmao/restricted/deny_post/{{ post.id }}"
+                        <a href="/restricted/deny_post/{{ post.id }}"
                            class="btn btn-small"><i class="icon-trash"></i> Apagar</a>
-                        <a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a>
-                        por <a href="/gmao/people/{{ post.author.id }}">{{ post.author.name }}</a>
+                        <a href="/posts/{{ post.id }}">{{ post.title }}</a>
+                        por <a href="/people/{{ post.author.id }}">{{ post.author.name }}</a>
                         </li>
                     {% empty %}
                         <li class="sci-item">Nenhum item</li>
@@ -45,11 +45,11 @@
                 <ul class="news-list">
                     {% for sci in sciences %}
                         <li class="sci-item">
-                        <a href="/gmao/restricted/authorize_science/{{ sci.id }}"
+                        <a href="/restricted/authorize_science/{{ sci.id }}"
                            class="btn btn-small"><i class="icon-ok"></i> Publicar</a>
-                        <a href="/gmao/restricted/deny_science/{{ sci.id }}"
+                        <a href="/restricted/deny_science/{{ sci.id }}"
                            class="btn btn-small"><i class="icon-trash"></i> Apagar</a>
-                        <a href="/gmao/news/{{ sci.id }}">{{ sci.short }}</a>
+                        <a href="/videos/{{ sci.id }}">{{ sci.short }}</a>
                         </li>
                     {% empty %}
                         <li class="sci-item">Nenhum item</li>

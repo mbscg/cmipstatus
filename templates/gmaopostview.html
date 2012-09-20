@@ -15,7 +15,7 @@
     <div class="row"><br>
         <div class="span12">
             <h2>{{ post.title }}</h2>
-            <span class="author"><a href="/gmao/people/{{ post.author.id }}">{{ post.author }}</a></span>
+            <span class="author"><a href="/people/{{ post.author.id }}">{{ post.author }}</a></span>
             <span class="post-timestamp">{{ post.when }}</span><br>
             <span class="post-description">{{ post.description|linebreaksbr }}</span>
         </div>
@@ -29,7 +29,7 @@
             {% else %}
                 <p class="post-body">{{ post.content|linebreaksbr|urlize }}</p>
             {% endif %}
-            <p>Por: <span class="author"><a href="/gmao/people/{{ post.author.id }}">{{ post.author }}</a></span></p>
+            <p>Por: <span class="author"><a href="/people/{{ post.author.id }}">{{ post.author }}</a></span></p>
         </div>
     </div>
 

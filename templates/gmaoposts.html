@@ -13,7 +13,7 @@
     <div class="span12">
         <ul class="post-list">
             {% for post in posts %}
-                <li class="post-item"><a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a></li>
+                <li class="post-item"><a href="/posts/{{ post.id }}">{{ post.title }}</a></li>
                 <li class="post-timestamp">{{ post.when }}</li>
             {% endfor %}
         </ul>

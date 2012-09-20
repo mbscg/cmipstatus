@@ -16,7 +16,7 @@
                 {% for p in row %}
                     <div class="span4">
                         <div class="well">
-                            <a href="/gmao/people/{{ p.id }}">
+                            <a href="/people/{{ p.id }}">
                                 <div class="span1">
                                     {% thumbnail p.photo "x30" crop="center" as photo %}
                                         <img src="{{ photo.url }}">

@@ -18,14 +18,14 @@
             <div id="rotativenews" class="carousel slide">
                 <div class="carousel-inner">
                     <div class="active item car-img">
-                        <a href="/gmao/news/{{ imgs.0.news }}"><img height=250 src="/media/{{ imgs.0.img }}"/></a>
+                        <a href="/news/{{ imgs.0.news }}"><img height=250 src="/media/{{ imgs.0.img }}"/></a>
                         <div class="carousel-caption">
                             <h4>{{ imgs.0.caption }}</h4>
                         </div>
                     </div>
                     {% for img in imgs|slice:"1:" %}
                         <div class="item car-img">
-                            <a href="/gmao/news/{{ img.news }}"><img height=250 class="car-img" src="/media/{{ img.img }}"/></a>
+                            <a href="/news/{{ img.news }}"><img height=250 class="car-img" src="/media/{{ img.img }}"/></a>
                             <div class="carousel-caption">
                                 <h4>{{ img.caption }}</h4>
                             </div>
@@ -41,7 +41,7 @@
             {# place for science #}
             <h4>Destaques</h4><br>
             {% for video in videos %}
-                <p><strong><a href="/gmao/videos/{{ video.id }}">{{ video.short }}</a></strong></p>
+                <p><strong><a href="/videos/{{ video.id }}">{{ video.short }}</a></strong></p>
             {% endfor %}
         </div>
     </div>
@@ -60,7 +60,7 @@
             {# place for news #}
             {% for n in news|slice:":2" %}
                 <p>
-                    <strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong><br>
+                    <strong><a href="/news/{{ n.id }}">{{ n.title }}</a></strong><br>
                     {{ n.content }}<br>
                     <span class="timestamp">{{ n.when }}</span>
                 </p>
@@ -70,7 +70,7 @@
             {# place for news #}
             {% for n in news|slice:"2:" %}
                 <p>
-                    <strong><a href="/gmao/news/{{ n.id }}">{{ n.title }}</a></strong><br>
+                    <strong><a href="/news/{{ n.id }}">{{ n.title }}</a></strong><br>
                     {{ n.content }}<br>
                     <span class="timestamp">{{ n.when }}</span>
                 </p>
@@ -80,7 +80,7 @@
             {# place for posts #}
             {% for post in posts %}
                 <p>
-                    <strong><a href="/gmao/posts/{{ post.id }}">{{ post.title }}</a></strong><br>
+                    <strong><a href="/posts/{{ post.id }}">{{ post.title }}</a></strong><br>
                     {{ post.description }}<br>
                     <span class="timestamp">{{ post.when }}</span>
                 </p>

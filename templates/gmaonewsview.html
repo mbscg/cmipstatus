@@ -15,7 +15,7 @@
     <div class="row"><br>
         <div class="span12">
             <h2>{{ news.title }}</h2>
-            <span class="author"><a href="/gmao/people/{{ news.author.id }}">{{ news.author }}</a></span>
+            <span class="author"><a href="/people/{{ news.author.id }}">{{ news.author }}</a></span>
             <span class="news-timestamp">{{ news.when }}</span><br>
             <span class="news-description">{{ news.content|linebreaksbr }}</span>
         </div>
@@ -24,7 +24,7 @@
     <div class="row"><br>
         <div class="span12">
             <p class="news-body">{{ news.long_content|linebreaksbr|urlize }}</p>
-            <p>Por: <span class="author"><a href="/gmao/people/{{ news.author.id }}">{{ news.author }}</a></span></p>
+            <p>Por: <span class="author"><a href="/people/{{ news.author.id }}">{{ news.author }}</a></span></p>
         </div>
     </div>
 
