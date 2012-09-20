@@ -39,7 +39,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 SITE_ID = 1
 
@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.markup',
     'cmipstatus',
     'groupsite',
     'cronjobs',
@@ -158,6 +159,6 @@ LOGGING = {
     }
 }
 
-LOGIN_URL = "/gmao/login"
-LOGOUT_URL = "/gmao/logout"
-LOGIN_REDIRECT_URL = "/gmao/" 
+LOGIN_URL = "login/"
+LOGOUT_URL = "logout/"
+LOGIN_REDIRECT_URL = "/"
