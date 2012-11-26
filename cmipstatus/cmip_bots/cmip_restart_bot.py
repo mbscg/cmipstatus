@@ -27,7 +27,7 @@ def get_conversion_status():
 
     conds100 = ('r1i1p1')
 
-    root='/stornext/online13/ocean/simulations/CMIP/CMIP5/output/INPE/BESM-OA2-3/'):
+    root = '/stornext/online13/ocean/simulations/CMIP/CMIP5/output/INPE/BESM-OA2-3/'
     frequency = ('3hr', '6hr', 'day', 'mon', 'monClim')
     realms = ('atmos', 'ocean', 'land')
     #variables = [('atmos', 'zg', 40), ('ocean', 'tossq', 42), ('land', 'mrsos', 2)]
