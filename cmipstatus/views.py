@@ -258,17 +258,18 @@ def outputs_util(forcing=False):
     weights = {'ocean': 0.5, 'atmos': 0.47, 'land': 0.03}
 
     for line in conversion_log:
-        decade, cond, comp, current, expected, progress  = line.split()
-        if not info.has_key(decade):
-            info[decade] = {}
-        if info.has_key(decade) and not info[decade].has_key(cond):
-            info[decade][cond] = {}
-        if not acum.has_key(decade):
-            acum[decade] = [0, 0]
-        info[decade][cond][comp] = ['%3.2f' % (100 * float(progress)) + '%', float(progress)]
-        acum[decade][0] += weights[comp] * float(progress)
-        acum[decade][1] += weights[comp]
-        new_info.append({'decade': decade, 'cond':cond, 'comp':comp, 'progress':['%3.2f' % (100 * float(progress)) + '%', float(progress)] })
+        if line.startswith('decadal'):
+            decade, cond, comp, current, expected, progress  = line.split()
+            if not info.has_key(decade):
+                info[decade] = {}
+            if info.has_key(decade) and not info[decade].has_key(cond):
+                info[decade][cond] = {}
+            if not acum.has_key(decade):
+                acum[decade] = [0, 0]
+            info[decade][cond][comp] = ['%3.2f' % (100 * float(progress)) + '%', float(progress)]
+            acum[decade][0] += weights[comp] * float(progress)
+            acum[decade][1] += weights[comp]
+            new_info.append({'decade': decade, 'cond':cond, 'comp':comp, 'progress':['%3.2f' % (100 * float(progress)) + '%', float(progress)] })
 
     #averaging
     for decade, value in acum.items():
