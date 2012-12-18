@@ -145,8 +145,8 @@ def moo(request):
     return render_to_response("gmaomoo.html", {'user':request.user})
 
 
-def presentation(request):
-    return render_to_response("gmaopres.html", {'user':request.user})
+def presentation(request, name):
+    return render_to_response("gmaopres_{0}.html".format(name), {'user':request.user})
 
 
 # RESTRICTED VIEWS SECTION
