@@ -63,3 +63,7 @@ class FormNetwork(forms.ModelForm):
     class Meta:
         model = NetworkInfo
         exclude = ('people',)
+
+
+class FormReport(forms.Form):
+    attachment = forms.FileField(max_length=1024, label="Relatório")

@@ -1,0 +1,53 @@
+{% extends 'gmaobase.html' %}
+
+{% block cabecalho %}Aguardando Aprovação{% endblock %}
+
+{% block pagebanner %}
+<h2>Aguardando Aprovação</h2>
+{% endblock %}
+
+{% block body %}
+<div class="news">
+    <div class="container">
+        <div class="row"><br>
+            <div class="span12">
+                <h3>Relatórios Pendentes</h3>
+                <ul class="news-list">
+                    {% for r in reports %}
+                        <li class="sci-item">
+                            <a href="{{ r.attachment.url }}">Enviado em {{ r.when }}</a>
+                        {% if approver %}
+                            por <a href="/people/{{ r.author.id }}">{{ r.author.name }}</a>
+                            <a href="/restricted/approve_report/{{ r.id }}" 
+                               class="btn btn-small"><i class="icon-ok"></i> Aprovar</a>
+                            <a href="/restricted/deny_report/{{ r.id }}" 
+                               class="btn btn-small"><i class="icon-trash"></i> Apagar</a>
+                        {% endif %}
+                        </li>
+                    {% empty %}
+                        <li class="sci-item">Nenhum item</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="row"><br>
+            <div class="span12">
+                <h3>Relatórios Aprovados</h3>
+                <ul class="news-list">
+                    {% for r in old %}
+                        <li class="sci-item">
+                        <a href="{{ r.attachment.url }}">Enviado em {{ r.when }}</a>
+                        {% if approver %}
+                            por <a href="/people/{{ r.author.id }}">{{ r.author.name }}</a>
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <li class="sci-item">Nenhum item</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

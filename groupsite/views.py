@@ -8,11 +8,11 @@ from cmipstatus.models import People
 import os
 from models import News, NewsImg, ScienceThing, YoutubeVideo, Post, Publication
 from models import NetworkInfo, LattesCache, Editor, NewsAttachment, PostImg
-from models import PostAttachment, Graphic
+from models import PostAttachment, Graphic, AmbarReport, AmbarPeople
 from cmipstatus.forms import FormEditProfile, FormPassword
 from forms import FormNews, FormPost, FormVideo, FormImage, FormPublication
 from forms import FormNetwork, FormAttachment, FormPostImage, FormPostAttachment
-from forms import FormGraphic
+from forms import FormGraphic, FormReport
 import requests
 from requests.exceptions import Timeout
 from django.core.validators import URLValidator
@@ -656,3 +656,72 @@ def parse_lattes_text(text):
             publication = splitted[1]
             paper_list.append({'authors':authors, 'publication':publication})
     return paper_list
+
+
+@login_required
+def uploadreport(request):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    get_object_or_404(AmbarPeople, people=people)
+
+    if request.method == 'POST':
+        form = FormReport(request.POST, request.FILES)
+        if form.is_valid():
+            att = form.cleaned_data['attachment']
+            report = AmbarReport(author=people, attachment=att)
+            report.save()
+            return render_to_response("gmaook.html", {'user':user})
+        else:
+            context = RequestContext(request)
+            return render_to_response("gmaouploadreport.html",
+                                      {'form':form, 'user':user, 'erro':True},
+                                      context_instance=context)
+    else:
+        form = FormReport()
+
+    context = RequestContext(request)
+    return render_to_response("gmaouploadreport.html", {'form':form, 'user':user},
+                              context_instance=context)    
+
+
+@login_required
+def viewreports(request):
+    user = request.user
+    people = People.objects.get(username=user)
+    try: 
+        # sees his pending reports
+        ambar = get_object_or_404(AmbarPeople, people=people)
+        reps = AmbarReport.objects.order_by('-when').filter(approved=False).filter(author=people)
+        old = AmbarReport.objects.order_by('-when').filter(approved=True).filter(author=people)
+        approver = False
+    except Http404:
+        approver = get_object_or_404(Editor, people=people)
+        # get pending news to approve
+        reps = AmbarReport.objects.order_by('when').filter(approved=False)
+        old = AmbarReport.objects.order_by('when').filter(approved=True)
+        approver = True
+
+    return render_to_response("gmaoambarreports.html", 
+            {'reports':reps, 'old':old, 'user':user, 'approver':approver})
+
+
+@login_required
+def approvereport(request, rep_id):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    editor = get_object_or_404(Editor, people=people)
+    rep = get_object_or_404(AmbarReport, pk=rep_id)
+    rep.approve()
+    rep.save()
+    return render_to_response("gmaook.html", {'user':user})
+
+
+@login_required
+def denyreport(request, rep_id):
+    user = request.user
+    people = get_object_or_404(People, username=user)
+    editor = get_object_or_404(Editor, people=people)
+    rep = get_object_or_404(AmbarReport, pk=rep_id)
+    rep.deny()
+    rep.delete()
+    return render_to_response("gmaook.html", {'user':user})

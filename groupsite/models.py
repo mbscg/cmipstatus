@@ -191,6 +191,13 @@ class Editor(models.Model):
         return "Editor " + self.people.name
 
 
+class AmbarPeople(models.Model):
+    people = models.ForeignKey(People)
+
+    def __unicode__(self):
+        return "Ambar " + self.people.name
+
+
 class PostsFeed(Feed):
     title = "GMAO Blog Feed"
     link = "http://antares.ccst.inpe.br/gmao/blog/"
@@ -215,3 +222,23 @@ class NewsFeed(Feed):
 
     def item_title(self, item):
         return item.title
+
+
+class AmbarReport(models.Model):
+    when = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(People)
+    approved = models.BooleanField(default=False)
+    attachment = models.FileField(max_length=1024, upload_to='attachments', verbose_name="Arquivo")
+
+    def __unicode__(self):
+        return ', '.join([self.author.name, self.when])
+
+
+    def approve(self):
+        #TODO send email
+        self.approved = True
+        print "approved, sending email"
+
+    def deny(self):
+        #TODO send email
+        print "denied, sending email"
