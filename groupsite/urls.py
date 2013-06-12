@@ -43,7 +43,7 @@ urlpatterns = patterns('',
     url(r'^restricted/approve_report/(\d+)/$', 'groupsite.views.approvereport'),
     url(r'^restricted/deny_report/(\d+)/$', 'groupsite.views.denyreport'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name' : 'gmaologin.html'}),
-    url(r'^logout/$', 'django.contrib.auth.views.logout_then_login', {'login_url' : '/gmao/login/'}),    
+    url(r'^logout/$', 'django.contrib.auth.views.logout_then_login', {'login_url' : '/login/'}),    
     url(r'^--moo/$', 'groupsite.views.moo'),    
     url(r'^pres/(.*)/$', 'groupsite.views.presentation'),
     )
