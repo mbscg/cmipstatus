@@ -1,4 +1,4 @@
-{% extends 'cmiphome.html' %}
+{% extends 'expshome.html' %}
 
 {% block body %}
 <div class="container">
@@ -12,12 +12,11 @@
                       data-target=".expcollapse">Hide/Show All</button>
           <div class="collapse in" id="running"><br>
             {% for exp in running %}
-                <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                <a href="/exps/expview/{{ exp.id }}">{{ exp.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
-                        data-target="#exp{{ exp.0.id }}">Details</button>
-                <div class="collapse expcollapse" id="exp{{ exp.0.id }}">
+                        data-target="#exp{{ exp.id }}">Details</button>
+                <div class="collapse expcollapse" id="exp{{ exp.id }}">
                     <div class="well">
-                    <span class="small-info">CO2: {{ exp.1.co2 }}</span>
                   {% for minfo in exp.1.minfo %}
                     <div class="row">
                       <div class="span1">

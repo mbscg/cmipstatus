@@ -1,0 +1,23 @@
+{% extends "expshome.html" %}
+
+{% block pagebanner %}
+    <h2>Criar Experimento</h2>
+{% endblock %}
+
+{% block body %}
+<div class="post-edit">
+    {% if erro %}
+        <div class="alert alert-error">
+            <a class="close" data-dismiss="alert">×</a>
+            <strong>Erro!</strong><br>Entradas inválidas
+        </div>
+    {% endif %}
+
+    <form class="well" method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit"><i class="icon-ok"></i> Salvar</button>
+    </form>
+</div>
+{% endblock %}
+

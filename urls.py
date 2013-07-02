@@ -2,7 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from cmipstatus.models import FeedFetcher
-from cmipstatus.urls import urlpatterns as cmip_patterns
+from expwatch.urls import urlpatterns as exps_patterns
 from groupsite.urls import urlpatterns as gmao_patterns
 
 admin.autodiscover()
@@ -13,7 +13,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^cmip/', include(cmip_patterns)),
+    url(r'^exps/', include(exps_patterns)),
     url(r'', include(gmao_patterns)),
 
     # Uncomment the admin/doc line below to enable admin documentation:
