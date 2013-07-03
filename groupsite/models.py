@@ -3,6 +3,9 @@
 from django.db import models
 from cmipstatus.models import People
 from django.contrib.syndication.views import Feed
+from django.core.mail import send_mail
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class News(models.Model):
@@ -186,6 +189,7 @@ class LattesCache(models.Model):
 
 class Editor(models.Model):
     people = models.ForeignKey(People)
+    email = models.EmailField()
 
     def __unicode__(self):
         return "Editor " + self.people.name
@@ -193,6 +197,7 @@ class Editor(models.Model):
 
 class AmbarPeople(models.Model):
     people = models.ForeignKey(People)
+    email = models.EmailField()
 
     def __unicode__(self):
         return "Ambar " + self.people.name
@@ -223,6 +228,16 @@ class NewsFeed(Feed):
     def item_title(self, item):
         return item.title
 
+REPORT_SEND_HEADER = '[Relatorios] {} enviou relatorio'
+REPORT_SEND_BODY = '{},\n{} enviou um relatorio. Para aprova-lo, {}'
+REPORT_APPR_HEADER = '[Relatorios] Seu relatorio foi aprovado'
+REPORT_APPR_BODY = '{},\nSeu relatorio enviado em {} foi aprovado.'
+REPORT_DENY_HEADER = '[Relatorios] Seu relatorio foi rejeitado'
+REPORT_DENY_BODY = '{},\nSeu relatorio enviado em {} foi rejeitado.'
+REPORT_FORW_HEADER = ''
+REPORT_FORW_BODY = ''
+
+
 
 class AmbarReport(models.Model):
     when = models.DateTimeField(auto_now_add=True)
@@ -231,14 +246,41 @@ class AmbarReport(models.Model):
     attachment = models.FileField(max_length=1024, upload_to='attachments', verbose_name="Arquivo")
 
     def __unicode__(self):
-        return ', '.join([self.author.name, self.when])
+        return ', '.join([self.author.name, str(self.when)])
 
 
     def approve(self):
-        #TODO send email
         self.approved = True
-        print "approved, sending email"
+        #notify author
+        recipient = AmbarPeople.objects.get(people=self.author).email
+        send_mail(
+            REPORT_APPR_HEADER,
+            REPORT_APPR_BODY.format(self.author.name, self.when),
+            'ocean',
+            [recipient]) 
+
+        #TODO: forward to ambar
+
 
     def deny(self):
-        #TODO send email
-        print "denied, sending email"
+        #notify author
+        recipient = AmbarPeople.objects.get(people=self.author).email
+        send_mail(
+            REPORT_DENY_HEADER,
+            REPORT_DENY_BODY.format(self.author.name, self.when),
+            'ocean',
+            [recipient]) 
+
+
+@receiver(post_save, sender=AmbarReport)
+def notify_submit_report(sender, instance, created, **kwargs):
+    if not created:
+        return
+    report = instance
+    approvers = Editor.objects.all()
+    for approver in approvers:
+        send_mail(
+            REPORT_SEND_HEADER.format(report.author.name),
+            REPORT_SEND_BODY.format(approver.people.name, report.author.name, 'link'),
+            'ocean',
+            [approver.email]) 

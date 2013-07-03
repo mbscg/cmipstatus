@@ -8,29 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'PostAttachment'
-        db.create_table('groupsite_postattachment', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('post', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['groupsite.Post'])),
-            ('attachment', self.gf('django.db.models.fields.files.ImageField')(max_length=1024)),
-        ))
-        db.send_create_signal('groupsite', ['PostAttachment'])
-
-        # Adding model 'PostImg'
-        db.create_table('groupsite_postimg', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('post', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['groupsite.Post'])),
-            ('img', self.gf('django.db.models.fields.files.ImageField')(max_length=1024)),
-        ))
-        db.send_create_signal('groupsite', ['PostImg'])
+        # Adding field 'AmbarPeople.email'
+        db.add_column('groupsite_ambarpeople', 'email',
+                      self.gf('django.db.models.fields.EmailField')(default='gabrielmarcondes@cptec.inpe.br', max_length=75),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'PostAttachment'
-        db.delete_table('groupsite_postattachment')
-
-        # Deleting model 'PostImg'
-        db.delete_table('groupsite_postimg')
+        # Deleting field 'AmbarPeople.email'
+        db.delete_column('groupsite_ambarpeople', 'email')
 
 
     models = {
@@ -77,10 +63,30 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        'groupsite.ambarpeople': {
+            'Meta': {'object_name': 'AmbarPeople'},
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'people': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['cmipstatus.People']"})
+        },
+        'groupsite.ambarreport': {
+            'Meta': {'object_name': 'AmbarReport'},
+            'approved': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'attachment': ('django.db.models.fields.files.FileField', [], {'max_length': '1024'}),
+            'author': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['cmipstatus.People']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'when': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
+        },
         'groupsite.editor': {
             'Meta': {'object_name': 'Editor'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'people': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['cmipstatus.People']"})
+        },
+        'groupsite.graphic': {
+            'Meta': {'object_name': 'Graphic'},
+            'data_file': ('django.db.models.fields.files.FileField', [], {'max_length': '102'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'science_thing': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['groupsite.ScienceThing']"})
         },
         'groupsite.lattescache': {
             'Meta': {'object_name': 'LattesCache'},
@@ -116,11 +122,13 @@ class Migration(SchemaMigration):
         'groupsite.newsattachment': {
             'Meta': {'object_name': 'NewsAttachment'},
             'attachment': ('django.db.models.fields.files.FileField', [], {'max_length': '1024'}),
+            'description': ('django.db.models.fields.TextField', [], {'default': "''"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'news': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['groupsite.News']"})
         },
         'groupsite.newsimg': {
             'Meta': {'object_name': 'NewsImg'},
+            'description': ('django.db.models.fields.TextField', [], {'default': "''"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'img': ('django.db.models.fields.files.ImageField', [], {'max_length': '1024'}),
             'news': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['groupsite.News']"})
@@ -134,16 +142,19 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {'default': "' '"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
+            'using_markdown': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'when': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
         },
         'groupsite.postattachment': {
             'Meta': {'object_name': 'PostAttachment'},
-            'attachment': ('django.db.models.fields.files.ImageField', [], {'max_length': '1024'}),
+            'attachment': ('django.db.models.fields.files.FileField', [], {'max_length': '1024'}),
+            'description': ('django.db.models.fields.TextField', [], {'default': "''"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'post': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['groupsite.Post']"})
         },
         'groupsite.postimg': {
             'Meta': {'object_name': 'PostImg'},
+            'description': ('django.db.models.fields.TextField', [], {'default': "''"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'img': ('django.db.models.fields.files.ImageField', [], {'max_length': '1024'}),
             'post': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['groupsite.Post']"})

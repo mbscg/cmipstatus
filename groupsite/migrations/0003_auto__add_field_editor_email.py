@@ -8,17 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'AmbarPeople'
-        db.create_table('groupsite_ambarpeople', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('people', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cmipstatus.People'])),
-        ))
-        db.send_create_signal('groupsite', ['AmbarPeople'])
+        # Adding field 'Editor.email'
+        db.add_column('groupsite_editor', 'email',
+                      self.gf('django.db.models.fields.EmailField')(default='gabrielmarcondes@cptec.inpe.br', max_length=75),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'AmbarPeople'
-        db.delete_table('groupsite_ambarpeople')
+        # Deleting field 'Editor.email'
+        db.delete_column('groupsite_editor', 'email')
 
 
     models = {
@@ -67,6 +65,7 @@ class Migration(SchemaMigration):
         },
         'groupsite.ambarpeople': {
             'Meta': {'object_name': 'AmbarPeople'},
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'people': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['cmipstatus.People']"})
         },
@@ -80,6 +79,7 @@ class Migration(SchemaMigration):
         },
         'groupsite.editor': {
             'Meta': {'object_name': 'Editor'},
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'people': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['cmipstatus.People']"})
         },
