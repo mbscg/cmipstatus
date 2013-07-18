@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.markup',
     'cmipstatus',
     'groupsite',
+    'expwatch',
     'cronjobs',
     'south',
     'sorl.thumbnail',
@@ -158,6 +159,14 @@ LOGGING = {
         },
     }
 }
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.cptec.inpe.br'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ['email_host_user']
+EMAIL_HOST_PASSWORD = os.environ['email_host_password']
+
 
 LOGIN_URL = "/login/"
 LOGOUT_URL = "/logout/"

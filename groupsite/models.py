@@ -234,8 +234,8 @@ REPORT_APPR_HEADER = '[Relatorios] Seu relatorio foi aprovado'
 REPORT_APPR_BODY = '{},\nSeu relatorio enviado em {} foi aprovado.'
 REPORT_DENY_HEADER = '[Relatorios] Seu relatorio foi rejeitado'
 REPORT_DENY_BODY = '{},\nSeu relatorio enviado em {} foi rejeitado.'
-REPORT_FORW_HEADER = ''
-REPORT_FORW_BODY = ''
+REPORT_FORW_HEADER = '[Relatorios] Relatorio enviado por {}'
+REPORT_FORW_BODY = 'Relatorio enviado por {}, anexo.'
 
 
 
@@ -259,7 +259,13 @@ class AmbarReport(models.Model):
             'ocean',
             [recipient]) 
 
-        #TODO: forward to ambar
+        from configs import ambar_email
+        send_mail(
+            REPORT_FORW_HEADER,
+            REPORT_FORW_BODY.format(self.author.name),
+            'ocean',
+            [ambar_email]) 
+        
 
 
     def deny(self):
