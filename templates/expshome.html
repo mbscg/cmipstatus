@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="/media/css/gmao_style.css" />
         <link rel="stylesheet" type="text/css" href="/media/css/bootstrap-lightbox.css" />
         {% block cabecalho %}
-             <title>CMIP Experiments Status</title>
+             <title>Experiments Status</title>
         {% endblock %}
     </head>
 
@@ -16,15 +16,15 @@
                 <div class="navbar-inner">
                     <div class="container">
                         <ul class="nav">
-                            <li class="active"><a class="brand" href="/cmip/">CMIPStatus</a></li>
-                            <li><a href="/cmip/list/">Experiments</a></li>
-                            <li><a href="/cmip/news/">News</a></li>
-                            <li><a href="/cmip/outputs/">Outputs</a></li>
+                            <li class="active"><a class="brand" href="/exps/">EXPStatus</a></li>
+                            <li><a href="/exps/list/">Experiments</a></li>
+                            <!--<li><a href="/exps/news/">News</a></li>
+                            <li><a href="/exps/outputs/">Outputs</a></li>-->
                             <li><a href="/">GMAO</a></li>
                             {% if user.is_authenticated %}
-                                <li><a href="/cmip/logout/">Logout</a></li>
+                                <li><a href="/exps/logout/">Logout</a></li>
                             {% else %}
-                                <li><a href="/cmip/login/">Login</a></li>
+                                <li><a href="/exps/login/">Login</a></li>
                             {% endif %}
                         </ul>
                     </div>
@@ -46,7 +46,7 @@
 
                 {% block body %}
                     <div class="hero-unit">
-                        <h2>Welcome to INPE-OA CMIP Experiments monitoring!</h2>
+                        <h2>Welcome to BESM Experiments monitoring!</h2>
                     </div>
                 {% endblock %}
             </div>
