@@ -4,7 +4,9 @@ import time
 import os
 import stat
 
-all_info = yaml.load(open('exp_info.yaml', 'r'))
+import running_stats_config
+
+config = yaml.load(open('running_stats.config', 'r'))
 permissions = stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP |\
               stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
 
@@ -12,8 +14,8 @@ permissions = stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP |\
  
 def get_running_stats():
     with settings(host_string='g.marcondes@tupa', warn_only=True):
-        results = run('stat_cpld manoel.baptista')
-        stats_file = all_info['paths']['qstat_log']
+        results = run('stat_cpld ocean')
+        stats_file = config['qstat_log']
         f = open(stats_file, 'w')
         f.writelines(results)
         f.writelines(['\n'])
@@ -22,5 +24,5 @@ def get_running_stats():
 
 
 if __name__ == "__main__":
-    print "refreshing"
+    print "getting running stats"
     get_running_stats()
