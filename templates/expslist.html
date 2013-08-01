@@ -11,7 +11,7 @@
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target=".expcollapse">Hide/Show All</button>
           <div class="collapse in" id="running"><br>
-            {% for exp in running %}
+            {% for exp in classified.RUN_OK %}
                 <a href="/exps/expview/{{ exp.id }}">{{ exp.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
                         data-target="#exp{{ exp.id }}">Details</button>
@@ -45,7 +45,7 @@
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target=".expcollapse-errors">Hide/Show All</button>
           <div class="collapse in" id="running-errors"><br>
-            {% for exp in running_errors %}
+            {% for exp in classified.RUN_ERR %}
                 <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
                         data-target="#exp{{ exp.0.id }}-errors">Details</button>
@@ -79,7 +79,7 @@
               <button class="btn btn-small" data-toggle="collapse" 
                       data-target=".expcollapse-aborted">Hide/Show All</button>
           <div class="collapse in" id="running-aborted"><br>
-            {% for exp in running_aborted %}
+            {% for exp in classified.RUN_ABO %}
                 <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
                         data-target="#exp{{ exp.0.id }}-aborted">Details</button>
@@ -118,10 +118,9 @@
                       data-target="#finished">Hide/Show All</button>
               <div class="collapse in" id="finished"><br>
                 <ul class="unstyled">
-                          {% for exp in finished %}
+                          {% for exp in classified.END_OK %}
                             <li>
                               <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
-                              <span class="small-info">CO2: {{ exp.1.co2 }}</span>
                             </li>
                           {% empty %}
                             <li>None</li>
@@ -136,10 +135,9 @@
                       data-target="#aborted">Hide/Show All</button>
               <div class="collapse in" id="aborted"><br>
                 <ul class="unstyled">
-                          {% for expa in finished_aborted %}
+                          {% for expa in classified.END_ABO %}
                             <li>
                               <a href="/cmip/expview/{{ expa.0.name }}">{{ expa.0.name }}</a>
-                              <span class="small-info">CO2: {{ expa.1.co2 }}</span>
                             </li>
                           {% empty %}
                             <li>None</li>

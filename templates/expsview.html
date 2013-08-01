@@ -12,11 +12,13 @@
     </div>
 </div>
 
+{{ minfo }}
+
 <div class="container">
     <div class="row"><br> <!-- start exps row -->
         <div class="span10"> <!-- span exps -->
             <div class="well"> <!-- well exps -->
-                {% for member_info in minfo %}
+                {% for member_info in info.run_info %}
                     <div class="row"><br><!-- row interno -->
                         <div class="span2"><!-- span sinal+nome -->
                             {% if member_info.post %}
@@ -67,7 +69,7 @@
                 {% empty %}
                     <p>No jobs submitted</p>
                 {% endfor %}
-                <br><p>Total errors in this list: {{ page_errors }}</p>
+                <br><p>Total errors in this list: {{ info.page_errors }}</p>
             </div><!-- fim well -->
         </div><!-- fim span exps -->
     </div><!-- fim row exps -->

@@ -24,14 +24,25 @@ class ExpList(View):
     @method_decorator(login_required)
     def get(self, request):
         user = request.user
-        all_exps = Exp.objects.all()
+        all_exps = Exp.objects.all().order_by('name')
+        classified = {'RUN_OK': [], 'RUN_ERR': [],
+                      'RUN_ABO': [], 'END_OK': [],
+                      'END_ABO': []}
+        total_aborted, total_errors = 0, 0
+        for exp in all_exps:
+            try:
+                status, error, aborted = exp.parse_exp_overview()
+                info = exp.parse_exp_info()
+                total_aborted += aborted
+                total_errors += error
+                classified[status].append([exp, info])
+            except:
+                pass
+            
+
         return render(request, self.template_name, 
-            {'user':user, 
-            'running':all_exps,
-            'running_errors':[],
-            'running_aborted':[],
-            'finished':[],
-            'finished_aborted':[]})
+            {'user':user, 'classified':classified,
+             'total_errors': total_errors, 'total_aborted': total_aborted})
 
 
 class ExpView(View):
@@ -43,7 +54,7 @@ class ExpView(View):
         exp = Exp.objects.get(id=kwargs['expid'])
         info = exp.parse_exp_info()
         return render(request, self.template_name,
-            {'user':user,'exp':exp})
+            {'user':user,'exp':exp, 'info':info})
 
 
 class IncludeNewExp(View):

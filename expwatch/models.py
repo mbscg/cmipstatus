@@ -3,6 +3,7 @@ import officeboy
 
 RESTART_LIST_DEFAULT = ' '
 
+
 class Exp(models.Model):
     name = models.CharField(max_length=15)
     members = models.IntegerField(default=1)
@@ -26,6 +27,38 @@ class Exp(models.Model):
         return meta_info
 
 
+    def parse_exp_overview(self):
+        info = self.parse_exp_info()
+        error, aborted, finished, running = 0, 0, 0, 0
+        status = 'RUN_OK'
+        for member in info['run_info']:
+            if member['complete']:
+                if member['aborted']:
+                    aborted += 1
+                else:
+                    finished += 1
+            else:
+                if member['error']:
+                    error += 1
+                else:
+                    running += 1
+
+        if running > 0:
+            if aborted > 0:
+                status = 'RUN_ABO'
+            elif error > 0:
+                status = 'RUN_ERR'
+            else:
+                status = 'RUN_OK'
+        elif running == 0:
+            if aborted > 0:
+                status = 'END_ABO'
+            else:
+                status = 'END_OK'
+
+        return status, error, aborted
+
+
     def __unicode__(self):
         return 'Exp {}, with {} members'.format(self.name, self.members)
 
@@ -37,6 +70,11 @@ class ExpMember(models.Model):
     member = models.IntegerField(default=0)
     restart_list = models.CharField(max_length=1024, default=RESTART_LIST_DEFAULT)
     description = models.TextField(max_length=1024, default=' ')
+
+    def get_fancy_name(self):
+        if self.exp.members == 1:
+            return self.exp.name
+        return '{}_{}'.format(self.exp.name, str(self.member))
 
     def parse_member_status(self, tupa_data):
         done, total, errors, last_ok = self.check_restart_list()
@@ -71,13 +109,12 @@ class ExpMember(models.Model):
         member_info['total_years'] = total_years
         member_info['text_total'] = '%3.2f' % (member_info['prog'] * 100)
 
-        print member_info
         return member_info
     
  
     def check_restart_list(self):
         print "checking restart list for", self
-        fancy_name = '{}_{}'.format(self.exp.name, str(self.member))
+        fancy_name = self.get_fancy_name()
         restart_list = officeboy.get_restart_list(fancy_name)
         restarts, done, error = 0, 0, 0
         last_ok = True
@@ -98,15 +135,16 @@ class ExpMember(models.Model):
 
 
     def check_status(self):
+        fancy_name = '{}_{}'.format
         tupa_data = officeboy.get_tupa_data()
         tupa_data.pop(0)
         for line in tupa_data:
             columns = line.split()
             exp_name = self.exp.name
             member_name = str(self.member)
-            if len(columns) > 2 and columns[1].endswith(exp_name+member_name):
+            if len(columns) > 2 and columns[1].endswith(self.get_fancy_name()):
                 return columns
-        return [None, 'M_'+self.exp.name+str(self.member), None, None, '0%']
+        return [None, 'M_'+self.get_fancy_name(), None, None, '0%']
 
 
     def __unicode__(self):
