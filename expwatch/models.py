@@ -7,7 +7,7 @@ class Exp(models.Model):
     members = models.IntegerField(default=1)
 
     def __unicode__(self):
-        return ', '.join([self.name, str(self.members)])
+        return 'Exp {}, with {} members'.format(self.name, self.members)
 
 
 class ExpMember(models.Model):
@@ -15,3 +15,6 @@ class ExpMember(models.Model):
     member = models.IntegerField(default=0)
     restart_list = models.CharField(max_length=1024, default=RESTART_LIST_DEFAULT)
     description = models.TextField(max_length=1024, default=' ')
+
+    def __unicode__(self):
+        return 'Member {} from Exp {}'.format(self.member, self.exp.name)
