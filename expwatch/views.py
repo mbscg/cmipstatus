@@ -1,4 +1,3 @@
-from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 
@@ -9,7 +8,7 @@ from django.utils.decorators import method_decorator
 
 from models import Exp, ExpMember
 from forms import FormIncludeExp
-
+from officeboy import get_tupa_data
 
 class Home(View):
     template_name = 'expshome.html'
@@ -42,6 +41,7 @@ class ExpView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         exp = Exp.objects.get(id=kwargs['expid'])
+        info = exp.parse_exp_info()
         return render(request, self.template_name,
             {'user':user,'exp':exp})
 
