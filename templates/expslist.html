@@ -9,7 +9,7 @@
           <div class="well">
             <h3>Running OK</h3>
               <button class="btn btn-small" data-toggle="collapse" 
-                      data-target=".expcollapse">Hide/Show All</button>
+                      data-target=".expcollapse">Collapse/Expand All</button>
           <div class="collapse in" id="running"><br>
             {% for exp in classified.RUN_OK %}
                 <a href="/exps/expview/{{ exp.0.id }}">{{ exp.0.name }}</a>
@@ -43,7 +43,7 @@
           <div class="well">
             <h3>Running with Errors</h3><h4>Total errors: {{ total_errors }}</h4>
               <button class="btn btn-small" data-toggle="collapse" 
-                      data-target=".expcollapse-errors">Hide/Show All</button>
+                      data-target=".expcollapse-errors">Collapse/Expand All</button>
           <div class="collapse in" id="running-errors"><br>
             {% for exp in classified.RUN_ERR %}
                 <a href="/exps/expview/{{ exp.0.id }}">{{ exp.0.name }}</a>
@@ -77,7 +77,7 @@
           <div class="well">
             <h3>Running with Aborted</h3><h4>Total Aborted {{ total_aborted }} </h4>
               <button class="btn btn-small" data-toggle="collapse" 
-                      data-target=".expcollapse-aborted">Hide/Show All</button>
+                      data-target=".expcollapse-aborted">Collapse/Expand All</button>
           <div class="collapse in" id="running-aborted"><br>
             {% for exp in classified.RUN_ABO %}
                 <a href="/exps/expview/{{ exp.0.id }}">{{ exp.0.name }}</a>
@@ -115,8 +115,8 @@
           <div class="well">
             <h3>Finished OK</h3>
               <button class="btn btn-small" data-toggle="collapse" 
-                      data-target="#finished">Hide/Show All</button>
-              <div class="collapse in" id="finished"><br>
+                      data-target="#finished">Hide/Show List</button>
+              <div class="collapse out" id="finished"><br>
                 <ul class="unstyled">
                           {% for exp in classified.END_OK %}
                             <li>
@@ -132,8 +132,8 @@
           <div class="well">
             <h3>Finished with Aborted</h3>
               <button class="btn btn-small" data-toggle="collapse" 
-                      data-target="#aborted">Hide/Show All</button>
-              <div class="collapse in" id="aborted"><br>
+                      data-target="#aborted">Hide/Show List</button>
+              <div class="collapse out" id="aborted"><br>
                 <ul class="unstyled">
                           {% for expa in classified.END_ABO %}
                             <li>
@@ -151,14 +151,14 @@
         <h2>Dashboard</h2>
         <div class="well">
             <h3 data-toggle="collapse" data-target="#options">Exp Management <b class="caret"></b></h3>
-            <div class="collapse in" id="options"><br>
+            <div class="collapse out" id="options"><br>
                 <p><a href="/exps/include/" class="btn">Include</a></p>
                 <p><a href="#" class="btn">Remove</a></p>
             </div>
         </div>
         <div class="well">
             <h3 data-toggle="collapse" data-target="#alerts">Alerts <b class="caret"></b></h3>
-            <div class="collapse in" id="alerts"><br>
+            <div class="collapse out" id="alerts"><br>
                {% for alert in alerts %}
                 <p>
                <a class="btn btn-small" href="/exps/alert/dismiss/{{ alert.id }}"><i class="icon-trash"></i></a>
