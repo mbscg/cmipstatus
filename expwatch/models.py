@@ -148,7 +148,7 @@ class ExpMember(models.Model):
 
 
     def __unicode__(self):
-        return 'Member {} from Exp {}'.format(self.member, self.exp.name)
+        return 'Member {} from Exp {}'.format(str(self.member), self.exp.name)
 
 
 class Alert(models.Model):
