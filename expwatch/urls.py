@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 from views import Home, ExpList, ExpView, IncludeNewExp
-from views import AlertDismiss
+from views import AlertView, AlertDismiss
 #from models import FeedFetcher
 
 urlpatterns = patterns('',
@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     url(r'^list/$', ExpList.as_view()),
     url(r'^expview/(?P<expid>\d+)/$', ExpView.as_view()),
     url(r'^include/$', IncludeNewExp.as_view()),
+    url(r'^alert/view/(?P<alertid>\d+)/$', AlertView.as_view()),
     url(r'^alert/dismiss/(?P<alertid>\d+)/$', AlertDismiss.as_view()),
 #    url(r'^news/$', 'cmipstatus.views.newslist'),
 #    url(r'^news/feed/$', FeedFetcher()),

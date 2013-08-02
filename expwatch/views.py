@@ -39,8 +39,8 @@ class ExpList(View):
                 classified[status].append([exp, info])
             except:
                 #what to do if the exp doesn't exist?
-                # ALERT!
-                alert = Alert.objects.filter(exp=exp).filter(message='NOT FOUND')
+                # ALERT! And this alert never ever goes away
+                alert = Alert.objects.filter(exp=exp).filter(message='NOT FOUND').filter(dismissed=False)
                 if not alert:
                     alert = Alert(exp=exp, message='NOT FOUND')
                     alert.save()
@@ -89,6 +89,18 @@ class IncludeNewExp(View):
         return render(request, self.template_name, 
             {'user':user, 'form':form},
             context_instance=RequestContext(request))
+
+
+class AlertView(View):
+    template_name = 'expsalertview.html'
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        alert = Alert.objects.get(id=kwargs['alertid'])
+        return render(request, self.template_name,
+            {'user':user, 'alert': alert})
+
 
 class AlertDismiss(View):
     template_name = 'expsok.html'
