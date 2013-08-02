@@ -159,12 +159,12 @@
         <div class="well">
             <h3 data-toggle="collapse" data-target="#alerts">Alerts <b class="caret"></b></h3>
             <div class="collapse in" id="alerts"><br>
-                <ul>
-                    <li>a</li>
-                    <li>b</li>
-                    <li>c</li>
-                    <li>d</li>
-                </ul>
+               {% for alert in alerts %}
+                <p>
+                <a class="btn btn-small" href="/exps/alert/dismiss/{{ alert.id }}"><i class="icon-ok"></i></a>
+                {{ alert.exp.name }} - {{ alert.message }}
+                </p>
+               {% endfor %}
             </div>
         </div>
     </div>

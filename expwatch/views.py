@@ -6,7 +6,7 @@ from django.views.generic.base import View
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 
-from models import Exp, ExpMember
+from models import Exp, ExpMember, Alert
 from forms import FormIncludeExp
 from officeboy import get_tupa_data
 
@@ -25,6 +25,7 @@ class ExpList(View):
     def get(self, request):
         user = request.user
         all_exps = Exp.objects.all().order_by('name')
+        open_alerts = Alert.objects.filter(dismissed=False).order_by('when')
         classified = {'RUN_OK': [], 'RUN_ERR': [],
                       'RUN_ABO': [], 'END_OK': [],
                       'END_ABO': []}
@@ -37,11 +38,16 @@ class ExpList(View):
                 total_errors += error
                 classified[status].append([exp, info])
             except:
-                pass
+                #what to do if the exp doesn't exist?
+                # ALERT!
+                alert = Alert.objects.filter(exp=exp).filter(message='NOT FOUND')
+                if not alert:
+                    alert = Alert(exp=exp, message='NOT FOUND')
+                    alert.save()
             
 
         return render(request, self.template_name, 
-            {'user':user, 'classified':classified,
+            {'user':user, 'alerts': open_alerts, 'classified':classified,
              'total_errors': total_errors, 'total_aborted': total_aborted})
 
 
@@ -84,4 +90,14 @@ class IncludeNewExp(View):
             {'user':user, 'form':form},
             context_instance=RequestContext(request))
 
+class AlertDismiss(View):
+    template_name = 'expsok.html'
 
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        alert = Alert.objects.get(id=kwargs['alertid'])
+        alert.dismissed = True
+        alert.save()
+        return render(request, self.template_name,
+            {'user':user})
