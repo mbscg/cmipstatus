@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic.base import View
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
@@ -57,7 +57,7 @@ class ExpView(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         user = request.user
-        exp = Exp.objects.get(id=kwargs['expid'])
+        exp = get_object_or_404(Exp, id=kwargs['expid'])
         try:
             info = exp.parse_exp_info()
         except:
@@ -100,7 +100,7 @@ class AlertView(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         user = request.user
-        alert = Alert.objects.get(id=kwargs['alertid'])
+        alert = get_object_or_404(Alert, id=kwargs['alertid'])
         return render(request, self.template_name,
             {'user':user, 'alert': alert})
 
@@ -111,7 +111,7 @@ class AlertDismiss(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         user = request.user
-        alert = Alert.objects.get(id=kwargs['alertid'])
+        alert = get_object_or_404(Alert, id=kwargs['alertid'])
         alert.dismissed = True
         alert.save()
         return render(request, self.template_name,
