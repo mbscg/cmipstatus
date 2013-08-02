@@ -60,7 +60,7 @@ class Exp(models.Model):
 
 
     def __unicode__(self):
-        return 'Exp {}, with {} members'.format(self.name, str(self.members))
+        return 'Exp {0}, with {1} members'.format(self.name, str(self.members))
 
 
 
@@ -74,7 +74,7 @@ class ExpMember(models.Model):
     def get_fancy_name(self):
         if self.exp.members == 1:
             return self.exp.name
-        return '{}_{}'.format(self.exp.name, str(self.member))
+        return '{0}_{1}'.format(self.exp.name, str(self.member))
 
     def parse_member_status(self, tupa_data):
         done, total, errors, last_ok = self.check_restart_list()
@@ -135,7 +135,6 @@ class ExpMember(models.Model):
 
 
     def check_status(self):
-        fancy_name = '{}_{}'.format
         tupa_data = officeboy.get_tupa_data()
         tupa_data.pop(0)
         for line in tupa_data:
@@ -148,7 +147,7 @@ class ExpMember(models.Model):
 
 
     def __unicode__(self):
-        return 'Member {} from Exp {}'.format(str(self.member), self.exp.name)
+        return 'Member {0} from Exp {1}'.format(str(self.member), self.exp.name)
 
 
 class Alert(models.Model):
@@ -158,4 +157,4 @@ class Alert(models.Model):
     dismissed = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "alert for {}".format(self.exp.name)
+        return "alert for {0}".format(self.exp.name)
