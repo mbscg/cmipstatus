@@ -1,0 +1,22 @@
+{% extends 'expshome.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row"><br>
+        <div class="span10">
+            <div class="well">
+                <h2>Alert</h2>
+                <p><strong>Experiment</strong>
+                    <a href="/exps/expview/{{ alert.exp.id }}">{{ alert.exp.name }}</a>
+                </p>
+                <p><strong>Message</strong> {{ alert.message }}</p>
+                <p><strong>Created at</strong> {{ alert.when }}</p>
+                <p><a class="btn" href="/exps/alert/dismiss/{{ alert.id }}">Dismiss</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
