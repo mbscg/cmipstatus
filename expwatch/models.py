@@ -149,3 +149,13 @@ class ExpMember(models.Model):
 
     def __unicode__(self):
         return 'Member {} from Exp {}'.format(self.member, self.exp.name)
+
+
+class Alert(models.Model):
+    exp = models.ForeignKey('Exp')
+    message = models.TextField(default='')
+    when = models.DateTimeField(auto_now_add=True)
+    dismissed = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "alert for {}".format(self.exp.name)
