@@ -58,7 +58,10 @@ class ExpView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         exp = Exp.objects.get(id=kwargs['expid'])
-        info = exp.parse_exp_info()
+        try:
+            info = exp.parse_exp_info()
+        except:
+            info = {}
         return render(request, self.template_name,
             {'user':user,'exp':exp, 'info':info})
 
