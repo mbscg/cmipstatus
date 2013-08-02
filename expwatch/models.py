@@ -60,7 +60,7 @@ class Exp(models.Model):
 
 
     def __unicode__(self):
-        return 'Exp {}, with {} members'.format(self.name, self.members)
+        return 'Exp {}, with {} members'.format(self.name, str(self.members))
 
 
 
