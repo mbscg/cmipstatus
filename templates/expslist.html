@@ -12,17 +12,17 @@
                       data-target=".expcollapse">Hide/Show All</button>
           <div class="collapse in" id="running"><br>
             {% for exp in classified.RUN_OK %}
-                <a href="/exps/expview/{{ exp.id }}">{{ exp.name }}</a>
+                <a href="/exps/expview/{{ exp.0.id }}">{{ exp.0.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
-                        data-target="#exp{{ exp.id }}">Details</button>
-                <div class="collapse expcollapse" id="exp{{ exp.id }}">
+                        data-target="#exp{{ exp.0.id }}">Details</button>
+                <div class="collapse expcollapse" id="exp{{ exp.0.id }}">
                     <div class="well">
-                  {% for minfo in exp.1.minfo %}
+                  {% for minfo in exp.1.run_info %}
                     <div class="row">
                       <div class="span1">
                         {{ minfo.member }}
                       </div>
-                      <div class="span4">
+                      <div class="span3">
                         <div class="progress progress-striped active" title="{{ minfo.text_total }}%">
                           <div class="bar" style="width: {{ minfo.text_total }}%"></div>
                         </div>
@@ -46,17 +46,17 @@
                       data-target=".expcollapse-errors">Hide/Show All</button>
           <div class="collapse in" id="running-errors"><br>
             {% for exp in classified.RUN_ERR %}
-                <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                <a href="/exps/expview/{{ exp.0.id }}">{{ exp.0.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
                         data-target="#exp{{ exp.0.id }}-errors">Details</button>
                 <div class="collapse expcollapse-errors" id="exp{{ exp.0.id }}-errors">
                     <div class="well">
-                  {% for minfo in exp.1.minfo %}
+                  {% for minfo in exp.1.run_info %}
                     <div class="row"><br>
                       <div class="span1">
                         {{ minfo.member }}
                       </div>
-                      <div class="span4">
+                      <div class="span3">
                             <div class="progress progress-striped active" title="{{ minfo.text_total }}%">
                               <div class="bar" style="width: {{ minfo.text_total }}%"></div>
                             </div>
@@ -80,22 +80,22 @@
                       data-target=".expcollapse-aborted">Hide/Show All</button>
           <div class="collapse in" id="running-aborted"><br>
             {% for exp in classified.RUN_ABO %}
-                <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                <a href="/exps/expview/{{ exp.0.id }}">{{ exp.0.name }}</a>
                 <button class="btn btn-small" data-toggle="collapse" 
                         data-target="#exp{{ exp.0.id }}-aborted">Details</button>
                 <div class="collapse expcollapse-aborted" id="exp{{ exp.0.id }}-aborted">
                     <div class="well">
-                  {% for minfo in exp.1.minfo %}
+                  {% for minfo in exp.1.run_info %}
                     <div class="row"><br>
                       <div class="span1">
                         {{ minfo.member }}
                       </div>
-                      <div class="span4">
+                      <div class="span3">
                             <div class="progress progress-striped active" title="{{ minfo.text_total }}%">
                               <div class="bar" style="width: {{ minfo.text_total }}%"></div>
                             </div>
                       </div>
-                      <div class="span4">
+                      <div class="span2">
                         ({{ minfo.finished_years }} of {{ minfo.total_years }}y)
                       </div>
                     </div>
@@ -120,7 +120,7 @@
                 <ul class="unstyled">
                           {% for exp in classified.END_OK %}
                             <li>
-                              <a href="/cmip/expview/{{ exp.0.name }}">{{ exp.0.name }}</a>
+                              <a href="/exps/expview/{{ exp.0.id }}">{{ exp.0.name }}</a>
                             </li>
                           {% empty %}
                             <li>None</li>
@@ -137,7 +137,7 @@
                 <ul class="unstyled">
                           {% for expa in classified.END_ABO %}
                             <li>
-                              <a href="/cmip/expview/{{ expa.0.name }}">{{ expa.0.name }}</a>
+                              <a href="/exps/expview/{{ expa.0.id }}">{{ expa.0.name }}</a>
                             </li>
                           {% empty %}
                             <li>None</li>
