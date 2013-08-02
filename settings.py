@@ -8,7 +8,6 @@ server_config_file = open(os.path.join(ROOTDIR, 'server_config.yaml'))
 server_configs = yaml.load(server_config_file)
 server_config_file.close()
 
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Gabriel Marcondes', 'gabriel.marcondes@cptec.inpe.br'),
@@ -17,6 +16,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 from server_config import DEBUG, DATABASES
+TEMPLATE_DEBUG = DEBUG
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
