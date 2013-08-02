@@ -161,8 +161,8 @@
             <div class="collapse in" id="alerts"><br>
                {% for alert in alerts %}
                 <p>
-                <a class="btn btn-small" href="/exps/alert/dismiss/{{ alert.id }}"><i class="icon-ok"></i></a>
-                {{ alert.exp.name }} - {{ alert.message }}
+               <a class="btn btn-small" href="/exps/alert/dismiss/{{ alert.id }}"><i class="icon-trash"></i></a>
+               <a href="/exps/alert/view/{{ alert.id }}">{{ alert.exp.name }} - {{ alert.message }}</a>
                 </p>
                {% endfor %}
             </div>
