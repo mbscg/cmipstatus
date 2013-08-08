@@ -84,9 +84,9 @@ class ExpMember(models.Model):
         finished_years = done / 12.0
         total_years = total/12
         run_fraction = 1. / total
-        member_info = {'member':current[1].split('_', 1)[-1], 'last':done,
-                       'current':done, 'total':total, 'errors': (errors != 0),
-                       'aborted': (errors < 0)}
+        member_info = {'member':current[1].split('_', 1)[-1], 'id':self.id,
+                       'last':done, 'current':done, 'total':total, 
+                       'errors': (errors != 0), 'aborted': (errors < 0)}
 
         if member_info['aborted']:
             errors *= -1

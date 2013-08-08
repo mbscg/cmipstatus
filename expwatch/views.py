@@ -116,3 +116,13 @@ class AlertDismiss(View):
         alert.save()
         return render(request, self.template_name,
             {'user':user})
+
+class MemberView(View):
+    template_name = 'expsmemberview.html'
+
+    @method_decorator(login_required)
+    def get(self, request, *args,  **kwargs):
+        user = request.user
+        member = get_object_or_404(ExpMember, id=kwargs['memberid'])
+        return render(request, self.template_name,
+            {'member':member, 'user':user})

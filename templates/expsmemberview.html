@@ -1,4 +1,4 @@
-{% extends 'cmiphome.html' %}
+{% extends 'expshome.html' %}
 
 {% load thumbnail %}
 
@@ -7,7 +7,8 @@
     <div class="row"><br>
         <div class="span11">
             <div class="well">
-                <h2>Validation Images for {{ expname }}</h2>
+                <h2>Experiment {{ member.exp.name }}</h2>
+                <h2>Member {{ member.member }}</h2>
             </div>
             <div class="well">
                 <h3>Graphics Info:</h3>
