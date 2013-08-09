@@ -4,8 +4,6 @@ import time
 import os
 import stat
 
-import running_stats_config
-
 config = yaml.load(open('running_stats.config', 'r'))
 permissions = stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP |\
               stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
@@ -13,7 +11,7 @@ permissions = stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP |\
 
  
 def get_running_stats():
-    with settings(host_string='g.marcondes@tupa', warn_only=True):
+    with settings(host_string='ocean@tupa', warn_only=True):
         results = run('stat_cpld ocean')
         stats_file = config['qstat_log']
         f = open(stats_file, 'w')
@@ -21,6 +19,7 @@ def get_running_stats():
         f.writelines(['\n'])
         f.close()
         os.chmod(stats_file, permissions)
+        print "saved into", stats_file
 
 
 if __name__ == "__main__":
