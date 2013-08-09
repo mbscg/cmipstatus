@@ -5,6 +5,7 @@
 *.tmp
 *.swp
 *.txt
-*.config
+*config*
+*yaml
 server_config.py
-
+media/*
