@@ -35,15 +35,14 @@ def inspect_files(filelist):
                     log.write("reproved" + filename + "\n")
                 else:
                     log.write("approved" + filename + "\n")
-                cur.execute("insert into FileHist(name, err) values ('{0}',{1})".format(filename, str(err)))
+                cur.execute("insert into FileHist(name, err, ack) values ('{0}',{1}, 0)".format(filename, str(err)))
             con.commit()
             log.close()
     print "finished exp"
 
 
 def repo_crawler():
-    return glob.glob(DIR_STRUCTURES['exp_root']) 
-    #return glob.glob(DIR_STRUCTURES['exp_root']) + glob.glob(DIR_STRUCTURES['cmp_root'])
+    return glob.glob(DIR_STRUCTURES['exp_root']) + glob.glob(DIR_STRUCTURES['cmp_root'])
 
 
 def exp_crawler():
