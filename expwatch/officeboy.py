@@ -15,7 +15,23 @@ def get_restart_list(fancy_name):
     retrieves the restart list for a given exp/member
     """
     fancy_filename = config['restart_list_template'].format(fancy_name)
-    restart_file = open(fancy_filename, 'r')
+    try_again = False
+    # special case for unique member with _1
+    if '_' not in fancy_name:
+        fancy_alt = config['restart_list_template'].format(fancy_name+'_1')
+        try_again = True
+
+    try:
+        restart_file = open(fancy_filename, 'r')
+    except:
+        if try_again:
+            try:
+                restart_file = open(fancy_alt, 'r')
+            except:
+                raise Exception
+        else:
+            raise Exception
+
     restart_list = restart_file.readlines()
     restart_file.close()
     return restart_list
