@@ -109,6 +109,7 @@ if __name__ == "__main__":
     get_restart_lists()
     get_exp_news()
     [os.chmod(restart, permissions) for restart
-     in glob.glob(os.path.join(restart_config['ftp_root'],'*RESTART*'))]
-    os.chmod(glob.glob(os.path.join(restart_config['ftp_root'], '*README*')), permissions)
+     in glob.glob(os.path.join(restart_config['ftp_root'], '*RESTART*'))]
+    [os.chmod(readme, permissions) for readme 
+     in glob.glob(os.path.join(restart_config['ftp_root'], '*README*'))]
 
