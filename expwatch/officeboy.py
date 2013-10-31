@@ -10,6 +10,16 @@ def get_tupa_data():
     return log_text
 
 
+def get_readme():
+    """
+    retrieves the readme info
+    """
+    readme_file = open(config['readme'], 'r')
+    readme_text = readme_file.readlines()
+    readme_file.close()
+    return readme_text
+
+
 def get_restart_list(fancy_name):
     """
     retrieves the restart list for a given exp/member

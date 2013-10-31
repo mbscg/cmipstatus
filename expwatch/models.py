@@ -59,6 +59,21 @@ class Exp(models.Model):
         return status, error, aborted
 
 
+    def parse_exp_readme(self):
+        readme = officeboy.get_readme()
+        relevant = []
+        state = 'ignore'
+        for line in readme:
+            l = line.decode('latin-1')
+            if self.name in l:
+                state = 'accept'
+            if state == 'accept':
+                relevant.append(l)
+                if 'diretorio: ' in l:
+                    state = 'ignore'
+        return relevant
+
+
     def __unicode__(self):
         return 'Exp {0}, with {1} members'.format(self.name, str(self.members))
 

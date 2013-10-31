@@ -75,12 +75,17 @@
     </div><!-- fim row exps -->
 </div><!-- fim container exps -->
 
-
-    {% if logged %}
+    {% if user %}
         <div class="container">
             <div class="row"><br>
                 <div class="span10">
                     <div class="well">
+                        <h3>README</h3>
+                        <p>{% for line in readme %}
+                                <br>{{ line }}
+                           {% endfor %}</p>
+
+<!--
                         <h3>Discussion ({{ comments.count }})</h3>
                         {% for comment in comments %}
                             <br>
@@ -94,6 +99,8 @@
                             {{ form.as_p }}
                             <button class='btn' type="submit">Submit Comment</button>
                         </form>
+-->
+
                     </div><!-- fim well -->
                 </div><!-- fim span -->
             </div><!-- fim row -->
