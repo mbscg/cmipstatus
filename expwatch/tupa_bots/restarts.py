@@ -14,6 +14,12 @@ def get_restart_lists():
         print "copying", restart
         shutil.copy(restart, restart_config['ftp_root'])
 
+
+def get_exp_news():
+    print "copying exp news"
+    shutil.copy(restart_config['exp_news'], restart_config['ftp_root'])
+
+
 '''
 #suspended for now
 def get_conversion_status():
@@ -101,5 +107,8 @@ def get_conversion_status():
 if __name__ == "__main__":
     #get_conversion_status()
     get_restart_lists()
+    get_exp_news()
     [os.chmod(restart, permissions) for restart
      in glob.glob(os.path.join(restart_config['ftp_root'],'*RESTART*'))]
+    os.chmod(glob.glob(os.path.join(restart_config['ftp_root'], '*README*')), permissions)
+
