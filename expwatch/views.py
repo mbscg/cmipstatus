@@ -60,9 +60,11 @@ class ExpView(View):
         exp = get_object_or_404(Exp, id=kwargs['expid'])
         try:
             info = exp.parse_exp_info()
-            readme = exp.parse_exp_readme()
         except:
             info = {}
+        try:
+            readme = exp.parse_exp_readme()
+        except:
             readme = {}
         return render(request, self.template_name,
             {'user':user,'exp':exp, 'info':info, 'readme':readme})
