@@ -10,7 +10,7 @@ permissions = stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP |\
               stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
 
 def get_restart_lists():
-    for rlist in restart_config['restarlists']:
+    for rlist in restart_config['restartlists']:
         for restart in glob.glob(rlist):
             print "copying", restart
             shutil.copy(restart, restart_config['ftp_root'])
