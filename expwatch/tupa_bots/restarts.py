@@ -10,9 +10,10 @@ permissions = stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP |\
               stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
 
 def get_restart_lists():
-    for restart in glob.glob(restart_config['restartlists']):
-        print "copying", restart
-        shutil.copy(restart, restart_config['ftp_root'])
+    for rlist in restart_config['restarlists']:
+        for restart in glob.glob(rlist):
+            print "copying", restart
+            shutil.copy(restart, restart_config['ftp_root'])
 
 
 def get_exp_news():
@@ -112,4 +113,3 @@ if __name__ == "__main__":
      in glob.glob(os.path.join(restart_config['ftp_root'], '*RESTART*'))]
     [os.chmod(readme, permissions) for readme 
      in glob.glob(os.path.join(restart_config['ftp_root'], '*README*'))]
-
