@@ -128,7 +128,6 @@ class ExpMember(models.Model):
     
  
     def check_restart_list(self):
-        print "checking restart list for", self
         fancy_name = self.get_fancy_name()
         restart_list = officeboy.get_restart_list(fancy_name)
         restarts, done, error = 0, 0, 0

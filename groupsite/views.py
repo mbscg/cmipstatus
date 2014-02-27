@@ -610,7 +610,6 @@ def get_text_from_lattes_cache(network):
             cache.save()
         return cache.text
     except Http404, e:
-        print Http404, e
         text = get_text_from_lattes(network.lattes)
         if text: # no timeout...
             cache = LattesCache(people=network.people, text=text)
@@ -625,13 +624,10 @@ def get_text_from_lattes(lattes_url):
         validator(lattes_url)
         lattes_data = requests.get(lattes_url, timeout=5.000)
     except ValidationError, e:
-        print "invalid url", e
         return None
     except Timeout, e:
-        print "timeout", e
         return None
     except Exception, e:
-        print "unexpected exception", e
         return None
     return lattes_data.text
 
