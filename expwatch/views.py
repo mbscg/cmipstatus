@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 
 from models import Exp, ExpMember, Alert
-from forms import FormIncludeExp
+from forms import FormIncludeExp, FormExcludeExp
 from officeboy import get_tupa_data
 
 class Home(View):
@@ -92,6 +92,31 @@ class IncludeNewExp(View):
             for i in range(1,form.instance.members + 1):
                 new_member = ExpMember(exp=exp, member=i)
                 new_member.save()
+            return render(request, 'expsok.html', {'user':user})
+        return render(request, self.template_name, 
+            {'user':user, 'form':form},
+            context_instance=RequestContext(request))
+
+
+class ExcludeExp(View):
+    template_name = 'expsexclude.html'
+
+    @method_decorator(login_required)
+    def get(self, request):
+        user = request.user
+        form = FormExcludeExp()
+        return render(request, self.template_name, 
+            {'user':user, 'form':form},
+            context_instance=RequestContext(request))
+
+
+    @method_decorator(login_required)
+    def post(self, request):
+        user = request.user
+        form = FormExcludeExp(request.POST, request.FILES)
+        if form.is_valid():
+            exp = form.cleaned_data['exp']
+            exp.delete()
             return render(request, 'expsok.html', {'user':user})
         return render(request, self.template_name, 
             {'user':user, 'form':form},
