@@ -1,0 +1,10 @@
+como usar:
+
+20 processos, decadal1960
+./quaco_submit.sh 20 1960
+
+20 processos, decadal1960, apenas r1i1p1
+./quaco_submit.sh 20 1960 r1i1p1
+
+20 processos, tudo
+./quaco_submit.sh 20
