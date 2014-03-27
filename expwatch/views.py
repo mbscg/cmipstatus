@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 
 from models import Exp, ExpMember, Alert
 from forms import FormIncludeExp, FormExcludeExp
-from officeboy import get_tupa_data
+from officeboy import get_tupa_data, get_fc_log
 
 class Home(View):
     template_name = 'expshome.html'
@@ -155,3 +155,13 @@ class MemberView(View):
         member = get_object_or_404(ExpMember, id=kwargs['memberid'])
         return render(request, self.template_name,
             {'member':member, 'user':user})
+
+
+class Filecheck(View):
+    template_name = 'expsfilecheck.html'
+
+    @method_decorator(login_required)
+    def get(self, request):
+        user = request.user
+        fc_log = get_fc_log() 
+        return render(request, self.template_name, {'user': user, 'fc_log': fc_log})

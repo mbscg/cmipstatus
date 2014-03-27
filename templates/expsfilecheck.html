@@ -1,0 +1,30 @@
+{% extends 'expshome.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row"><br>
+        <div class="span10">
+            <div class="well">
+                <h2>File Check Alerts</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row"><br> <!-- start exps row -->
+        <div class="span10"> <!-- span exps -->
+            <div class="well"> <!-- well exps -->
+                {% for log in fc_log %}
+                    <p>
+                    <b>file:</b> {{ log.file }}<br>
+                    <b>error:</b> {{ log.error }}
+                    </p>
+                {% endfor %}
+            </div><!-- fim well -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

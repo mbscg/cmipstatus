@@ -1,4 +1,6 @@
 from settings import officeboy_configs as config
+from .tupa_bots.quaco.tests import errorcodes
+
 
 def get_tupa_data():
     """
@@ -46,4 +48,15 @@ def get_restart_list(fancy_name):
     restart_file.close()
     return restart_list
 
+
+def get_fc_log():
+    fc_log = open(config['fc_log'], 'r')
+    lines = fc_log.readlines()
+    fc_log.close()
+    for line in lines:
+        columns = line.split(',')
+        filename = columns[0]
+        error_description = errorcodes.descriptions[int(columns[1])]
+        log = {'file': filename, 'error': error_description}
+        yield(log)
 
