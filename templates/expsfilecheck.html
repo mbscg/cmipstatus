@@ -15,10 +15,11 @@
     <div class="row"><br> <!-- start exps row -->
         <div class="span10"> <!-- span exps -->
             <div class="well"> <!-- well exps -->
+                <p>Total warnings: {{ fc_log|length }}</p>
                 {% for log in fc_log %}
                     <p>
                     <b>file:</b> {{ log.file }}<br>
-                    <b>error:</b> {{ log.error }}
+                    <b>{{ log.error|length }} errors:</b> {% for e in log.error %} {{ e }}, {% endfor %}
                     </p>
                 {% endfor %}
             </div><!-- fim well -->

@@ -10,6 +10,9 @@ from models import Exp, ExpMember, Alert
 from forms import FormIncludeExp, FormExcludeExp
 from officeboy import get_tupa_data, get_fc_log
 
+import os
+
+
 class Home(View):
     template_name = 'expshome.html'
 
@@ -163,5 +166,5 @@ class Filecheck(View):
     @method_decorator(login_required)
     def get(self, request):
         user = request.user
-        fc_log = get_fc_log() 
+        fc_log = get_fc_log()
         return render(request, self.template_name, {'user': user, 'fc_log': fc_log})
