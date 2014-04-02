@@ -1,6 +1,6 @@
 import numpy as np
 from pupynere import netcdf_file
-from errorcodes import MINVALUE, MINERR
+from errorcodes import MINVALUE
 
 THRESHOLD = 9e+36
 
