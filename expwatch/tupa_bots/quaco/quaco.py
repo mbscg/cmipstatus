@@ -6,10 +6,10 @@ from datetime import datetime
 import time
 import quaco_db
 
-from tests import loading, filesize, minvalue
+from tests import loading, filesize, minvalue, zerovalue
 from tests.errorcodes import LOADERR
 
-from quaco_settings import DB_NAME, DIR_STRUCTURES, EXCLUSION_LIST, dump_file
+from quaco_settings import DB_NAME, DIR_STRUCTURES
 
 permissions = stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP |\
               stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
@@ -28,18 +28,19 @@ def check_list(filelist):
         if not filename: # may be None
             continue
         arq = quaco_db.get(con, filename)
-        print "checking", arq
+        #print "checking", arq
         if arq:
             #checked
             if arq.ack == 2:
                 #recheck needed
-                print "marked to recheck"
+                #print "marked to recheck"
                 new_list.append(filename)
             else:
-                print "no need to check"
+                #print "no need to check"
+                pass
         else:
             #never checked
-            print "never checked"
+            #print "never checked"
             new_list.append(filename)
     con.close()
     return new_list
@@ -57,7 +58,7 @@ def confirm_files():
     con = quaco_db.connect()
     dump_files = glob.glob('dumps/dump*')
     for d in dump_files:
-        print "confirming", d
+        #print "confirming", d
         dump_file = open(d, 'r')
         sqls = dump_file.readlines()
         dump_file.close()
@@ -73,12 +74,14 @@ def confirm_files():
 def gen_report():
     con = quaco_db.connect()
     msgs = quaco_db.gen_report(con)
+    con.commit()
+    con.close()
     report = open('dumps/report', 'a')
     for m in msgs:
         report.write(','.join(m))
         report.write('\n')
-    con.commit()
-    con.close()
+    report.close()
+    os.chmod('dumps/report', permissions)
 
 
 class Verifier():
@@ -112,12 +115,18 @@ def capataz(id, file_list):
 
 def run_tests(filename):
     total_errors = 0
+    var_name = os.path.basename(filename).split('_')[0]
+
+    # loading and filesize need filepath
     load_result, data = loading.run(filename)
     if load_result == LOADERR:
         # won't go ahead
         return load_result
     total_errors += filesize.run(filename)
-    total_errors += minvalue.run(data)
+
+    # from now on, tests work on variables
+    total_errors += minvalue.run(data, var_name)
+    total_errors += zerovalue.run(data, var_name)
     return total_errors
 
 
