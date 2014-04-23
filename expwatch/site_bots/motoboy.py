@@ -1,11 +1,14 @@
 import yaml
 import subprocess
 import glob
+import shutil
 
 motoboy_config = yaml.load(open('motoboy.config','r'))
 
 def get_data_from_tupa():
     subprocess.call(motoboy_config['wget'].split())
+    for fig in glob.glob(motoboy_config['fetched_figures']):
+        shutil.copy(fig, motoboy_config['static'])
 
     # Let this here, for future figs
     """
