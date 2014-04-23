@@ -15,6 +15,11 @@
                 <strong>Start Date</strong> {{ log.start_date }}<br>
                 <strong>End Date</strong> {{ log.end_date }}<br>
                 <strong>Last Generated</strong> {{ log.last_generated }}
+                <div>
+                {% for fig in figs %}
+                    <img src="/static/figures/{{ fig }}">
+                {% endfor %}
+                </div>
             </div>
 
 <!-- old graphics
