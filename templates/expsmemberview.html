@@ -19,11 +19,13 @@
                 <div>
                 <a data-toggle="collapse" href="#imgs"><h3>Images</h3></a>
                     <div class="collapse out" id="imgs">
-                        {% for fig in figs %}
-                            <div class="row"><div class="span3">
-                                {{ fig.var }}
-                                <a href="/media/figures/{{ fig.path }}"
-                                class="thumbnail"><img src="/media/figures/{{ fig.path }}"></a>
+                        {% for var, fig_list in figs.items %}
+                            {{ var }}
+                            <div class="row"><div class="span10">
+                                {% for fig in fig_list %}
+                                    <a href="/media/figures/{{ fig }}"
+                                    class="thumbnail span3"><img src="/media/figures/{{ fig }}"></a>
+                                {% endfor %}
                             </div></div>
                             <br>
                         {% endfor %}

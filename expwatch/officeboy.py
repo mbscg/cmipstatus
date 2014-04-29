@@ -67,12 +67,13 @@ def get_fc_log():
 
 def get_figs_for(exp, member):
     folder = '{0}_{1}'.format(exp, '%.2d' % member)
-    figs = []
-    try:
-        gifs = os.listdir(config['figures'].format(folder))
+    media_folder = config['figures'].format(folder)
+    figs = {}
+    if os.path.exists(media_folder):
+        gifs = sorted(os.listdir(media_folder))
+        gifs = [g for g in gifs if '.gif' in g]
         for g in gifs: #expanding list comprehension for the sake of beauty
-            if '.gif' in g:
-                figs.append({'path': os.path.join(folder, g), 'var': g[:-4].split('-')[1]})
-    except:
-        pass
+            name = g[:-4].split('-')[1]
+            path = os.path.join(folder, g)
+            figs[name] = figs.get(name, []) + [path]
     return figs
