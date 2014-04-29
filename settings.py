@@ -14,7 +14,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-from server_config import DEBUG, DATABASES
+from server_config import DEBUG, DATABASES, SECRET_KEY
 TEMPLATE_DEBUG = DEBUG
 
 # Local time zone for this installation. Choices can be found here:
@@ -78,8 +78,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
-
-SECRET_KEY = os.environ['CMIP_SECRET_KEY']
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
