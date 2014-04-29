@@ -66,6 +66,6 @@ def get_fc_log():
         
 
 def get_figs_for(exp, member):
-    folder = '{}_{}'.format(exp, '%.2d' % member)
+    folder = '{0}_{1}'.format(exp, '%.2d' % member)
     gifs = os.listdir(config['figures'].format(folder))
     return sorted([{'path': os.path.join(folder, gif), 'var': gif[:-4].split('-')[1]} for gif in gifs if '.gif' in gif])
