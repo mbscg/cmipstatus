@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 
 from models import Exp, ExpMember, Alert
 from forms import FormIncludeExp, FormExcludeExp
-from officeboy import get_tupa_data, get_fc_log
+from officeboy import get_tupa_data, get_fc_log, get_figs_for
 
 import os
 
@@ -156,8 +156,9 @@ class MemberView(View):
     def get(self, request, *args,  **kwargs):
         user = request.user
         member = get_object_or_404(ExpMember, id=kwargs['memberid'])
+        figs = get_figs_for(member.exp.name, member.member)
         return render(request, self.template_name,
-            {'member':member, 'user':user})
+            {'member':member, 'user':user, 'figs':figs})
 
 
 class Filecheck(View):

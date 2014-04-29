@@ -1,6 +1,7 @@
 from settings import officeboy_configs as config
 from .tupa_bots.quaco.tests import errorcodes
 import os
+import glob
 
 
 def get_tupa_data():
@@ -64,3 +65,7 @@ def get_fc_log():
     return log
         
 
+def get_figs_for(exp, member):
+    folder = '{}_{}'.format(exp, '%.2d' % member)
+    gifs = os.listdir(config['figures'].format(folder))
+    return sorted([{'path': os.path.join(folder, gif), 'var': gif[:-4].split('-')[1]} for gif in gifs if '.gif' in gif])
