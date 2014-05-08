@@ -9,7 +9,6 @@ anyjson==0.3.3
 argparse==1.2.1
 beautifulsoup4==4.1.1
 billiard==3.3.0.17
-celery==3.1.11
 certifi==0.0.8
 chardet==1.0.1
 distribute==0.6.24
