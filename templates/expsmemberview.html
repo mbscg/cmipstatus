@@ -18,7 +18,7 @@
                 -->
                 <div>
                 <a data-toggle="collapse" href="#imgs"><h3>Images</h3></a>
-                    <div class="collapse out" id="imgs">
+                    <div class="collapse in" id="imgs">
                         {% for var, fig_list in figs.items %}
                             {{ var }}
                             <div class="row"><div class="span10">
@@ -33,9 +33,17 @@
                 </div>
             </div>
 
+            <form class="well" method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn"><i class="icon-ok"></i> Save Changes</button>
+            </form>
+                
         </div>
     </div>
 </div>
 
 {% endblock %}
 
+{% block scripts %}
+{% endblock %}

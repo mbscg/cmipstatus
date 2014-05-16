@@ -1,13 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.base import View
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
+from django.core.urlresolvers import reverse
 
 from models import Exp, ExpMember, Alert
-from forms import FormIncludeExp, FormExcludeExp
+from forms import FormIncludeExp, FormExcludeExp, FormMemberConfigs
 from officeboy import get_tupa_data, get_fc_log, get_figs_for
 
 import os
@@ -149,16 +150,31 @@ class AlertDismiss(View):
         return render(request, self.template_name,
             {'user':user})
 
+
 class MemberView(View):
     template_name = 'expsmemberview.html'
 
     @method_decorator(login_required)
-    def get(self, request, *args,  **kwargs):
+    def get(self, request, memberid):
         user = request.user
-        member = get_object_or_404(ExpMember, id=kwargs['memberid'])
+        member = get_object_or_404(ExpMember, id=memberid)
+        config = member.get_config()
+        form = FormMemberConfigs(instance=config)
         figs = get_figs_for(member.exp.name, member.member)
         return render(request, self.template_name,
-            {'member':member, 'user':user, 'figs':figs})
+            {'member':member, 'form':form, 'user':user, 'figs':figs})
+
+
+    @method_decorator(login_required)
+    def post(self, request, memberid):
+        user = request.user
+        member = get_object_or_404(ExpMember, id=memberid)
+        config = member.get_config()
+        form = FormMemberConfigs(request.POST, request.FILES, instance=config)
+        figs = get_figs_for(member.exp.name, member.member)
+        if form.is_valid():
+            form.save()
+        return redirect(reverse("member_view", kwargs={'memberid':memberid}))
 
 
 class Filecheck(View):

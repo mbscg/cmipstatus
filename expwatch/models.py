@@ -92,7 +92,7 @@ class ExpMember(models.Model):
         return '{0}_{1}'.format(self.exp.name, str(self.member))
 
     def parse_member_status(self, tupa_data):
-        done, total, errors, last_ok = self.check_restart_list()
+        done, total, errors, last_ok, last_complete_year = self.check_restart_list()
         current = self.check_status()
 
         finished_prog = float(done) / float(total)
@@ -100,7 +100,8 @@ class ExpMember(models.Model):
         total_years = total/12
         run_fraction = 1. / total
         member_info = {'member':current[1].split('_', 1)[-1], 'id':self.id,
-                       'last':done, 'current':done, 'total':total, 
+                       'last':done, 'current':done, 'total':total,
+                       'last_complete_year': last_complete_year,
                        'errors': (errors != 0), 'aborted': (errors < 0)}
 
         if member_info['aborted']:
@@ -145,7 +146,15 @@ class ExpMember(models.Model):
                 last_ok = False
                 error += 1
                 error *= -1
-        return done, restarts, error, last_ok
+        try:
+            last_month = line.split()[2][:6]
+            if last_month.endswith('12'):
+                last_complete_year = last_month[:4]
+            else:
+                last_complete_year = str(int(last_month[:4]) - 1)
+        except:
+            last_complete_year = None
+        return done, restarts, error, last_ok, last_complete_year
 
 
     def check_status(self):
@@ -160,6 +169,15 @@ class ExpMember(models.Model):
         return [None, 'M_'+self.get_fancy_name(), None, None, '0%']
 
 
+    def get_config(self):
+        try: 
+            config = MemberConfig.objects.get(member=self)
+        except:
+            config = MemberConfig(member=self, variables='', interval=0, active=False)
+            config.save()
+        return config
+
+
     def __unicode__(self):
         return 'Member {0} from Exp {1}'.format(str(self.member), self.exp.name)
 
@@ -172,3 +190,38 @@ class Alert(models.Model):
 
     def __unicode__(self):
         return "alert for {0}".format(self.exp.name)
+
+
+class MemberConfig(models.Model):
+    member = models.ForeignKey('ExpMember')
+    variables = models.TextField()
+    interval = models.IntegerField()
+    active = models.BooleanField()
+    last_gen = models.IntegerField(default=-1)
+
+    def __unicode__(self):
+        return "orders for " + str(self.member)
+
+
+    def check_need(self):
+        member_info = self.member.parse_member_status(officeboy.get_tupa_data())
+        finished = int(float(member_info['last_complete_year']))
+        if self.active and finished:
+            if self.last_gen == -1 or (finished - self.last_gen > self.interval):
+                # need
+                self.last_gen = finished
+                self.save()
+                return True
+            else:
+                # no need
+                return False
+
+
+    def create_requisition(self):
+        req = {
+            'final_year':'2010',
+            'exp':self.member.exp.name, 
+            'member':'%02d' % self.member.member,
+            'variables': self.variables
+        }
+        return req
