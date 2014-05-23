@@ -33,12 +33,25 @@
                 </div>
             </div>
 
-            <form class="well" method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn"><i class="icon-ok"></i> Save Changes</button>
-            </form>
-                
+            <div class="well">
+            <div class="row">
+                <div class="span5">
+                 <form method="post" action="" enctype="multipart/form-data" class="infotabs accfrm">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn"><i class="icon-ok"></i> Save Changes</button>
+                 </form>
+                </div>
+                <div class="span3">
+                    <h4>Instructions</h4>
+                    <p><ul>
+                    <li><b>Variables</b> lista de variáveis, no formato realm:VAR, separadas por espaços</li>
+                    <li><b>Interval</b> intervalo de anos para nova geração de figuras</li>
+                    <li><b>Active</b> ativa/desativa a geração para o membro</li>
+                    </ul></p>
+                </div>
+            </div>
+            </div>
         </div>
     </div>
 </div>
