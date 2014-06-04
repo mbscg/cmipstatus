@@ -198,6 +198,8 @@ class MemberConfig(models.Model):
     interval = models.IntegerField()
     active = models.BooleanField()
     last_gen = models.IntegerField(default=-1)
+    compare_to = models.TextField(default='')
+
 
     def __unicode__(self):
         return "orders for " + str(self.member)
@@ -222,6 +224,7 @@ class MemberConfig(models.Model):
             'final_year':'2010',
             'exp':self.member.exp.name, 
             'member':'%02d' % self.member.member,
-            'variables': self.variables
+            'variables': self.variables,
+            'comp_to': self.compare_to,
         }
         return req
