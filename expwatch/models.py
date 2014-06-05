@@ -198,7 +198,8 @@ class MemberConfig(models.Model):
     interval = models.IntegerField()
     active = models.BooleanField()
     last_gen = models.IntegerField(default=-1)
-    compare_to = models.TextField(default='')
+    compare_to = models.TextField(default='', blank=True)
+    plot_area = models.TextField(default='', blank=True)
 
 
     def __unicode__(self):
@@ -226,5 +227,6 @@ class MemberConfig(models.Model):
             'member':'%02d' % self.member.member,
             'variables': self.variables,
             'comp_to': self.compare_to,
+            'plot_area': self.plot_area,
         }
         return req
