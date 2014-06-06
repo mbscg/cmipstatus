@@ -15,6 +15,16 @@
 
     <div class="row"><br>
         <div class="span11">
+            <h3>Progress: {{ minfo.text_total }}%</h3>
+            <div class="progress progress-striped active" title="{{ minfo.text_total }}%">
+                <div class="bar" style="width: {{ minfo.text_total }}%"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row"><br>
+        <div class="span11">
             <h3>Images</h3>
             <div id="imgs">
                 <ul class="nav nav-tabs" data-tabs="tabs" id="tabs">

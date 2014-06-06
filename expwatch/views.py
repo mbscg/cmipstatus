@@ -161,8 +161,26 @@ class MemberView(View):
         config = member.get_config()
         form = FormMemberConfigs(instance=config)
         figs = get_figs_for(member.exp.name, member.member)
+        member_info = None
+        try:
+            info = member.exp.parse_exp_info()
+            for mem_info in info['run_info']:
+                member_name = mem_info['member']
+                if '_' in member_name:
+                    exp, mem = member_name.split('_')
+                    if int(mem) == member.member:
+                        # this is the info
+                        member_info = mem_info
+                        break
+                else:
+                    # only one member, this is the right choice
+                    member_info = mem_info
+                    break
+        except:
+            pass
+        
         return render(request, self.template_name,
-            {'member':member, 'form':form, 'user':user, 'figs':figs})
+            {'member':member, 'form':form, 'user':user, 'figs':figs, 'minfo': member_info})
 
 
     @method_decorator(login_required)
