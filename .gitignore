@@ -7,5 +7,4 @@
 *.txt
 *yaml
 server_config.py
-media/*
 *.db
