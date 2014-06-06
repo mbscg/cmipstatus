@@ -23,7 +23,7 @@
                             {{ var }}
                             <div class="row"><div class="span10">
                                 {% for fig in fig_list %}
-                                    <a href="/media/figures/{{ fig }}"
+                                    <a data-lightbox="images for {{ var }}" href="/media/figures/{{ fig }}"
                                     class="thumbnail span3"><img src="/media/figures/{{ fig }}"></a>
                                 {% endfor %}
                             </div></div>
@@ -61,4 +61,6 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="/media/js/lightbox.min.js"></script>
+<link href="/media/css/lightbox.css" rel="stylesheet" />
 {% endblock %}
