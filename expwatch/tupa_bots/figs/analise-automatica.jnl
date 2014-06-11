@@ -1,0 +1,60 @@
+!!! Script used to analise the precipitation paterns of the exp 120, 121 and 122.
+!!! 14/04/2014
+!!! by Otacilio Leandro de M. Neto (otaciliomneto@gmail.com)
+
+SET MEMORY/SIZE=500
+
+cancel mode logo
+cancel view
+
+!! Contorno go globo centrado no oceano indico
+
+define region/x=80E:80E/y=90N:90S Global
+set region/@Global
+
+use $1
+
+let var = $2
+
+let t_end = "$3" 
+
+ppl axlsze .17 .17 
+ppl shakey ,,0.17
+
+let marg = "1.4 1.4 1.2 1.4"
+!let pal = "padrao" 
+let lvl = "(-inf)(-30,30,2.5)(inf)"
+
+!fill/palette=default/set $2[l=@ave] ; ppl shakey ,,0.17 ; ppl fill ; go land 1 "" 1 
+fill/set $2[l=@ave] ; ppl shakey ,,0.17 ; ppl fill ; go land 1 "" 1 
+
+
+cancel view
+
+go margins `marg` 
+
+fill/nolabel/set $2[l=@ave] ; ppl shakey ,,0.17 ; ppl fill ; go land 1 "" 1 
+label/nou `($PPL$XLEN)/2`, 6.3, 0, 0, .2, @C01 ($lab2)
+label/nou `($PPL$XLEN)/2`, -0.9, 0, 0, .2, @C01 ($labtit)
+
+frame/file=fill-$2.gif
+
+!!  exit
+
+!! Grafico media movel
+ppl color,6,80,80,80 
+
+def axis/t="`$2,return=tstart`":"01-DEC-`t_end` 00:00:00":1/unit=month tax
+
+go margins `marg` 
+plot/grat="large(dash,color=6)"/nolab $2[x=@ave,y=@ave, gt=tax, t="`$2,return=tstart`":"01-DEC-`t_end` 00:00:00"@sbx:12] 
+
+label/nou `($PPL$XLEN)/2`, 6.3, 0, 0, .2, @C01 Runing Mean (one year)
+label/nou `($PPL$XLEN)/2`, -0.9, 0, 0, .2, @C01 ($labtit)
+
+frame/file=plot-$2.gif
+
+!!sp eog *$2.gif &
+
+exit
+

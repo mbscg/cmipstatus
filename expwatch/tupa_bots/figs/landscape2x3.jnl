@@ -1,0 +1,47 @@
+\cancel mode verify      ! ... now defining 6 viewports: 3 across, 2 down
+! Description: Set up for six viewports on an 11 x 8.5 page
+message/continue .....
+message/continue The viewports are sized to fit well on an 8 1/2 x 11 page
+message/continue Viewport names are: ll6,ml6,lr6,ul6,mr6, and ur6
+message/continue ll6 -- lower left
+message/continue lr6 -- lower right
+message/continue ml6 -- middle left
+message/continue mr6 -- middle right
+message/continue ul6 -- upper left
+message/continue ur6 -- upper right
+message/continue Use "SET VIEWPORT ll6"  to select the lower left, etc.
+message/continue Use CANCEL VIEWPORT and PPL/RESET to restore default graphics
+message/continue .....
+
+! Create 6 viewports on a landscape plot - 2 across, 3 down.
+! Use a larger that normal axis box since these teensy plots get so small.
+! The sizing is to fill a landscape 8 1/2 x 11 page.
+
+ppl/reset
+!set window/aspect=1.32   ! this is for the portrait size of the paper which is main.
+set window/aspect=1.40   
+set mode/last verify
+
+
+\! define viewports
+!define view/ylimits=0,.35/xlimits=0.08,.52   ll6
+!define view/ylimits=.31,.68/xlimits=0.08,.52 ml6
+!define view/ylimits=.64,1/xlimits=0.08,.52   ul6
+!define view/ylimits=0,.35/xlimits=.48,0.92   lr6
+!define view/ylimits=.31,.68/xlimits=.48,0.92 mr6
+!define view/ylimits=.64,1/xlimits=.48,0.92   ur6
+
+define view/ylimits=0,.35/xlimits=0.0,.52   ll6
+define view/ylimits=.31,.68/xlimits=0.0,.52 ml6
+define view/ylimits=.64,1/xlimits=0.0,.52   ul6
+define view/ylimits=0,.35/xlimits=.48,1   lr6
+define view/ylimits=.31,.68/xlimits=.48,1 mr6
+define view/ylimits=.64,1/xlimits=.48,1   ur6
+
+\message/continue .....
+\message/continue In order to decrease amount of "dead space" in the plot,
+\message/continue simply modify the ylimits as defined above so that the
+\message/continue viewports slightly overlap each other.
+\message/continue .....
+
+!\set window/size = 0.6	! immediate redraw / appropriate screen size
