@@ -198,8 +198,8 @@ class MemberConfig(models.Model):
     interval = models.IntegerField()
     active = models.BooleanField()
     last_gen = models.IntegerField(default=-1)
-    compare_to = models.TextField(default='', blank=True)
-    plot_area = models.TextField(default='', blank=True)
+    compare_to = models.CharField(default='', max_length=20, blank=True)
+    plot_area = models.CharField(default='', max_length=20, blank=True)
 
 
     def __unicode__(self):
