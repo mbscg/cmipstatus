@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from views import Home, ExpList, ExpView, IncludeNewExp, ExcludeExp
 from views import MemberView
-from views import AlertView, AlertDismiss, Filecheck
+from views import AlertView, AlertDismiss, Filecheck, FilecheckImgs
 #from models import FeedFetcher
 
 urlpatterns = patterns('',
@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^alert/view/(?P<alertid>\d+)/$', AlertView.as_view(), name="alert_view"),
     url(r'^alert/dismiss/(?P<alertid>\d+)/$', AlertDismiss.as_view(), name="alert_dismiss"),
     url(r'^filecheck/$', Filecheck.as_view(), name="filecheck_view"),
+    url(r'^filecheck/(?P<decadal>\d+)/$', FilecheckImgs.as_view(), name="filecheck_view"),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name' : 'gmaologin.html'}, name="login"),
     url(r'^logout/$', 'django.contrib.auth.views.logout_then_login', {'login_url' : '/exps/login/'}, name="logout"),
     )

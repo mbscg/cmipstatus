@@ -6,10 +6,11 @@ from django.views.generic.base import View
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from models import Exp, ExpMember, Alert
 from forms import FormIncludeExp, FormExcludeExp, FormMemberConfigs
-from officeboy import get_tupa_data, get_fc_log, get_figs_for
+from officeboy import get_tupa_data, get_fc_log, get_figs_for, get_cmip_figs
 
 import os
 
@@ -203,3 +204,22 @@ class Filecheck(View):
         user = request.user
         fc_log = get_fc_log()
         return render(request, self.template_name, {'user': user, 'fc_log': fc_log})
+
+
+class FilecheckImgs(View):
+    template_name = 'expsfilecheckimgs.html'
+
+    @method_decorator(login_required)
+    def get(self, request, decadal):
+        user = request.user
+        figs = get_cmip_figs(str(decadal))
+        paginators = [(rip, Paginator(fig_list, 5)) for rip, fig_list in figs.items()]
+        page = request.GET.get('page')
+        try:
+            figs_page = [(rip, pag.page(page)) for rip, pag in paginators]
+        except PageNotAnInteger:
+            figs_page = [(rip, pag.page(1)) for rip, pag in paginators]
+        except EmptyPage:
+            figs_page = [(rip, pag.page(paginator.num_pages)) for rip, pag in paginators]
+            
+        return render(request, self.template_name, {'user': user, 'dec': decadal, 'pages': figs_page})
