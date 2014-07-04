@@ -77,3 +77,23 @@ def get_figs_for(exp, member):
             path = os.path.join(folder, g)
             figs[name] = figs.get(name, []) + [path]
     return figs
+
+
+def get_cmip_figs(decadal):
+    figs = glob.glob(config['cmip_figures'])
+    figs_structure = {}
+    decadal = 'decadal' + decadal
+    figs = [f for f in sorted(figs) if decadal in f]
+    for fig in figs:
+        fig_name = os.path.basename(fig)
+        parts = fig_name.split('_')
+        var = parts[2]
+        rip = parts[3][:-4]
+
+        if not figs_structure.has_key(rip):
+            figs_structure[rip] = []
+
+        figs_structure[rip].append(fig_name)
+
+    return figs_structure
+        
