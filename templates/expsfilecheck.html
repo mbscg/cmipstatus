@@ -1,28 +1,27 @@
 {% extends 'expshome.html' %}
 
 {% block body %}
-<div class="container">
-    <div class="row"><br>
-        <div class="span10">
-            <div class="well">
-                <h2>File Check Alerts</h2>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="container">
-    <div class="row"><br> <!-- start exps row -->
-        <div class="span10"> <!-- span exps -->
-            <div class="well"> <!-- well exps -->
-                <p>Total warnings: {{ fc_log|length }}</p>
-                {% for log in fc_log %}
-                    <p>
-                    <b>file:</b> {{ log.file }}<br>
-                    <b>{{ log.error|length }} errors:</b> {% for e in log.error %} {{ e }}, {% endfor %}
-                    </p>
-                {% endfor %}
-            </div><!-- fim well -->
+    <div class="row"><br>
+        <div class="span11 well">
+            <h3>CMIP Figures</h3>
+            <a href="/exps/filecheck/1960">decadal1960</a>
+            <a href="/exps/filecheck/1980">decadal1980</a>
+            <a href="/exps/filecheck/2005">decadal2005</a>
+        </div>
+    </div>
+
+    <div class="row"><br>
+        <div class="span11">
+            <h3>File Checks</h3>
+            <p>Total warnings: {{ fc_log|length }}</p>
+            {% for log in fc_log %}
+                <p>
+                <b>file:</b> {{ log.file }}<br>
+                <b>{{ log.error|length }} errors:</b> {% for e in log.error %} {{ e }}, {% endfor %}
+                </p>
+            {% endfor %}
         </div>
     </div>
 </div>

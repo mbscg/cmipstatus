@@ -1,0 +1,48 @@
+{% extends 'expshome.html' %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row"><br>
+        <div class="span11">
+            <h3>Images for {{ dec }}</h3>
+        </div>
+    </div>
+
+    <div class="row"><br>
+        <div class="span11">
+            <span class="step-links">
+                {% if pages.0.1.has_previous %}
+                    <a href="?page={{ pages.0.1.previous_page_number }}">≤≤</a>
+                {% endif %}
+                <span class="current">
+                    p {{ pages.0.1.number }} of {{ pages.0.1.paginator.num_pages }}
+                </span>
+                {% if pages.0.1.has_next %}
+                    <a href="?page={{ pages.0.1.next_page_number }}">≥≥</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    {% for rip, pag in pages %}
+        <div class="row"><br>
+            <div class="span11">
+                <h4>{{ rip }}</h4>
+            </div>
+        </div>
+        <div class="row"><br>
+            {% for f in pag %}
+                <a data-lightbox="images for {{ dec }}" href="/media/figures/cmip_figs/{{ f }}"
+                class="thumbnail span1"><img src="/media/figures/cmip_figs/{{ f }}"></a>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="/media/js/lightbox.min.js"></script>
+    <link href="/media/css/lightbox.css" rel="stylesheet"/>
+{% endblock %}
