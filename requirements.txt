@@ -13,7 +13,6 @@ certifi==0.0.8
 chardet==1.0.1
 distribute==0.6.24
 django-classy-tags==0.3.4.1
-django-cms==2.3
 django-cronjobs==0.2.3
 django-mptt==0.5.2
 django-sekizai==0.6.1
