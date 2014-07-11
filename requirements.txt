@@ -13,13 +13,12 @@ certifi==14.05.14
 chardet==2.2.1
 distribute==0.7.3
 django-classy-tags==0.5.1
-django-cms==3.0.2
 django-cronjobs==0.2.3
 django-mptt==0.6.1
 django-sekizai==0.7
 html5lib==0.999
 ipython==2.1.0
-kombu==3.0.20
+kombu==3.0.21
 mechanize==0.2.5
 multi-mechanize==1.2.0
 oauthlib==0.6.3
