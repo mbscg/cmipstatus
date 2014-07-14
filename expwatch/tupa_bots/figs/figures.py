@@ -62,7 +62,8 @@ def gen_figures():
 
             c_params = None
             cmp_possible = []
-            if order.has_key('comp_to'):
+            if order.has_key('comp_to') and order['comp_to']:
+                    
                 cmp_exp, cmp_member = order['comp_to'].split()
                 c_params = {'output_tcl': '{}_{}.tcl'.format(cmp_exp, cmp_member),
                     'output_nc': '{}-{}.nc'.format(cmp_exp, cmp_member),
@@ -99,11 +100,15 @@ def gen_figures():
             figs += glob.glob('*{}*'.format(v))
         destino = os.path.join(config['figs_destino'], '_'.join([params['exp'], params['member']]))
         if os.path.exists(destino):
+            print "exists, rm tree", destino
             shutil.rmtree(destino)
-            os.makedirs(destino)
-            os.chmod(destino, permissions)
+        print "re/creating", destino
+        os.makedirs(destino)
+        print "chmodding"
+        os.chmod(destino, permissions)
         for fig in figs:
             os.chmod(fig, permissions)
+            print "moving", fig, destino
             shutil.move(fig, destino)
 
         # consumed, delete
@@ -112,6 +117,14 @@ def gen_figures():
         [os.remove(t) for t in glob.glob('*.tcl')]
 
 
+def copy_cmip_figures():
+    figs = glob.glob(config['cmip_figs'])
+    dest = os.path.join(config['figs_destino'], 'cmip_figs')
+    for fig in figs:
+        shutil.copy(fig, dest)
+
+
 if __name__ == "__main__":
     print "generating figures"
     gen_figures()
+    copy_cmip_figures()
