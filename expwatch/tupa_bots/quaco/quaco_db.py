@@ -34,24 +34,7 @@ def start():
 
 
 def get(session, name):
-    return session.query(Register).filter_by(name=name).first()
-
-
-def set_recheck(session, name):
-    register = session.query(Register).filter_by(name=name).first()
-    register.ack = 2
-
-
-def gen_report(session):
-    err_registers = session.query(Register).filter(Register.error>0).filter(Register.ack==0)
-    ok_registers = session.query(Register).filter(Register.error==0).filter(Register.ack==0)
-    msgs = [[r.name, str(r.error)] for r in err_registers]
-    for r in err_registers:
-        r.ack = 1
-    for r in ok_registers:
-        # pretending to dump (file is ok)
-        r.ack = 1
-    return msgs
+    session.query(Register).filter_by(name=name).first()
 
 
 def include(session, info):
