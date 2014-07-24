@@ -87,14 +87,13 @@ def get_cmip_figs(decadal):
     for fig in figs:
         fig_name = os.path.basename(fig)
         parts = fig_name.split('-')
-        print parts
         var = parts[1]
         rip = parts[4]
 
-        if not figs_structure.has_key(rip):
-            figs_structure[rip] = []
+        if not figs_structure.has_key(var):
+            figs_structure[var] = []
 
-        figs_structure[rip].append(fig_name)
+        figs_structure[var].append(fig_name)
 
     return figs_structure
         

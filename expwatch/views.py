@@ -213,13 +213,13 @@ class FilecheckImgs(View):
     def get(self, request, decadal):
         user = request.user
         figs = get_cmip_figs(str(decadal))
-        paginators = [(rip, Paginator(fig_list, 5)) for rip, fig_list in figs.items()]
+        paginators = [(var, Paginator(fig_list, 5)) for var, fig_list in figs.items()]
         page = request.GET.get('page')
         try:
-            figs_page = [(rip, pag.page(page)) for rip, pag in paginators]
+            figs_page = [(var, pag.page(page)) for var, pag in paginators]
         except PageNotAnInteger:
-            figs_page = [(rip, pag.page(1)) for rip, pag in paginators]
+            figs_page = [(var, pag.page(1)) for var, pag in paginators]
         except EmptyPage:
-            figs_page = [(rip, pag.page(paginator.num_pages)) for rip, pag in paginators]
+            figs_page = [(var, pag.page(paginator.num_pages)) for var, pag in paginators]
             
         return render(request, self.template_name, {'user': user, 'dec': decadal, 'pages': figs_page})
