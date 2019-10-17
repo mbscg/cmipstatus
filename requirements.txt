@@ -2,7 +2,7 @@ Django==1.4.1
 Fabric==1.4.2
 Markdown==2.2.0
 PIL==1.1.7
-PyYAML==3.10
+PyYAML==5.1
 South==0.7.5
 amqp==1.4.5
 anyjson==0.3.3
