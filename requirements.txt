@@ -1,4 +1,4 @@
-Django==1.4.1
+Django==2.2.24
 Fabric==1.4.2
 Markdown==2.2.0
 PIL==1.1.7
