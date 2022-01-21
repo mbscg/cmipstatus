@@ -17,7 +17,7 @@ django-cronjobs==0.2.3
 django-mptt==0.5.2
 django-sekizai==0.6.1
 html5lib==0.95
-ipython==0.12.1
+ipython==7.16.3
 kombu==3.0.16
 mechanize==0.2.5
 multi-mechanize==1.2.0
